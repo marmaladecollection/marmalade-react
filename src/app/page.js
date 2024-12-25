@@ -1,7 +1,12 @@
+"use client";
 import Item from "./item";
 import styles from "./page.module.css";
 
-const items = [{ name: "Chair" }, { name: "Table" }, { name: "Lamp" }];
+const items = [
+  { id: 1, name: "Chair" },
+  { id: 2, name: "Table" },
+  { id: 3, name: "Lamp" }
+];
 
 export default function Home() {
   return (
@@ -11,7 +16,7 @@ export default function Home() {
         <ul>
           {items.map((item) => (
             <li key={item.name}>
-              <Item name={item.name} />
+              <Item item={item} />
             </li>
           ))}
         </ul>
