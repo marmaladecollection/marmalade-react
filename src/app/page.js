@@ -1,14 +1,17 @@
 "use client";
+
+import { fetchData } from "./firebaseConfig";
+import { useState, useEffect } from "react";
 import Item from "./item";
 import styles from "./page.module.css";
 
-const items = [
-  { id: 1, name: "Chair" },
-  { id: 2, name: "Table" },
-  { id: 3, name: "Lamp" }
-];
-
 export default function Home() {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    fetchData(setItems);
+  }, []);
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -24,3 +27,4 @@ export default function Home() {
     </div>
   );
 }
+
