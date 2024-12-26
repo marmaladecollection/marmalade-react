@@ -1,10 +1,8 @@
-// firebaseConfig.js
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { doc, getDoc, getDocs } from "firebase/firestore"; // Import Firestore methods
 import { collection } from "firebase/firestore";
 
-// Your Firebase configuration object
 const firebaseConfig = {
     apiKey: "AIzaSyDO9_iM3sha-AigKFyha1uc07EQNFxAhyo",
     authDomain: "marmalade-5ae5d.firebaseapp.com",
@@ -15,13 +13,10 @@ const firebaseConfig = {
     measurementId: "G-XR3QK3YRLK"
   };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-// Export Firestore instance
-export const db = getFirestore(app);
-
-export const fetchData = async (setItems) => {
+export const fetchAllItems = async (setItems) => {
     try {
       const querySnapshot = await getDocs(collection(db, "item"));
       const data = querySnapshot.docs.map((doc) => ({
@@ -30,30 +25,24 @@ export const fetchData = async (setItems) => {
       }));
       setItems(data);
     } catch (e) {
-      console.error("Error fetching documents:", e);
+      console.error("Error fetching items:", e);
     }
   };
 
-
 export const fetchItemById = async(id, setItem) =>{
   try {
-    // Create a reference to the document
     const docRef = doc(db, 'item', id);
-
-    // Fetch the document snapshot
     const docSnap = await getDoc(docRef);
 
-    // Check if the document exists
     if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data()); // Log the document data
-      var res = docSnap.data(); // Return the document data
-      setItem(res)
+      console.log("Item data:", docSnap.data());
+      setItem(docSnap.data())
     } else {
-      console.log("No such document!");
+      console.log("No item with id " + id);
       return null;
     }
   } catch (error) {
-    console.error("Error fetching document:", error);
-    throw error; // Handle errors as needed
+    console.error("Error fetching item " + id, error);
+    throw error;
   }
 }

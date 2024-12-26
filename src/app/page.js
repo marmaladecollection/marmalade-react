@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchData } from "./firebaseConfig";
+import { fetchAllItems } from "./firebase";
 import { useState, useEffect } from "react";
 import Item from "./item";
 import styles from "./page.module.css";
@@ -9,7 +9,7 @@ export default function Home() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    fetchData(setItems);
+    fetchAllItems(setItems);
   }, []);
 
   return (

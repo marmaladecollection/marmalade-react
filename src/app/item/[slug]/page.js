@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./page.module.css";
-import { fetchItemById } from "../../firebaseConfig";
+import { fetchItemById } from "../../firebase";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -25,6 +25,7 @@ export default function ItemPage({params}) {
       <main className={styles.main}>
         <h1>MARAMALADE ITEM PAGE</h1>
         <h2>{item.name}</h2>
+        <button onClick={() => router.push("/basket")}>Add to basket</button>
       </main>
     </div>
   );
