@@ -8,12 +8,12 @@ export const MarmaladeProvider = ({ children }) => {
     const [basketItemId, setBasketItemId] = useState(''); 
 
     useEffect(() => {
-        const storedMessage = localStorage.getItem('basketItemId');
-        if (storedMessage) {
-            setBasketItemId(storedMessage);
+        const storedItem = localStorage.getItem('basketItemId');
+        if (storedItem) {
+            console.log('Updating context with id from localStorage ' + storedItem);
+            setBasketItemId(storedItem);
         }
     }, []); 
-
 
     useEffect(() => {
         if (basketItemId) {

@@ -29,6 +29,7 @@ export const fetchAllItems = async (setItems) => {
 
 export const fetchItemById = async(id, setItem) =>{
   try {
+    console.log("fetching item with id " + id);
     const docRef = doc(db, 'item', id);
     const docSnap = await getDoc(docRef);
 

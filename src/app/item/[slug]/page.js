@@ -7,20 +7,17 @@ import { fetchItemById } from "../../firebase";
 import styles from "./page.module.css";
 
 export default function ItemPage() {
-  const [slug, setSlug] = useState([]);
   const [item, setItem] = useState([]);
   const router = useRouter();
   const { setBasketItemId } = useMarmaladeContext();
 
   useEffect(() => {
     const pathname = window.location.pathname;
-    const slugFromPath = pathname.split("/").pop(); // Extract slug from URL path
-    setSlug(slugFromPath);
-    fetchItemById(slugFromPath, setItem);
+    const itemIdFromPath = pathname.split("/").pop(); 
+    fetchItemById(itemIdFromPath, setItem);
   }, []);
   
-  const openBasket = () => {
-    console.log(item.id);
+  const addToBasket = () => {
     setBasketItemId(item.id);
     router.push("/basket");
   }
@@ -30,7 +27,7 @@ export default function ItemPage() {
       <main className={styles.main}>
         <h1>ITEM</h1>
         <h2>{item.name}</h2>
-        <button onClick={openBasket}>Add to basket</button>
+        <button onClick={addToBasket}>Add to basket</button>
       </main>
     </div>
   );
