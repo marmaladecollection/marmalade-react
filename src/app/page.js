@@ -13,16 +13,13 @@ export default function Home() {
   }, []);
 
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-
-        <ul>
+    <div>
+      <main>
+        <div className={styles.gallery}>
           {items.map((item) => (
-            <li key={item.name}>
-              <Item item={item} />
-            </li>
+              <Item key={item.name} item={item} />
           ))}
-        </ul>
+        </div>
       </main>
     </div>
   );

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useMarmaladeContext } from "../context/MarmaladeContext";
 import { fetchItemById } from "../firebase";
+import Thumbnail from "../thumbnail";
 import styles from "./page.module.css";
 
 export default function BasketPage() {
@@ -32,8 +33,9 @@ export default function BasketPage() {
 
         <h1>BASKET</h1>
         <h2>{item.name}</h2>
-        <h3>{basketItemId}</h3>
+        <Thumbnail item={item} />
       </main>
+      <i>{basketItemId}</i>
     </div>
   );
 }

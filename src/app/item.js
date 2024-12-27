@@ -1,16 +1,18 @@
 "use client";
-import styles from "./item.module.css";
 import Link from "next/link";
+import styles from "./item.module.css";
+import Thumbnail from "./thumbnail";
 
-export default function Item({item}) {
-
+export default function Item({ item }) {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-
-        <Link href={`/item/${item.id}`}>{item.name}</Link>
-
+    <div key={item.id} className={styles.page}>
+      <main>
+        <Link href={`/item/${item.id}`} className={styles.main}>
+          <Thumbnail item={item} />
+         {item.name}
+        </Link>
       </main>
     </div>
   );
 }
+
