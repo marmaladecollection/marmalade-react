@@ -2,14 +2,14 @@ import { initializeApp } from "firebase/app";
 import { collection, doc, getDoc, getDocs, getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDO9_iM3sha-AigKFyha1uc07EQNFxAhyo",
-    authDomain: "marmalade-5ae5d.firebaseapp.com",
-    projectId: "marmalade-5ae5d",
-    storageBucket: "marmalade-5ae5d.firebasestorage.app",
-    messagingSenderId: "128262757682",
-    appId: "1:128262757682:web:84a5c6989424c52aeacb2b",
-    measurementId: "G-XR3QK3YRLK"
-  };
+  apiKey: "AIzaSyDAy3UOEf3Occ9dRnfO8i-NawSc81jMuIY",
+  authDomain: "marmalade-collection.firebaseapp.com",
+  projectId: "marmalade-collection",
+  storageBucket: "marmalade-collection.firebasestorage.app",
+  messagingSenderId: "113362983488",
+  appId: "1:113362983488:web:b3e93cb5f68e4996711da5",
+  measurementId: "G-8BBEVMWJ3L"
+};
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
