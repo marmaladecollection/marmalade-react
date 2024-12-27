@@ -1,33 +1,40 @@
-'use client'; // This makes the component a Client Component
-
+'use client'; 
 import { createContext, useContext, useEffect, useState } from 'react';
 
 const MarmaladeContext = createContext();
 
 export const MarmaladeProvider = ({ children }) => {
-    const [basketItemId, setBasketItemId] = useState(''); 
+    const [basketIds, setBasketIds] = useState([]);
 
+    // Effect to read from local storage on mount
     useEffect(() => {
-        const storedItem = localStorage.getItem('basketItemId');
-        if (storedItem) {
-            console.log('Updating context with id from localStorage ' + storedItem);
-            setBasketItemId(storedItem);
+        const savedIds = localStorage.getItem('BasketIds');
+        if (savedIds) {
+            setBasketIds(JSON.parse(savedIds));
         }
-    }, []); 
+    }, []);
 
+    // Effect to write to local storage whenever ids change
     useEffect(() => {
-        if (basketItemId) {
-            localStorage.setItem('basketItemId', basketItemId);
-        } else {
-            localStorage.removeItem('basketItemId'); 
-        }
-    }, [basketItemId]);
+        localStorage.setItem('BasketIds', JSON.stringify(basketIds));
+    }, [basketIds]);
+
+    // Function to add an ID
+    const addToBasket = (newId) => {
+        setBasketIds((prevIds) => [...prevIds, newId]);
+    };
+
+    // Function to remove an ID
+    const removeFromBasket = (idToRemove) => {
+        setBasketIds((prevIds) => prevIds.filter(id => id !== idToRemove));
+    };
 
     return (
-        <MarmaladeContext.Provider value={{ basketItemId, setBasketItemId }}>
+        <MarmaladeContext.Provider value={{ basketIds, addToBasket, removeFromBasket }}>
             {children}
         </MarmaladeContext.Provider>
     );
 };
+
 
 export const useMarmaladeContext = () => useContext(MarmaladeContext);

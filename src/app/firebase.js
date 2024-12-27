@@ -27,6 +27,31 @@ export const fetchAllItems = async (setItems) => {
   }
 };
 
+export const fetchItemsByIds = async (ids, setItems) => {
+  var items = []
+  console.log("fetching items with ids " + ids);
+  for (let id of ids) {
+    if (id) {
+      console.log("fetching item with id " + id);
+      const docRef = doc(db, 'item', id);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = {
+          id: docSnap.id,
+          ...docSnap.data()
+        }
+        items.push(data)
+      } else {
+        console.log("No item with id " + id);
+      }
+    }
+  }
+
+  console.log("setting items " + items.map(item => item.name));
+  setItems(items)
+}
+
 export const fetchItemById = async (id, setItem) => {
   try {
     if (id) {

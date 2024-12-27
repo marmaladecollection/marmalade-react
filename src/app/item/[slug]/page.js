@@ -10,7 +10,7 @@ import styles from "./page.module.css";
 export default function ItemPage() {
   const [item, setItem] = useState([]);
   const router = useRouter();
-  const { setBasketItemId } = useMarmaladeContext();
+  const { addToBasket } = useMarmaladeContext();
 
   useEffect(() => {
     const pathname = window.location.pathname;
@@ -18,8 +18,8 @@ export default function ItemPage() {
     fetchItemById(itemIdFromPath, setItem);
   }, []);
 
-  const addToBasket = () => {
-    setBasketItemId(item.id);
+  const add = () => {
+    addToBasket(item.id);
     router.push("/basket");
   }
 
@@ -29,7 +29,7 @@ export default function ItemPage() {
         <h1>ITEM</h1>
         <h2>{item.name}</h2>
         <Thumbnail item={item} />
-        <button onClick={addToBasket}>Add to basket</button>
+        <button onClick={add}>Add to basket</button>
       </main>
     </div>
   );
