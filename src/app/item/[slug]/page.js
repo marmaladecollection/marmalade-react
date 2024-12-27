@@ -1,16 +1,16 @@
 "use client";
 
-import styles from "./page.module.css";
-import { fetchItemById } from "../../firebase";
-import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useMyContext } from "../../context/MyContext";
+import { useEffect, useState } from "react";
+import { useMarmaladeContext } from "../../context/MarmaladeContext";
+import { fetchItemById } from "../../firebase";
+import styles from "./page.module.css";
 
 export default function ItemPage({params}) {
   const [slug, setSlug] = useState([]);
   const [item, setItem] = useState([]);
   const router = useRouter();
-  const { setMessage } = useMyContext();
+  const { setMessage } = useMarmaladeContext();
 
   useEffect(() => {
 
@@ -29,7 +29,7 @@ export default function ItemPage({params}) {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <h1>MARAMALADE ITEM PAGE</h1>
+        <h1>ITEM</h1>
         <h2>{item.name}</h2>
         <button onClick={openBasket}>Add to basket</button>
       </main>

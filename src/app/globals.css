@@ -10,7 +10,8 @@
   }
 }
 
-header, footer {
+header,
+footer {
   background-color: #333;
   color: white;
   padding: 10px;
@@ -45,4 +46,14 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+.logo {
+  font-size: 40px;
+  font-weight: bold;
+  color: transparent;
+  -webkit-text-stroke: 1px black;
+  letter-spacing: -1px;
+  cursor: pointer;
+  text-transform: uppercase;
 }

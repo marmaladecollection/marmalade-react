@@ -1,13 +1,12 @@
 "use client";
 
-import styles from "./page.module.css";
-import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useMyContext } from "../context/MyContext";
+import { useMarmaladeContext } from "../context/MarmaladeContext";
+import styles from "./page.module.css";
 
 export default function BasketPage({params}) {
   const router = useRouter();
-  const { message } = useMyContext();
+  const { message } = useMarmaladeContext();
 
   return (
     <div className={styles.page}>
@@ -20,7 +19,7 @@ export default function BasketPage({params}) {
           checkout
         </button>
     
-        <h1>MARAMALADE BASKET PAGE</h1>
+        <h1>BASKET</h1>
         <h2>{message}</h2>
       </main>
     </div>

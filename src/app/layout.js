@@ -1,8 +1,8 @@
 "use client";
 
 import { Geist, Geist_Mono } from "next/font/google";
+import { MarmaladeProvider } from "./context/MarmaladeContext";
 import "./globals.css";
-import { MyProvider } from "./context/MyContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,9 +19,13 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <header>Free Delivery</header>
-        <MyProvider>
+        <div className="logo" onClick={() => window.location.href = '/'}>
+          Marmalade
+        </div>
+
+        <MarmaladeProvider>
           {children}
-        </MyProvider>
+        </MarmaladeProvider>
         <footer>Help   Contact Us</footer>
         </body>
     </html>

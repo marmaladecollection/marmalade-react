@@ -1,7 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { fetchAllItems } from "./firebase";
-import { useState, useEffect } from "react";
 import Item from "./item";
 import styles from "./page.module.css";
 
@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-       <h1>MARAMALADE GALLERY PAGE</h1>
+
         <ul>
           {items.map((item) => (
             <li key={item.name}>
