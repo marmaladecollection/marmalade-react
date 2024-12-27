@@ -1,7 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { doc, getDoc, getDocs } from "firebase/firestore"; // Import Firestore methods
-import { collection } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDO9_iM3sha-AigKFyha1uc07EQNFxAhyo",
@@ -35,8 +33,11 @@ export const fetchItemById = async(id, setItem) =>{
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log("Item data:", docSnap.data());
-      setItem(docSnap.data())
+      const data = {
+        id: docSnap.id,
+        ...docSnap.data()
+      }
+      setItem(data)
     } else {
       console.log("No item with id " + id);
       return null;

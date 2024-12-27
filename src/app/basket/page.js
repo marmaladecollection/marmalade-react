@@ -4,9 +4,9 @@ import { useRouter } from "next/navigation";
 import { useMarmaladeContext } from "../context/MarmaladeContext";
 import styles from "./page.module.css";
 
-export default function BasketPage({params}) {
+export default function BasketPage() {
   const router = useRouter();
-  const { message } = useMarmaladeContext();
+  const { basketItemId } = useMarmaladeContext();
 
   return (
     <div className={styles.page}>
@@ -20,7 +20,7 @@ export default function BasketPage({params}) {
         </button>
     
         <h1>BASKET</h1>
-        <h2>{message}</h2>
+        <h2>{basketItemId}</h2>
       </main>
     </div>
   );

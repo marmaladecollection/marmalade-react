@@ -6,23 +6,22 @@ import { useMarmaladeContext } from "../../context/MarmaladeContext";
 import { fetchItemById } from "../../firebase";
 import styles from "./page.module.css";
 
-export default function ItemPage({params}) {
+export default function ItemPage() {
   const [slug, setSlug] = useState([]);
   const [item, setItem] = useState([]);
   const router = useRouter();
-  const { setMessage } = useMarmaladeContext();
+  const { setBasketItemId } = useMarmaladeContext();
 
   useEffect(() => {
-
     const pathname = window.location.pathname;
     const slugFromPath = pathname.split("/").pop(); // Extract slug from URL path
     setSlug(slugFromPath);
-    
     fetchItemById(slugFromPath, setItem);
   }, []);
   
   const openBasket = () => {
-    setMessage("Item added to basket: " + item.name);
+    console.log(item.id);
+    setBasketItemId(item.id);
     router.push("/basket");
   }
 

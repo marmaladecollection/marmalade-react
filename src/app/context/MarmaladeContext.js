@@ -5,26 +5,26 @@ import { createContext, useContext, useEffect, useState } from 'react';
 const MarmaladeContext = createContext();
 
 export const MarmaladeProvider = ({ children }) => {
-    const [message, setMessage] = useState(''); 
+    const [basketItemId, setBasketItemId] = useState(''); 
 
     useEffect(() => {
-        const storedMessage = localStorage.getItem('message');
+        const storedMessage = localStorage.getItem('basketItemId');
         if (storedMessage) {
-            setMessage(storedMessage);
+            setBasketItemId(storedMessage);
         }
     }, []); 
 
 
     useEffect(() => {
-        if (message) {
-            localStorage.setItem('message', message);
+        if (basketItemId) {
+            localStorage.setItem('basketItemId', basketItemId);
         } else {
-            localStorage.removeItem('message'); 
+            localStorage.removeItem('basketItemId'); 
         }
-    }, [message]);
+    }, [basketItemId]);
 
     return (
-        <MarmaladeContext.Provider value={{ message, setMessage }}>
+        <MarmaladeContext.Provider value={{ basketItemId, setBasketItemId }}>
             {children}
         </MarmaladeContext.Provider>
     );
