@@ -9,8 +9,8 @@ export default function Item({ item }) {
       <main>
         <Link href={`/item/${item.id}`} className={styles.main}>
           <Thumbnail item={item} />
-         {item.name}
-         £{item.price}
+         <div>{item.name}</div>
+         <div>£{item.price}</div>
         </Link>
       </main>
     </div>

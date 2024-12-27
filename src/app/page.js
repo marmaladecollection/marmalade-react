@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { fetchAllItems } from "./firebase";
+
 import Item from "./item";
-import styles from "./page.module.css";
 
 export default function Home() {
   const [items, setItems] = useState([]);
@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <div>
       <main>
-        <div className={styles.gallery}>
+        <div className="gallery">
           {items.map((item) => (
               <Item key={item.name} item={item} />
           ))}
