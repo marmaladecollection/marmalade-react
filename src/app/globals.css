@@ -70,3 +70,7 @@ button {
   margin: 10px;
   padding: 10px;
 }
+a.basket {
+  color: white;
+  float: right;
+}

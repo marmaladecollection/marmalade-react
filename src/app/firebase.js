@@ -15,33 +15,35 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 export const fetchAllItems = async (setItems) => {
-    try {
-      const querySnapshot = await getDocs(collection(db, "item"));
-      const data = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setItems(data);
-    } catch (e) {
-      console.error("Error fetching items:", e);
-    }
-  };
-
-export const fetchItemById = async(id, setItem) =>{
   try {
-    console.log("fetching item with id " + id);
-    const docRef = doc(db, 'item', id);
-    const docSnap = await getDoc(docRef);
+    const querySnapshot = await getDocs(collection(db, "item"));
+    const data = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setItems(data);
+  } catch (e) {
+    console.error("Error fetching items:", e);
+  }
+};
 
-    if (docSnap.exists()) {
-      const data = {
-        id: docSnap.id,
-        ...docSnap.data()
+export const fetchItemById = async (id, setItem) => {
+  try {
+    if (id) {
+      console.log("fetching item with id " + id);
+      const docRef = doc(db, 'item', id);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = {
+          id: docSnap.id,
+          ...docSnap.data()
+        }
+        setItem(data)
+      } else {
+        console.log("No item with id " + id);
+        return null;
       }
-      setItem(data)
-    } else {
-      console.log("No item with id " + id);
-      return null;
     }
   } catch (error) {
     console.error("Error fetching item " + id, error);

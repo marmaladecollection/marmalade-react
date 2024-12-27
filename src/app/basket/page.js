@@ -13,10 +13,7 @@ export default function BasketPage() {
   const [item, setItem] = useState([]);
 
   useEffect(() => {
-    console.log('*** Fetching item by id ' + basketItemId);
-    if (basketItemId) {
       fetchItemById(basketItemId, setItem);
-    }
   }, [basketItemId]);
 
   console.log('Rendering basket page with item id ' + basketItemId);
@@ -35,7 +32,7 @@ export default function BasketPage() {
         <h2>{item.name}</h2>
         <Thumbnail item={item} />
       </main>
-      <i>{basketItemId}</i>
+
     </div>
   );
 }
