@@ -7,7 +7,7 @@ import Item from "../item";
 import styles from "./page.module.css";
 
 export default function BasketPage() {
-  const { basketIds } = useMarmaladeContext();
+  const { basketIds, removeFromBasket } = useMarmaladeContext();
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -24,6 +24,7 @@ export default function BasketPage() {
         <div className="gallery">
         {items.map((item) => (
           <div key={item.id}>
+            <button onClick={() => removeFromBasket(item.id)}>Remove</button>
             <Item item={item} />
           </div>
         ))}
