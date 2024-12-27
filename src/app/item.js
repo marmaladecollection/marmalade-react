@@ -10,6 +10,7 @@ export default function Item({ item }) {
         <Link href={`/item/${item.id}`} className={styles.main}>
           <Thumbnail item={item} />
          {item.name}
+         £{item.price}
         </Link>
       </main>
     </div>

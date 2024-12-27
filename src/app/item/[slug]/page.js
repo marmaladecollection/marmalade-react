@@ -29,6 +29,7 @@ export default function ItemPage() {
         <h1>ITEM</h1>
         <h2>{item.name}</h2>
         <Thumbnail item={item} />
+        <p>£{item.price}</p>
         <button onClick={add}>Add to basket</button>
       </main>
     </div>
