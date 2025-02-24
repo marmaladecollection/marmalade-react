@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import styles from "./item.module.css";
+import styles from "./item.module.scss";
 import Thumbnail from "./thumbnail";
 
 export default function Item({ item }) {

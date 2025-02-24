@@ -20,12 +20,15 @@ Photos Store is Google photos with msm gmail
 
 ## Hosting
 On IONOS skw@g u-i
+
+## Deploying
 ssh [user]@[ip address]
 (see IONOS console for details and password)
-
+git clone/pull from repo
 
 ## Troubleshooting
 Can't see my images - Switch off VPN
+Can't see the webpage - Ask ChatGPT about setting up nginx and DNS A records.  These take time to propogate changes. Using a USA VPN, they propogate quicker!
 
 
 
