@@ -1,6 +1,6 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-ss: Arial, Helvetica, sans-serif;
+  --font-s: 'Libre Baskerville', serif;
 }
 
 @media (prefers-color-scheme: dark) {
