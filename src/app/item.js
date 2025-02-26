@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import styles from "./item.module.scss";
-import Thumbnail from "./thumbnail";
+import { default as Thumbnail, default as UnderThumbnail } from "./thumbnail";
 
 export default function Item({ item }) {
   return (
@@ -9,8 +9,7 @@ export default function Item({ item }) {
       <main>
         <Link href={`/item/${item.id}`} className={styles.main}>
           <Thumbnail item={item} />
-         <div>{item.name}</div>
-         <div>£{item.price}</div>
+          <UnderThumbnail item={item} />
         </Link>
       </main>
     </div>

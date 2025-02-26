@@ -17,7 +17,6 @@ Photos Store is Google photos with msm gmail
 
 ### Adding an item
 
-
 ## Hosting
 On IONOS skw@g u-i
 
