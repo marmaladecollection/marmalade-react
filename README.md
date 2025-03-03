@@ -25,6 +25,9 @@ ssh [user]@[ip address]
 (see IONOS console for details and password)
 git clone/pull from repo into /srv/marmalade
 
+To transfer images from local machine to server...
+
+
 ## Config
 Go to IONOS Domains and SSL 
 Select your domain

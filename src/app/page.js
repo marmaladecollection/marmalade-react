@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { fetchAllItems } from "./firebase";
-import Item from "./item";
+import Gallery from "./gallery";
 import styles from './page.module.scss';
 
 export default function Home() {
@@ -15,11 +15,7 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main>
-        <div className={styles.main}>
-          {items.map((item) => (
-              <Item key={item.name} item={item} />
-          ))}
-        </div>
+        <Gallery items={items} />
       </main>
     </div>
   );
