@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Category from "./category";
 import { fetchAllItems } from "./firebase";
 import Gallery from "./gallery";
 import styles from './page.module.scss';
@@ -15,6 +16,7 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main>
+        <Category />
         <Gallery items={items} />
       </main>
     </div>

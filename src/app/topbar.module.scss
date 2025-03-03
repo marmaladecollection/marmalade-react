@@ -5,8 +5,10 @@
     justify-content: space-between;
     align-items: center;
     padding: 16px;
-    font-size: smaller;
-    margin-bottom: 24px;
+    font-size: smaller; 
+    font-family: var(--font-ss);
+    font-weight: 400;
+    letter-spacing: 2px;
 }
 
 #logo {
