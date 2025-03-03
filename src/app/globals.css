@@ -1,7 +1,7 @@
-:root {
+/* :root {
   --font-ss: Arial, Helvetica, sans-serif;
   --font-s: 'Libre Baskerville', serif;
-}
+} */
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -77,9 +77,4 @@ button {
 a.basket {
   color: white;
   float: right;
-}
-
-.gallery {
-  display: flex;
-  flex-direction: row;
 }
