@@ -7,3 +7,11 @@
     margin: 0px 20px;
     align-items: flex-start;
 }
+.bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-ss);
+    margin: 20px;
+}

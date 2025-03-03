@@ -5,8 +5,9 @@ import styles from "./underthumbnail.module.scss";
 export default function Item({ item }) {
   return (
       <div className={styles.main}>
-          <div>{item.name}</div>
-          <div>£{item.price}</div>
+          <span>{item.name}</span>
+          <span>£{item.price}</span>
+          <a className={styles.save}>SAVE</a>
       </div>
   );
 }

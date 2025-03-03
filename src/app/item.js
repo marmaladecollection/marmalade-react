@@ -10,8 +10,8 @@ export default function Item({ item }) {
       <main>
         <Link href={`/item/${item.id}`} className={styles.main}>
           <Thumbnail item={item} />
-          <UnderThumbnail item={item} />
         </Link>
+        <UnderThumbnail item={item} />
       </main>
     </div>
   );
