@@ -2,6 +2,7 @@
 
 import { Libre_Baskerville, Noto_Sans } from "next/font/google";
 import { MarmaladeProvider } from "./context/MarmaladeContext";
+import Footer from "./footer";
 import "./globals.css";
 import Header from "./header";
 import TopBar from "./topbar";
@@ -28,8 +29,9 @@ export default function RootLayout({ children }) {
         <MarmaladeProvider>
           {children}
         </MarmaladeProvider>
-        <footer>Help   Contact Us</footer>
-        </body>
+
+        <Footer/>
+      </body>
     </html>
   );
 }
