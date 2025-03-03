@@ -4,6 +4,7 @@ import { Libre_Baskerville, Noto_Sans } from "next/font/google";
 import { MarmaladeProvider } from "./context/MarmaladeContext";
 import "./globals.css";
 import Header from "./header";
+import TopBar from "./topbar";
 
 const serifFont = Libre_Baskerville({
   variable: "--font-s",
@@ -22,10 +23,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${serifFont.variable} ${sansSerifFont.variable}`}>
         <Header/>
-
-        <div className="logo" onClick={() => window.location.href = '/'}>
-          Marmalade
-        </div>
+        <TopBar/>
 
         <MarmaladeProvider>
           {children}

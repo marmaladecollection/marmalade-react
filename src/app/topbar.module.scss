@@ -1,0 +1,20 @@
+#topBar {
+    border-bottom: 1px solid #ebebeb;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    font-size: smaller;
+    margin-bottom: 24px;
+}
+
+#logo {
+    letter-spacing: -1px;
+    cursor: pointer;
+
+    font-size: 40px;
+    font-weight: bold;
+    color: transparent;
+    -webkit-text-stroke: 1px black;
+}
