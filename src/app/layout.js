@@ -18,18 +18,15 @@ const sansSerifFont = Noto_Sans({
   subsets: ['latin'],
 });
 
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${serifFont.variable} ${sansSerifFont.variable}`}>
         <Header/>
         <TopBar/>
-
         <MarmaladeProvider>
           {children}
         </MarmaladeProvider>
-
         <Footer/>
       </body>
     </html>

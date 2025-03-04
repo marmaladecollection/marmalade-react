@@ -1,14 +1,15 @@
+@import '../../common.scss';
+
 .summary {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    @extend .spaced-down, .divider;
+
     align-items: flex-start;
     padding-bottom: 20px;
     margin-bottom: 20px;
-    border-bottom: 1px solid #ebebeb;
 }
 
-.description {
+.name {
+    font-family: var(--font-s);
     font-size: larger;
     font-weight: 600;
     text-align: left;

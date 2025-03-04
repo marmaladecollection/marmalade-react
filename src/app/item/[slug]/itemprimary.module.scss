@@ -1,87 +1,35 @@
+@import '../../common.scss';
+
 .mainBit {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    @extend .spaced-across;
+
+    margin-top: 48px;
     align-items: flex-start;
 
-    @media only screen and (max-width: 1016px) {
-        flex-direction: column-reverse;
-        align-items: initial;
-        margin-right: 0px;
-    }
-}
-
-.images,
-.productBlurb {
-    @media only screen and (min-width: 1016px) {
-        margin-left: 20px !important;
-        flex: 0 1 calc(50% - 60px);
-    }
-}
-
-.actions,
-.deliveryBlurb {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    
-    @media only screen and (min-width: 1016px) {
-        margin-left: 20px !important;
-        flex: 0 1 calc(50%);
-    }
-
-    @media only screen and (max-width: 1016px) {
-        margin-right: 20px;
-    }
-}
-
-.images {
-    overflow: hidden;
-    position: relative;
-
-    &:hover img {
-        transform: scale(2);
-    }
-
-    img {
-        width: 100%;
-        height: auto;
-    }
+    // @media only screen and (max-width: 1016px) {
+    //     flex-direction: column-reverse;
+    //     align-items: initial;
+    //     margin-right: 0px;
+    // }
 }
 
 .actions {
-    margin-left: 20px;
+    @extend .spaced-down;
 
     @media only screen and (min-width: 1016px) {
+        margin-left: 20px !important;
         margin-right: 20px;
+        flex: 0 1 calc(50%);
     }
 
-    justify-content: space-between;
-    align-items: initial;
-    font-family: var(--font-s);
-    font-size: large;
-
-    .summary {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        padding-bottom: 20px;
-        margin-bottom: 20px;
-        border-bottom: 1px solid #ebebeb;
-    }
-
-    .description {
-        font-size: larger;
-        font-weight: 600;
-        text-align: left;
-        margin-bottom: 10px;
-    }
+    // @media only screen and (max-width: 1016px) {
+    //     margin-right: 20px;
+    // }
 
     .returns {
+        align-self: flex-start;
         font-size: smaller;
         margin-bottom: 24px;
-        align-self: flex-start;
     }
 
     .productInfo {
@@ -91,36 +39,5 @@
         text-underline-offset: 8px;
         align-self: flex-start;
         margin-bottom: 36px;
-    }
-
-    .buttons {
-        display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-        margin-bottom: 32px;
-
-        a {
-            flex: 0 1 calc(50%);
-            font-family: var(--font-ss);
-            font-size: x-small;
-            text-align: center;
-            display: inline-block;
-            letter-spacing: 2px;
-            padding: 20px 30px;
-            border-radius: 1px;
-            text-transform: uppercase;
-            text-wrap: nowrap;
-        }
-
-        .addToBag {
-            background-color: black;
-            color: white;
-            margin-right: 18px;
-        }
-
-        .saveForLater {
-            border: 1px solid black;
-        }
     }
 }

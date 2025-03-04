@@ -1,20 +1,15 @@
+@import 'common.scss';
+
 .footer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    @extend .spaced-across, .top-divider;
     
     margin-top: 44px;
     padding: 24px;
     font-size: x-small;
-    font-family: var(--font-ss);
-    letter-spacing: 1px;
     text-transform: uppercase;
-    text-align: center;
-    border-top: 1px solid #ebebeb;
-    cursor: pointer;
 
     & div:hover {
+        cursor: pointer;
         color: #424246
     }
 }

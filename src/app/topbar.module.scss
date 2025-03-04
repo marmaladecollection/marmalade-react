@@ -1,20 +1,15 @@
+@import 'common.scss';
+
 #topBar {
-    border-bottom: 1px solid #ebebeb;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    @extend .divider, .spaced-across;
+
     padding: 16px;
-    font-family: var(--font-ss);
     font-size: smaller; 
-    font-weight: 400;
-    letter-spacing: 2px;
 }
 
 #logo {
-    letter-spacing: -1px;
     cursor: pointer;
-    font-family: var(--font-ss);
+    letter-spacing: -1px;
     font-size: 40px;
     font-weight: bold;
     color: transparent;

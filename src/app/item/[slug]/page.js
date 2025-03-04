@@ -4,11 +4,9 @@ import { useEffect, useState } from "react";
 import { fetchItemById } from "../../firebase";
 import ItemPrimary from "./itemprimary";
 import ItemSecondary from "./itemsecondary";
-import styles from "./page.module.scss";
 
 export default function ItemPage() {
   const [item, setItem] = useState([]);
-
 
   useEffect(() => {
     const pathname = window.location.pathname;
@@ -16,9 +14,8 @@ export default function ItemPage() {
     fetchItemById(itemIdFromPath, setItem);
   }, []);
 
-
   return (
-    <div className={styles.page}>
+    <div>
       <ItemPrimary item={item} />
       <ItemSecondary item={item} />
     </div>

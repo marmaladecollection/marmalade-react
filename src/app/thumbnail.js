@@ -2,10 +2,10 @@
 
 import styles from './thumbnail.module.scss';
 
-export default function UnderThumbnail({ item }) {
+export default function Thumbnail({ item }) {
   return (
     <div>
-      <img src={`/images/${item.id}.jpg`} />
+      <img className={styles.image} src={`/images/${item.id}.jpg`} />
       <div className={styles.addToBasket}>+</div>
     </div>
 

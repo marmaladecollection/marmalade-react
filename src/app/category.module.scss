@@ -1,6 +1,8 @@
+@import 'common.scss';
+
 .category {
-    border-bottom: 1px solid #ebebeb;
-    font-family: var(--font-ss);
+    @extend .divider;
+
     margin-bottom: 20px;
     h2 {
         margin: 20px;

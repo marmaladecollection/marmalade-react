@@ -1,44 +1,9 @@
 .page {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    position: relative;
     flex: 0 1 calc(33.333% - 13.333px);
+    position: relative;
 
     @media only screen and (max-width: 1016px) {
         flex: 0 1 calc(100%);
     }
-
-    text-align: start !important;
-    cursor: pointer;
-
-    img {
-        width: 100%;
-        margin-bottom: 8px;
-    }
-
-    .fade {
-        position: relative;
-        width: 100%;
-        overflow: hidden;
-
-        img.main {
-            display: block;
-            position: absolute;
-            transition: opacity 0.4s ease-in-out;
-            opacity: 1;
-            height: auto;
-        }
-
-        &:hover .main {
-            opacity: 0;
-        }
-    }
-
-    span {
-        margin: 4px 0px;
-    }
-
-
 }
