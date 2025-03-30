@@ -1,0 +1,10 @@
+@import '../common.scss';
+
+.page {
+    @extend .spaced-across;
+    align-items: flex-start;
+}
+
+.summary {
+    @extend .spaced-down;
+}

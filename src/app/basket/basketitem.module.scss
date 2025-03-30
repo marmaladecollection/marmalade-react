@@ -1,0 +1,10 @@
+@import '../common.scss';
+
+.page {
+    @extend .spaced-across;
+}
+
+.thumbnail {
+    width: 200px;
+    display: block;
+}

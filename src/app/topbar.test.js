@@ -1,5 +1,8 @@
+// External dependencies
 import { fireEvent, render, screen } from '@testing-library/react';
 import { useRouter } from 'next/navigation';
+
+// Internal dependencies
 import { MarmaladeProvider } from './context/MarmaladeContext';
 import TopBar from './topbar';
 
