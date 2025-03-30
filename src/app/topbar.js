@@ -18,7 +18,7 @@ export default function TopBar() {
 
   return (
     <div id={styles.topBar}>
-      <div>MENU</div>
+      <div></div>
       
       <div
         id={styles.logo}
