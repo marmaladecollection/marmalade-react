@@ -12,6 +12,10 @@ export default function TopBar() {
     router.push('/'); // Redirect to the root of the website
   };
 
+  const handleBagClick = () => {
+    router.push('/basket');
+  };
+
   return (
     <div id={styles.topBar}>
       <div>MENU</div>
@@ -23,7 +27,13 @@ export default function TopBar() {
       >
         MARMALADE
       </div>
-      <div data-testid="bag-count">BAG ({basketIds.length})</div>
+      <div 
+        onClick={handleBagClick}
+        data-testid="bag-count"
+        style={{ cursor: 'pointer' }}
+      >
+        BAG ({basketIds.length})
+      </div>
     </div>
   );
 }

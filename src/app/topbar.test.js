@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, act } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { useRouter } from 'next/navigation';
 import { MarmaladeProvider } from './context/MarmaladeContext';
 import TopBar from './topbar';
@@ -53,5 +53,14 @@ describe('TopBar', () => {
 
     // The bag should show 3 items
     expect(screen.getByTestId('bag-count')).toHaveTextContent('BAG (3)');
+  });
+
+  it('redirects to the basket page when clicking the BAG label', () => {
+    render(<TopBar />, { wrapper: TestWrapper });
+
+    const bagLabel = screen.getByTestId('bag-count');
+    fireEvent.click(bagLabel);
+
+    expect(mockPush).toHaveBeenCalledWith('/basket');
   });
 });
