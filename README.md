@@ -10,6 +10,12 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+Run jest tests with
+
+```
+npm run test
+```
+
 ## Content Management
 
 Data Store is Firebase with msm gmail

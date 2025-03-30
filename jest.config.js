@@ -7,10 +7,14 @@
 const config = {
   testEnvironment: 'jsdom',
   transform: {
-    '^.+\\.(js|jsx)$': 'babel-jest', // Transform JS/JSX files using Babel
+    '^.+\\.(js|jsx)$': '@swc/jest', // Transform JS/JSX files using SWC
   },
   moduleNameMapper: {
     '\\.(scss|css)$': 'identity-obj-proxy', // Mock SCSS/CSS imports
+  },
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  testEnvironmentOptions: {
+    url: 'http://localhost',
   },
   // All imported modules in your tests should be mocked automatically
   // automock: false,
