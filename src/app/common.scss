@@ -11,6 +11,10 @@
   border-left: 1px solid #ebebeb;
 }
 
+.right-divider {
+  border-right: 1px solid #ebebeb;
+}
+
 .spaced-across {
   display: flex;
   flex-direction: row;
@@ -28,4 +32,14 @@
   border-radius: 3px;
   text-transform: uppercase;
   text-wrap: nowrap;
+}
+
+.underline-button {
+  text-decoration: underline;
+  text-underline-offset: 8px;
+  border: none;
+  background-color: transparent;
+  font-size: small;
+  cursor: pointer;
+
 }

@@ -2,9 +2,33 @@
 
 .page {
     @extend .spaced-across;
+    align-items: flex-start;
+    padding: 20px 0;
+    border-bottom: 1px solid #ebebeb;
 }
 
 .thumbnail {
     width: 200px;
     display: block;
+}
+
+.name {
+    font-family: var(--font-s);
+    font-size: small;
+    letter-spacing: 0px;
+    font-weight: 600;
+}
+
+.remove {
+    @extend .underline-button;
+    font-size: smaller;
+    font-family: var(--font-ss);
+    margin-top: 20px;
+}
+
+.details {
+    @extend .spaced-down;
+    align-items: flex-start;
+
+
 }

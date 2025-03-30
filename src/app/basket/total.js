@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import { useMarmaladeContext } from "../context/MarmaladeContext";
 import { fetchItemsByIds } from "../firebase";
 
-export default function BasketPage() {
-  const { basketIds, removeFromBasket } = useMarmaladeContext();
+export default function Total() {
+  const { basketIds } = useMarmaladeContext();
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -17,9 +17,10 @@ export default function BasketPage() {
 
   return (
     <div className={styles.page}>
-      <h3>Subtotal</h3>
-      <span>excluding delivery</span>
-      <span>£{totalPrice}</span>
+      <h3>Subtotal
+        <span className={styles.excludingDelivery}>excluding delivery</span>
+      </h3>
+      <span className={styles.totalPrice}>£{totalPrice}</span>
     </div>
   );
 }

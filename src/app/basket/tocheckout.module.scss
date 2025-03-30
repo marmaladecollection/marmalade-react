@@ -3,3 +3,18 @@
 .page {
     @extend .spaced-down;
 }
+
+.checkout {
+    @extend .button;
+    border: 1px solid black;
+    background-color: black;
+    color: white;
+
+    padding: 20px 30px;
+    margin: 50px;
+}
+
+.paymentMethods {
+    @extend .spaced-down;
+    font-size: small;
+}

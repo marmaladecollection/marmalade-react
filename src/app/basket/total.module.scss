@@ -1,5 +1,17 @@
 @import '../common.scss';
 
 .page {
-    @extend .spaced-across;
+    @extend .spaced-across, .divider;
+    font-family: var(--font-s);
+    padding-bottom: 20px;
+}
+
+.excludingDelivery {
+    font-size: small;
+    font-weight: 400;
+    margin-left: 10px;
+}
+
+.totalPrice {
+    font-weight: 600;
 }

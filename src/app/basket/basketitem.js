@@ -12,9 +12,9 @@ export default function BasketItem({ item }) {
         <Link href={`/item/${item.id}`} className={styles.thumbnail}>
           <Thumbnail item={item} />
         </Link>
-        <div>
-          <span>{item.name}</span>
-          <button onClick={() => removeFromBasket(item.id)}>Remove</button>
+        <div className={styles.details}>
+          <span className={styles.name}>{item.name}</span>
+          <button className={styles.remove} onClick={() => removeFromBasket(item.id)}>Remove</button>
         </div>
         <div>£{item.price}</div>        
     </div>
