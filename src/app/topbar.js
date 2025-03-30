@@ -1,10 +1,12 @@
 "use client";
 
 import { useRouter } from 'next/navigation'; // Import Next.js router for client components
+import { useMarmaladeContext } from './context/MarmaladeContext';
 import styles from './topbar.module.scss';
 
 export default function TopBar() {
   const router = useRouter(); // Initialize the router
+  const { basketIds } = useMarmaladeContext();
 
   const handleLogoClick = () => {
     router.push('/'); // Redirect to the root of the website
@@ -21,7 +23,7 @@ export default function TopBar() {
       >
         MARMALADE
       </div>
-      <div>BAG (0)</div>
+      <div data-testid="bag-count">BAG ({basketIds.length})</div>
     </div>
   );
 }
