@@ -12,7 +12,9 @@ export default function Gallery({ items }) {
       </div>
       <div className={styles.gallery}>
         {items.map((item) => (
-          <Item key={item.name} item={item} />
+          <div key={item.name} className={styles.item}>
+            <Item item={item} />
+          </div>
         ))}
       </div>
     </main>
