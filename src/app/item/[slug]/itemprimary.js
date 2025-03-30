@@ -4,7 +4,7 @@ import Images from "./images";
 import ItemActions from "./itemactions";
 import ItemHeadline from "./itemheadline";
 import styles from "./itemprimary.module.scss";
-
+import Blurb from "./blurb";
 export default function ItemPrimary({ item }) {
 
   return (
@@ -13,6 +13,7 @@ export default function ItemPrimary({ item }) {
       
       <div className={styles.actions}>
         <ItemHeadline item={item} />
+        <Blurb item={item} />
         <span className={styles.returns}>Free UK Returns on all orders</span>
         <ItemActions item={item} />
         <span className={styles.productInfo}>Product Information</span>

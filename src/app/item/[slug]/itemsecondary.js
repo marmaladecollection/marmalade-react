@@ -8,7 +8,6 @@ export default function ItemSecondary({ item }) {
 
   return (
     <div className={styles.secondaryBit}>
-      <Blurb item={item} />
       <Delivery item={item} />
     </div>
 
