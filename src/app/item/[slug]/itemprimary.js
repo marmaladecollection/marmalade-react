@@ -14,9 +14,7 @@ export default function ItemPrimary({ item }) {
       <div className={styles.actions}>
         <ItemHeadline item={item} />
         <Blurb item={item} />
-        <span className={styles.returns}>Free UK Returns on all orders</span>
         <ItemActions item={item} />
-        <span className={styles.productInfo}>Product Information</span>
       </div>
     </main>
 

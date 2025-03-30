@@ -17,7 +17,6 @@ export default function ItemActions({ item }) {
   return (
     <div className={styles.buttons}>
       <a className={styles.addToBag} onClick={add}>Add to bag</a>
-      <a className={styles.saveForLater}>Save for later</a>
     </div>
   );
 }

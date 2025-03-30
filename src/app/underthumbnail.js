@@ -7,7 +7,7 @@ export default function Item({ item }) {
       <div className={styles.main}>
           <span>{item.name}</span>
           <span>£{item.price}</span>
-          <a className={styles.save}>SAVE</a>
+          <a className={styles.save}>ADD</a>
       </div>
   );
 }
