@@ -4,12 +4,19 @@
     @extend .spaced-across;
     align-items: flex-start;
     padding: 20px 0;
-    border-bottom: 1px solid #ebebeb;
+    justify-content: space-between;
+}
+
+.leftSection {
+    @extend .spaced-across;
+    align-items: flex-start;
+    gap: 20px;
 }
 
 .thumbnail {
     width: 200px;
     display: block;
+    cursor: pointer;
 }
 
 .name {
@@ -24,11 +31,14 @@
     font-size: smaller;
     font-family: var(--font-ss);
     margin-top: 20px;
+    cursor: pointer;
 }
 
 .details {
     @extend .spaced-down;
     align-items: flex-start;
+}
 
-
+.price {
+    font-weight: 600;
 }

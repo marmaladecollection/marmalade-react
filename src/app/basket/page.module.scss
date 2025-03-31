@@ -4,7 +4,8 @@
     @extend .spaced-across;
     align-items: flex-start;
     height: 100%;
-    margin: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .continue {
@@ -20,7 +21,7 @@
 .list {
     @extend .spaced-down, .right-divider;
     width: 60%;
-    margin: 40px;
+    // margin: 40px;
     padding-right: 40px;
 }
 

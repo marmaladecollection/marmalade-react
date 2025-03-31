@@ -4,7 +4,6 @@ import styles from "./page.module.scss";
 import BasketItems from "./basketitems";
 import Total from "./total";
 import ToCheckout from "./tocheckout";
-import BasketHeader from "./basketheader";
 import { useRouter } from 'next/navigation';
 
 export default function BasketPage() {
