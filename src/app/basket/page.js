@@ -4,6 +4,7 @@ import styles from "./page.module.scss";
 import BasketItems from "./basketitems";
 import Total from "./total";
 import ToCheckout from "./tocheckout";
+import EmptyBasket from "./emptybasket";
 import { useRouter } from 'next/navigation';
 import { useMarmaladeContext } from "../context/MarmaladeContext";
 
@@ -12,13 +13,7 @@ export default function BasketPage() {
   const { basketIds } = useMarmaladeContext();
 
   if (basketIds.length === 0) {
-    return (
-      <div className={styles.page}>
-        <div className={styles.emptyMessage}>
-          Your bag is currently empty
-        </div>
-      </div>
-    );
+    return <EmptyBasket />;
   }
 
   return (

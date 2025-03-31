@@ -18,7 +18,6 @@ export default function TopBar() {
 
   return (
     <div id={styles.topBar}>
-      <div></div>
       
       <div
         id={styles.logo}
@@ -27,10 +26,11 @@ export default function TopBar() {
       >
         MARMALADE
       </div>
+ 
       <div 
+        id={styles.bagCount}
         onClick={handleBagClick}
         data-testid="bag-count"
-        style={{ cursor: 'pointer' }}
       >
         BAG ({basketIds.length})
       </div>
