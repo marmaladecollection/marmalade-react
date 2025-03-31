@@ -14,7 +14,6 @@ export default function BasketPage() {
     <div className={styles.page}>
       <div className={styles.list}>
         <button className={styles.continue} onClick={() => router.push('/')}>Continue Shopping</button>
-         <BasketHeader />
          <BasketItems />
       </div>
       <div className={styles.summary}>

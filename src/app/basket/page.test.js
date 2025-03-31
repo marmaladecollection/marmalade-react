@@ -43,4 +43,14 @@ describe('BasketPage', () => {
     
     expect(mockRouter.push).toHaveBeenCalledWith('/');
   });
+
+  it('should display empty basket message when there are no items', () => {
+    render(
+      <MarmaladeProvider>
+        <BasketPage />
+      </MarmaladeProvider>
+    );
+    
+    expect(screen.getByText('Your bag is currently empty')).toBeInTheDocument();
+  });
 }); 

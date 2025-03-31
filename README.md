@@ -22,6 +22,8 @@ Data Store is Firebase with msm gmail
 Photos Store is Google photos with msm gmail
 
 ### Adding an item
+1. Add item to [Firestore](https://console.firebase.google.com/u/3/project/marmalade-collection/firestore/databases/-default-/data/~2Fitem~2Ftable-2)
+2. Add wepp image under public/images matching the name in firestore
 
 ## Hosting
 On IONOS skw@g u-i
@@ -29,15 +31,14 @@ On IONOS skw@g u-i
 ## Deploying
 ssh [user]@[ip address]
 (see IONOS console for details and password)
-git clone/pull from repo into /srv/marmalade
 
 To transfer images from local machine to server...
-
 
 ## Config
 Go to IONOS Domains and SSL 
 Select your domain
 Go to DNS
+https://my.ionos.co.uk/domain-dns-settings/marmaladecollection.com?linkId=ct.txt.domainlist.dns-settings.pro&from=connect-domain%2Fmarmaladecollection.com
 sudo systemctl restart nginx
 sudo chmod -R 644 /srv/marmalade/*
 sudo chmod -R 755 /srv/marmalade
