@@ -6,18 +6,27 @@ import styles from "./underthumbnail.module.scss";
 
 export default function UnderThumbnail({ item }) {
   const router = useRouter();
-  const { addToBasket } = useMarmaladeContext();
+  const { basketIds, addToBasket } = useMarmaladeContext();
+
+  const isInBasket = basketIds.includes(item.id);
 
   const add = () => {
-    addToBasket(item.id);
-    router.push("/basket");
+    if (!isInBasket) {
+      addToBasket(item.id);
+      router.push("/basket");
+    }
   };
 
   return (
     <div className={styles.main}>
       <span>{item.name}</span>
       <span>£{item.price}</span>
-      <a className={styles.save} onClick={add}>ADD</a>
+      <a 
+        className={`${styles.save} ${isInBasket ? styles.disabled : ''}`} 
+        onClick={add}
+      >
+        ADD
+      </a>
     </div>
   );
 }

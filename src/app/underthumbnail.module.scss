@@ -2,12 +2,26 @@
 
 .main {
     @extend .spaced-down;
-
     text-align: start;
     margin-bottom: 12px;
 
     span {
         margin: 4px;
+    }
+
+    .save {
+        cursor: pointer;
+        &:hover {
+            color: #424246;
+        }
+
+        &.disabled {
+            background-color: #cccccc;
+            cursor: default;
+            &:hover {
+                color: white
+            }
+        }
     }
 }
 
