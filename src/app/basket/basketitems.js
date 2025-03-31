@@ -17,16 +17,10 @@ export default function BasketItems() {
 
   return (
     <div className={styles.page}>
-        {items.length === 0 ? (
-          <div>Your bag is currently empty</div>
-        ) : (
-          <>
-            <BasketHeader />
-            {items.map((item) => (
-              <BasketItem key={item.id + Math.random()} item={item} />
-            ))}
-          </>
-        )}
+      <BasketHeader />
+      {items.map((item) => (
+        <BasketItem key={item.id + Math.random()} item={item} />
+      ))}
     </div>
   );
 }

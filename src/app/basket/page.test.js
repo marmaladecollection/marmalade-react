@@ -52,5 +52,28 @@ describe('BasketPage', () => {
     );
     
     expect(screen.getByText('Your bag is currently empty')).toBeInTheDocument();
+    expect(screen.queryByText('Continue Shopping')).not.toBeInTheDocument();
+    expect(screen.queryByText('Product')).not.toBeInTheDocument();
+    expect(screen.queryByText('Price')).not.toBeInTheDocument();
+  });
+
+  it('should display basket items when there are items in the basket', () => {
+    // Override the mock to include items
+    jest.spyOn(require('../context/MarmaladeContext'), 'useMarmaladeContext').mockImplementation(() => ({
+      basketIds: ['item1', 'item2'],
+      addToBasket: jest.fn(),
+      removeFromBasket: jest.fn(),
+    }));
+
+    render(
+      <MarmaladeProvider>
+        <BasketPage />
+      </MarmaladeProvider>
+    );
+    
+    expect(screen.queryByText('Your bag is currently empty')).not.toBeInTheDocument();
+    expect(screen.getByText('Continue Shopping')).toBeInTheDocument();
+    expect(screen.getByText('Product')).toBeInTheDocument();
+    expect(screen.getByText('Price')).toBeInTheDocument();
   });
 }); 

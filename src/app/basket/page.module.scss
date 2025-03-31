@@ -16,6 +16,7 @@
     letter-spacing: 2px;
     padding: 15px 30px;
     margin-bottom: 60px;
+    cursor: pointer;
 }
 
 .list {
@@ -30,4 +31,15 @@
 
     width: 40%;
     margin: 40px;
+}
+
+.emptyMessage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    font-family: var(--font-s);
+    font-size: medium;
+    font-weight: 100;
 }
