@@ -29,10 +29,10 @@ export const fetchAllItems = async (setItems) => {
 
 export const fetchItemsByIds = async (ids, setItems) => {
   var items = []
-  console.log("fetching items with ids " + ids);
+  // console.log("fetching items with ids " + ids);
   for (let id of ids) {
     if (id) {
-      console.log("fetching item with id " + id);
+      // console.log("fetching item with id " + id);
       const docRef = doc(db, 'item', id);
       const docSnap = await getDoc(docRef);
 
@@ -48,7 +48,7 @@ export const fetchItemsByIds = async (ids, setItems) => {
     }
   }
 
-  console.log("setting items " + items.map(item => item.name));
+  // console.log("setting items " + items.map(item => item.name));
   setItems(items)
 }
 
