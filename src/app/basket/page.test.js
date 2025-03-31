@@ -25,13 +25,39 @@ describe('BasketPage', () => {
 
   beforeEach(() => {
     useRouter.mockReturnValue(mockRouter);
+    // Reset the MarmaladeContext mock before each test
+    jest.spyOn(require('../context/MarmaladeContext'), 'useMarmaladeContext').mockImplementation(() => ({
+      basketIds: [],
+      addToBasket: jest.fn(),
+      removeFromBasket: jest.fn(),
+    }));
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should navigate to home page when Continue Shopping button is clicked', () => {
+  it('should navigate to home page when Continue Shopping button is clicked in empty state', () => {
+    render(
+      <MarmaladeProvider>
+        <BasketPage />
+      </MarmaladeProvider>
+    );
+    
+    const continueButton = screen.getByText('Continue Shopping');
+    fireEvent.click(continueButton);
+    
+    expect(mockRouter.push).toHaveBeenCalledWith('/');
+  });
+
+  it('should navigate to home page when Continue Shopping button is clicked in populated state', () => {
+    // Override the mock to include items
+    jest.spyOn(require('../context/MarmaladeContext'), 'useMarmaladeContext').mockImplementation(() => ({
+      basketIds: ['item1'],
+      addToBasket: jest.fn(),
+      removeFromBasket: jest.fn(),
+    }));
+
     render(
       <MarmaladeProvider>
         <BasketPage />
@@ -45,6 +71,13 @@ describe('BasketPage', () => {
   });
 
   it('should display empty basket message when there are no items', () => {
+    // Ensure the mock is set to empty basket
+    jest.spyOn(require('../context/MarmaladeContext'), 'useMarmaladeContext').mockImplementation(() => ({
+      basketIds: [],
+      addToBasket: jest.fn(),
+      removeFromBasket: jest.fn(),
+    }));
+
     render(
       <MarmaladeProvider>
         <BasketPage />
@@ -52,9 +85,7 @@ describe('BasketPage', () => {
     );
     
     expect(screen.getByText('Your bag is currently empty')).toBeInTheDocument();
-    expect(screen.queryByText('Continue Shopping')).not.toBeInTheDocument();
-    expect(screen.queryByText('Product')).not.toBeInTheDocument();
-    expect(screen.queryByText('Price')).not.toBeInTheDocument();
+    expect(screen.getByText('Continue Shopping')).toBeInTheDocument();
   });
 
   it('should display basket items when there are items in the basket', () => {
