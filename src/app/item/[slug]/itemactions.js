@@ -5,18 +5,26 @@ import { useMarmaladeContext } from "../../context/MarmaladeContext";
 import styles from "./itemactions.module.scss";
 
 export default function ItemActions({ item }) {
-
   const router = useRouter();
-  const { addToBasket } = useMarmaladeContext();
+  const { basketIds, addToBasket } = useMarmaladeContext();
+
+  const isInBasket = basketIds.includes(item.id);
 
   const add = () => {
-    addToBasket(item.id);
-    router.push("/basket");
+    if (!isInBasket) {
+      addToBasket(item.id);
+      router.push("/basket");
+    }
   }
 
   return (
     <div className={styles.buttons}>
-      <a className={styles.addToBag} onClick={add}>Add to bag</a>
+      <a 
+        className={`${styles.addToBag} ${isInBasket ? styles.disabled : ''}`} 
+        onClick={add}
+      >
+        Add to bag
+      </a>
     </div>
   );
 }

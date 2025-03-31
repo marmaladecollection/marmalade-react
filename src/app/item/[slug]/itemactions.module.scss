@@ -18,6 +18,14 @@
         background-color: black;
         color: white;
         margin-right: 18px;
+
+        &.disabled {
+            background-color: #cccccc;
+            cursor: default;
+            &:hover {
+                color: white;
+            }
+        }
     }
 
     .saveForLater {
