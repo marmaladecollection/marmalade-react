@@ -3,6 +3,7 @@
 import styles from "./page.module.scss";
 import { useRouter } from "next/navigation";
 import Bill from "./Bill";
+import StripeCheckout from "./StripeCheckout";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -10,7 +11,7 @@ export default function CheckoutPage() {
   return (
     <div className={styles.page}>
       <div className={styles.checkout}>
-        TBD
+        <StripeCheckout />
       </div>
       <div className={styles.list}>
         <Bill />
