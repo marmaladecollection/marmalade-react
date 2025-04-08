@@ -21,7 +21,7 @@ export async function POST(request) {
         quantity: 1,
       })),
       mode: 'payment',
-      return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+      return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout?session_id={CHECKOUT_SESSION_ID}`,
     });
 
     return NextResponse.json({ clientSecret: session.client_secret });

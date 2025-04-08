@@ -5,6 +5,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from "@stripe/react-stripe-js";
 import { useMarmaladeContext } from "../context/MarmaladeContext";
 import { fetchItemsByIds } from "../firebase";
+import PaymentSuccess from "./PaymentSuccess";
 import styles from "./StripeCheckout.module.scss";
 
 // Replace with your Stripe publishable key
@@ -16,13 +17,34 @@ export default function StripeCheckout() {
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
 
   useEffect(() => {
     fetchItemsByIds(basketIds, setItems);
   }, [basketIds]);
 
   useEffect(() => {
-    if (items.length > 0) {
+    // Check if we're returning from a successful payment
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session_id');
+    
+    if (sessionId) {
+      // Verify the payment status
+      fetch(`/api/checkout-status?session_id=${sessionId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status === "complete" || data.payment_status === "paid") {
+            setPaymentSuccess(true);
+          }
+        })
+        .catch((err) => {
+          console.error("Error checking payment status:", err);
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (items.length > 0 && !paymentSuccess) {
       // Calculate the total amount
       const amount = items.reduce((sum, item) => sum + item.price, 0);
       
@@ -55,10 +77,14 @@ export default function StripeCheckout() {
           setError(err.message);
           setLoading(false);
         });
-    } else {
+    } else if (items.length === 0) {
       setLoading(false);
     }
-  }, [items]);
+  }, [items, paymentSuccess]);
+
+  if (paymentSuccess) {
+    return <PaymentSuccess />;
+  }
 
   if (loading) {
     return <div className={styles.loading}>Loading payment form...</div>;
