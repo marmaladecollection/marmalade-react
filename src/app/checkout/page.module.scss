@@ -1,0 +1,17 @@
+@import '../common.scss';
+
+.page {
+    @extend .spaced-across;
+    align-items: flex-start;
+    height: 100%;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.checkout {
+  width: 60%;
+}
+
+.list {
+  @extend .spaced-down, .right-divider;
+  padding-right: 40px;
+}
