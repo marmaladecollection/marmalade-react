@@ -17,12 +17,15 @@ npm run test
 ```
 
 ## Content Management
-
 Data Store is Firebase with msm gmail
 Photos are not online. They are stored on my local machine and 
 copied across to the server machine.
 
-### Adding an item
+## Payments
+Uses Stripe
+
+
+## Adding an item
 1. Add item to [Firestore](https://console.firebase.google.com/u/3/project/marmalade-collection/firestore/databases/-default-/data/~2Fitem~2Ftable-2)
 2. Add wepp image under public/images matching the name in firestore
 
@@ -49,6 +52,7 @@ npm run build
 sudo resolvectl flush-caches     (flush DNS)
 pm2 startup
 sudo netstat -tulnp | grep :3000
+
 
 ## Troubleshooting
 Can't see my images - Switch off VPN
