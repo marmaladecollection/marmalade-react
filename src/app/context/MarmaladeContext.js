@@ -56,8 +56,13 @@ export const MarmaladeProvider = ({ children }) => {
         setBasketIds((prevIds) => prevIds.filter(id => id !== idToRemove));
     };
 
+    // Function to clear the basket
+    const clearBasket = () => {
+        setBasketIds([]);
+    };
+
     return (
-        <MarmaladeContext.Provider value={{ basketIds, addToBasket, removeFromBasket }}>
+        <MarmaladeContext.Provider value={{ basketIds, addToBasket, removeFromBasket, clearBasket }}>
             {children}
         </MarmaladeContext.Provider>
     );

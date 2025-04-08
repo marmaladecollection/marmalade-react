@@ -11,8 +11,8 @@ import styles from "./StripeCheckout.module.scss";
 // Replace with your Stripe publishable key
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
-export default function StripeCheckout() {
-  const { basketIds } = useMarmaladeContext();
+export default function StripeCheckout({ onPaymentSuccess }) {
+  const { basketIds, clearBasket } = useMarmaladeContext();
   const [items, setItems] = useState([]);
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(true);
@@ -35,13 +35,16 @@ export default function StripeCheckout() {
         .then((data) => {
           if (data.status === "complete" || data.payment_status === "paid") {
             setPaymentSuccess(true);
+            onPaymentSuccess?.();
+            // Clear the basket after successful payment
+            clearBasket();
           }
         })
         .catch((err) => {
           console.error("Error checking payment status:", err);
         });
     }
-  }, []);
+  }, [clearBasket, onPaymentSuccess]);
 
   useEffect(() => {
     if (items.length > 0 && !paymentSuccess) {
@@ -83,7 +86,11 @@ export default function StripeCheckout() {
   }, [items, paymentSuccess]);
 
   if (paymentSuccess) {
-    return <PaymentSuccess />;
+    return (
+      <div className={styles.fullWidthContainer}>
+        <PaymentSuccess />
+      </div>
+    );
   }
 
   if (loading) {
