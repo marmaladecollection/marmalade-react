@@ -2,11 +2,14 @@
 
 import styles from "./tocheckout.module.scss";
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 export default function ToCheckout() {
+  const router = useRouter();
+
   return (
     <div className={styles.page}>
-      <button className={styles.checkout}>Go To Checkout</button>
+      <button className={styles.checkout} onClick={() => router.push('/checkout')}>Go To Checkout</button>
       <div className={styles.paymentMethods}>We accept the payment methods</div>
       <div className={styles.paymentSymbols}>
         <Image 
