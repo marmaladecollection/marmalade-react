@@ -9,8 +9,8 @@ export default function Blurb({ item }) {
         {item.blurb}
       </p>
       <div className={styles.details}>
-        <h4>Details</h4>
-        H 100cm x 70cm
+        <h4>Dimensions</h4>
+        {item.dimensions}
       </div>
     </div>
 
