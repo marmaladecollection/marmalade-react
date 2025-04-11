@@ -1,10 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./page.module.scss";
 
+// Main page component
 export default function SuccessPage() {
+  return (
+    <Suspense fallback={
+      <div className={styles.page}>
+        <div className={styles.content}>
+          <h1>Loading payment information...</h1>
+          <p>Please wait a moment...</p>
+        </div>
+      </div>
+    }>
+      <SuccessPageContent />
+    </Suspense>
+  );
+}
+
+// Inner component that uses useSearchParams within Suspense
+function SuccessPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");

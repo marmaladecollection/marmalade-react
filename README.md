@@ -33,7 +33,10 @@ Uses Stripe
 On IONOS skw@g u-i
 
 ## Deploying
-ssh [user]@[ip address]
+npm run build
+
+ssh root@217.154.9.107
+/srv/marmalade/
 (see IONOS console for details and password)
 
 To transfer images from local machine to server...
