@@ -1,4 +1,3 @@
-
 .divider {
   border-bottom: 1px solid #ebebeb;
 }
@@ -13,6 +12,43 @@
 
 .right-divider {
   border-right: 1px solid #ebebeb;
+}
+
+// Media query mixins
+@mixin mobile {
+  @media only screen and (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media only screen and (min-width: 769px) and (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media only screen and (min-width: 1025px) {
+    @content;
+  }
+}
+
+// Common breakpoints
+$breakpoints: (
+  'mobile': 768px,
+  'tablet': 1024px,
+  'desktop': 1025px
+);
+
+// Responsive mixin that works with any breakpoint
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media only screen and (max-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "Unknown breakpoint: #{$breakpoint}";
+  }
 }
 
 .spaced-across {
@@ -42,5 +78,4 @@
   background-color: transparent;
   font-size: small;
   cursor: pointer;
-
 }

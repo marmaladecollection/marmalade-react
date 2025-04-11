@@ -15,7 +15,10 @@
     font-weight: bold;
     color: transparent;
     -webkit-text-stroke: 1px black;
-
+    
+    @include mobile {
+        font-size: 32px;
+    }
 }
 
 #bagCount {
