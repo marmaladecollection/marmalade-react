@@ -6,7 +6,35 @@
     height: 100%;
     margin-left: 20px;
     margin-right: 20px;
+
+    @include mobile {
+        flex-direction: column;
+    }   
 }
+
+.list {
+    @extend .spaced-down, .right-divider;
+    width: 60%;
+    padding-right: 40px;
+
+    @include mobile {
+        width: 100%;
+        padding-right: 0px;
+        border-right: none;
+    }
+}
+
+.summary {
+    @extend .spaced-down;
+    width: 40%;
+    margin: 40px;
+
+    @include mobile {
+        width: 100%;
+        margin: 0px;
+    }
+}
+
 
 .continue {
     @extend .button;
@@ -17,16 +45,4 @@
     padding: 15px 30px;
     margin-bottom: 60px;
     cursor: pointer;
-}
-
-.list {
-    @extend .spaced-down, .right-divider;
-    width: 60%;
-    padding-right: 40px;
-}
-
-.summary {
-    @extend .spaced-down;
-    width: 40%;
-    margin: 40px;
 }

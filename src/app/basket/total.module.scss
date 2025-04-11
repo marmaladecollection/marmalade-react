@@ -1,9 +1,9 @@
 @import '../common.scss';
 
 .page {
-    @extend .spaced-across, .divider;
+    @extend .spaced-across;
     font-family: var(--font-s);
-    padding-bottom: 20px;
+
 }
 
 .excludingDelivery {
