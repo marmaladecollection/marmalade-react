@@ -6,6 +6,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export async function POST(request) {
   try {
     const { items } = await request.json();
+    const origin = request.headers.get('origin') || 'http://localhost:3000';
 
     // Create a Checkout Session
     const session = await stripe.checkout.sessions.create({
@@ -21,7 +22,7 @@ export async function POST(request) {
         quantity: 1,
       })),
       mode: 'payment',
-      return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout?session_id={CHECKOUT_SESSION_ID}`,
+      return_url: `${origin}/checkout?session_id={CHECKOUT_SESSION_ID}`,
     });
 
     return NextResponse.json({ clientSecret: session.client_secret });
