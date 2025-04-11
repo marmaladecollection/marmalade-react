@@ -6,6 +6,10 @@
     height: 100%;
     margin-left: 20px;
     margin-right: 20px;
+
+    @include mobile {
+        flex-direction: column-reverse;
+    } 
 }
 
 .fullWidth {
@@ -16,9 +20,18 @@
 
 .checkout {
   width: 60%;
+
+  @include mobile {
+    width: 100%;
+  }
 }
 
 .list {
   @extend .spaced-down, .right-divider;
   padding-right: 40px;
+
+  @include mobile {
+    width: 100%;
+    padding-right: 0px;
+  }
 }
