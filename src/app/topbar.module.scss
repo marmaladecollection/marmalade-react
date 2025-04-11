@@ -13,11 +13,12 @@
     letter-spacing: -1px;
     font-size: 40px;
     font-weight: bold;
-    color: transparent;
-    -webkit-text-stroke: 1px black;
+    color: #FFB347;
+    -webkit-text-stroke: 1px #5C4033;
     
     @include mobile {
         font-size: 32px;
+        text-align: left;
     }
 }
 
