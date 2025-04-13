@@ -17,7 +17,7 @@ export default function ItemPage() {
   return (
     <div>
       <ItemPrimary item={item} />
-      <ItemSecondary item={item} />
+
     </div>
   );
 }
