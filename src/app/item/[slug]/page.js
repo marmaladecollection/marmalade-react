@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { fetchItemById } from "../../firebase";
 import ItemPrimary from "./itemprimary";
-
+import ConditionReport from "./conditionreport";
 
 export default function ItemPage() {
   const [item, setItem] = useState([]);
@@ -17,6 +17,7 @@ export default function ItemPage() {
   return (
     <div>
       <ItemPrimary item={item} />
+      <ConditionReport item={item} />
     </div>
   );
 }

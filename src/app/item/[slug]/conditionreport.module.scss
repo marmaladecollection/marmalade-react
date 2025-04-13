@@ -1,0 +1,33 @@
+@import '../../common.scss';
+
+.conditionReport {
+  font-family: var(--font-s);
+  margin-top: 30px;
+  margin-bottom: 30px;
+
+  h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.condition, .notes {
+  display: flex;
+  gap: 10px;
+  line-height: 1.6;
+}
+
+.label {
+  font-weight: 500;
+}
+
+.value {
+  color: #666;
+} 

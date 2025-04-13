@@ -5,8 +5,8 @@ import ItemActions from "./itemactions";
 import ItemHeadline from "./itemheadline";
 import styles from "./itemprimary.module.scss";
 import Blurb from "./blurb";
-export default function ItemPrimary({ item }) {
 
+export default function ItemPrimary({ item }) {
   return (
     <main className={styles.mainBit}>
       <div className={styles.left}>
@@ -19,6 +19,5 @@ export default function ItemPrimary({ item }) {
         <ItemActions item={item} />
       </div>
     </main>
-
   );
 }
