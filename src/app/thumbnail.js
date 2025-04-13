@@ -53,7 +53,8 @@ export default function Thumbnail({ item, allowCycling = false }) {
 
   return (
     <div className={styles.container}>
-      <img className={styles.image} src={availableImages[currentImageIndex]} alt={item.name} />
+      <img className={styles.backgroundImage} src={`/images/${item.id}.webp`} alt={item.name} />
+      <img className={styles.overlayImage} src={availableImages[currentImageIndex]} alt={item.name} /> 
       {allowCycling && availableImages.length > 1 && (
         <>
           <button className={styles.navButton} onClick={handlePrevious} aria-label="Previous image">
