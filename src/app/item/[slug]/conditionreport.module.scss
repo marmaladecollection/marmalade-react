@@ -1,9 +1,11 @@
 @import '../../common.scss';
 
 .conditionReport {
-  font-family: var(--font-s);
-  margin-top: 30px;
-  margin-bottom: 30px;
+  padding-top: 50px;
+  font-family: var(--font-ss);
+  margin: 30px;
+  text-align: left; 
+
 
   h4 {
     font-size: 1.1rem;
@@ -15,19 +17,31 @@
 .details {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
 }
 
-.condition, .notes {
+.condition {
   display: flex;
   gap: 10px;
   line-height: 1.6;
 }
 
+.notes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  line-height: 1.6;
+}
+
 .label {
   font-weight: 500;
+  min-width: 80px;
 }
 
 .value {
   color: #666;
+  
+  &.notes {
+    white-space: pre-line;
+  }
 } 
