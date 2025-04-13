@@ -7,7 +7,7 @@ export default function Images({ item }) {
 
   return (
       <div className={styles.images}>
-        <Thumbnail item={item} />
+        <Thumbnail item={item} allowCycling={true} />
       </div>
 
   );

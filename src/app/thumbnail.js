@@ -1,11 +1,73 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import styles from './thumbnail.module.scss';
 
-export default function Thumbnail({ item }) {
+export default function Thumbnail({ item, allowCycling = false }) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [availableImages, setAvailableImages] = useState([]);
+
+  useEffect(() => {
+    const loadImages = async () => {
+      if (allowCycling) {
+        // Start with the base image
+        const images = [`/images/${item.id}.webp`];
+        
+        // Then look for numbered variants
+        let index = 1;
+        let hasMoreImages = true;
+        
+        while (hasMoreImages) {
+          const imagePath = `/images/${item.id}-${index}.webp`;
+          try {
+            // Try to load the image
+            const img = new Image();
+            await new Promise((resolve, reject) => {
+              img.onload = resolve;
+              img.onerror = reject;
+              img.src = imagePath;
+            });
+            images.push(imagePath);
+            index++;
+          } catch (error) {
+            hasMoreImages = false;
+          }
+        }
+        setAvailableImages(images);
+      } else {
+        // Single image mode
+        setAvailableImages([`/images/${item.id}.webp`]);
+      }
+    };
+
+    loadImages();
+  }, [item.id, allowCycling]);
+
+  const handlePrevious = () => {
+    setCurrentImageIndex((prev) => (prev === 0 ? availableImages.length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setCurrentImageIndex((prev) => (prev === availableImages.length - 1 ? 0 : prev + 1));
+  };
+
   return (
-    <div>
-      <img className={styles.image} src={`/images/${item.id}.webp`} />
+    <div className={styles.container}>
+      <img className={styles.image} src={availableImages[currentImageIndex]} alt={item.name} />
+      {allowCycling && availableImages.length > 1 && (
+        <>
+          <button className={styles.navButton} onClick={handlePrevious} aria-label="Previous image">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+          <button className={styles.navButton} onClick={handleNext} aria-label="Next image">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </>
+      )}
     </div>
   );
 }
