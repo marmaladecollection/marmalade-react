@@ -11,22 +11,21 @@
     }
 }
 
+.left {
+    max-width: 400px;
+    flex: 0 0    auto;
+    @include mobile {
+        max-width: 100%;
+        margin-right: 40px;
+    }
+}
+
 .actions {
     @extend .spaced-down;
+    margin-left: 20px !important;
+    margin-right: 20px;
 
-    @media only screen and (min-width: 1016px) {
-        margin-left: 20px !important;
-        margin-right: 20px;
-        flex: 0 1 calc(50%);
-    }
-
-    // @media only screen and (max-width: 1016px) {
-    //     margin-right: 20px;
+    // @media only screen and (min-width: 1016px) {
+    //     flex: 0 1 calc(50%);
     // }
-
-    .returns {
-        align-self: flex-start;
-        font-size: smaller;
-        margin-bottom: 24px;
-    }
 }

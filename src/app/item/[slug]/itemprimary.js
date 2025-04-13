@@ -9,7 +9,9 @@ export default function ItemPrimary({ item }) {
 
   return (
     <main className={styles.mainBit}>
-      <Images item={item} />
+      <div className={styles.left}>
+        <Images item={item} />
+      </div>
       
       <div className={styles.actions}>
         <ItemHeadline item={item} />
