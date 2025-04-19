@@ -17,7 +17,9 @@ npm run test
 ```
 
 ## Content Management
-Data Store is Firebase with msm gmail
+Data Store is Firebase with msm gmail.
+In the Firebase db, the main object is Item. In the Item blurb field, use [term|education] to show a popup with
+educational info for a term.
 Photos are not online. They are stored on my local machine and 
 copied across to the server machine.
 

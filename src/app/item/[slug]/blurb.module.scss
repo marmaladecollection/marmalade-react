@@ -1,3 +1,5 @@
+@import "../../common.scss";
+
 .productBlurb {
     @media only screen and (min-width: 1016px) {
         // margin-left: 20px !important;
@@ -21,4 +23,49 @@
 
 .details {
     margin-top: 30px;
+}
+
+.highlightedText {
+    color: #0066cc;
+    cursor: help;
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dashed #0066cc;
+}
+
+.tooltip {
+    visibility: hidden;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    text-align: left;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 600px;
+    white-space: normal;
+    word-wrap: break-word;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    margin-top: 8px;
+
+
+    @include mobile {
+        width: 300px;
+        position: fixed;
+        top: 50vh;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+        line-height: 1.5;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+}
+
+.highlightedText:hover .tooltip {
+    visibility: visible;
 }
