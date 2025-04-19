@@ -8,12 +8,11 @@ export async function GET(request) {
   const sessionId = searchParams.get('session_id');
 
   try {
-    const session = await stripe.checkout.sessions.retrieve(sessionId);
-    
-    return NextResponse.json({
-      status: session.status,
-      payment_status: session.payment_status
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+      expand: ['customer', 'payment_intent']
     });
+    
+    return NextResponse.json(session);
   } catch (error) {
     console.error('Error retrieving checkout session:', error);
     return NextResponse.json(

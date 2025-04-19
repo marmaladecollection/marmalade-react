@@ -40,9 +40,11 @@ export default function ({ onPaymentSuccess }) {
             clearBasket();
             
             // Record the sale in Firebase for each item
+            const basketId = data?.id || `basket-${Date.now()}`; // Generate a single basket ID for all items
             for (const item of items) {
               try {
-                await sellItem(item, data.customer_details?.name || "Anonymous");
+                console.log("selling item " + item.id);
+                await sellItem(item, data, basketId);
               } catch (error) {
                 console.error("Error recording sale for item:", item.id, error);
               }

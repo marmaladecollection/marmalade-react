@@ -125,16 +125,61 @@ export const fetchItemById = async (id, setItem) => {
   }
 };
 
-export const sellItem = async (item, customerName) => {
+export const sellItem = async (item, stripeData, basketId) => {
   try {
     await ensureAuthenticated();
+    
+    // Create a base sale data object with required fields
     const saleData = {
+      basketId: basketId,
       itemId: item.id,
       itemName: item.name,
-      customerName: customerName,
       saleDate: new Date(),
-      price: item.price || 0
+      itemPrice: item.price || 0,
     };
+
+    // Add customer details if available
+    if (stripeData?.customer_details) {
+      saleData.customerName = stripeData.customer_details.name || "Anonymous";
+      if (stripeData.customer_details.email) {
+        saleData.customerEmail = stripeData.customer_details.email;
+      }
+      if (stripeData.customer_details.address) {
+        saleData.customerAddress = stripeData.customer_details.address;
+      }
+    }
+
+    // Add payment details if available
+    if (stripeData?.amount_total) {
+      saleData.paymentAmount = stripeData.amount_total / 100;
+    }
+    if (stripeData?.id) {
+      saleData.stripeSessionId = stripeData.id;
+    }
+    if (stripeData?.payment_intent) {
+      saleData.paymentIntentId = stripeData.payment_intent;
+    }
+    if (stripeData?.payment_status) {
+      saleData.paymentStatus = stripeData.payment_status;
+    }
+    if (stripeData?.payment_method_types?.[0]) {
+      saleData.paymentMethod = stripeData.payment_method_types[0];
+    }
+    if (stripeData?.currency) {
+      saleData.currency = stripeData.currency;
+    }
+    if (stripeData?.customer) {
+      saleData.customerId = stripeData.customer;
+    }
+    if (stripeData?.customer_details?.phone) {
+      saleData.phone = stripeData.customer_details.phone;
+    }
+    if (stripeData?.shipping?.address) {
+      saleData.shippingAddress = stripeData.shipping.address;
+    }
+    if (stripeData?.payment_method_details) {
+      saleData.paymentMethodDetails = stripeData.payment_method_details;
+    }
 
     const docRef = await addDoc(collection(db, "sale"), saleData);
     console.log("Sale recorded with ID: ", docRef.id);
