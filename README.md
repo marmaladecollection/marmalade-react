@@ -26,6 +26,9 @@ copied across to the server machine.
 ## Payments
 Uses Stripe
 
+## Emails
+Use nodemailer and nextjs app endpoints to ensure they are sent from the server side.
+No other cloud code is required.
 
 ## Adding an item
 1. Add item to [Firestore](https://console.firebase.google.com/u/3/project/marmalade-collection/firestore/databases/-default-/data/~2Fitem~2Ftable-2)

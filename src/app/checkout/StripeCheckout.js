@@ -46,6 +46,8 @@ export default function ({ onPaymentSuccess }) {
             
             const timeString = new Date().toTimeString().split(' ')[0].split(':').slice(0, 2).join('');
             const basketId = `${new Date().toISOString().split('T')[0]}-${timeString}-${Math.floor(Math.random() * 1000000)}`;
+            
+            // Process all items first
             for (const item of items) {
               try {
                 console.log("selling item " + item.id + " with basket id " + basketId);
@@ -53,6 +55,48 @@ export default function ({ onPaymentSuccess }) {
               } catch (error) {
                 console.error("Error recording sale for item:", item.id, error);
               }
+            }
+
+            // Send a single email with all items
+            const totalAmount = items.reduce((sum, item) => sum + item.price, 0);
+            const itemsList = items.map(item => `- ${item.name} (£${item.price})`).join('\n');
+            
+            try {
+              console.log('Sending email with data:', {
+                itemName: items.length === 1 ? items[0].name : `${items.length} items`,
+                customerName: data.customer_details?.name || 'Unknown Customer',
+                customerEmail: data.customer_details?.email || 'No email provided',
+                customerAddress: data.customer_details?.address ? 
+                  `${data.customer_details.address.line1}, ${data.customer_details.address.city}, ${data.customer_details.address.postal_code}, ${data.customer_details.address.country}` : 
+                  'No address provided',
+                itemCost: totalAmount,
+                itemsList: itemsList
+              });
+
+              const response = await fetch('/api/send-sale-email', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  itemName: items.length === 1 ? items[0].name : `${items.length} items`,
+                  customerName: data.customer_details?.name || 'Unknown Customer',
+                  customerEmail: data.customer_details?.email || 'No email provided',
+                  customerAddress: data.customer_details?.address ? 
+                    `${data.customer_details.address.line1}, ${data.customer_details.address.city}, ${data.customer_details.address.postal_code}, ${data.customer_details.address.country}` : 
+                    'No address provided',
+                  itemCost: totalAmount,
+                  itemsList: itemsList
+                }),
+              });
+
+              if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Email sending failed:', errorData);
+                throw new Error('Failed to send email');
+              }
+            } catch (error) {
+              console.error('Error sending email notification:', error);
             }
           }
         } catch (err) {

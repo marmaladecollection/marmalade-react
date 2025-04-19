@@ -14,11 +14,6 @@ export default function ItemActions({ item }) {
 
   const add = () => {
     if (!isInBasket) {
-      sendEmailViaAPI(
-        "madeleine.spencer.marmalade@gmail.com",
-        "Hello World",
-        "This is a test email from your application!"
-      );
       addToBasket(item.id);
       router.push("/basket");
     }
