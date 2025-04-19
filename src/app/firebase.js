@@ -14,37 +14,45 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
-
 const auth = getAuth();
-signInAnonymously(auth)
-  .then(() => {
-    console.log("Signed in");
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.error("Error signing in: ", errorCode, errorMessage);
-  });
 
+// Track authentication state
+let currentUser = null;
 
+// Initialize auth state listener
+onAuthStateChanged(auth, (user) => {
+  currentUser = user;
+  if (user) {
+    console.log("Signed in as", user.uid);
+  } else {
+    console.log("Signed out");
+  }
+});
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/auth.user
-      const uid = user.uid;
-      console.log("Signed in as " + uid);
-      // ...
-    } else {
-      console.log("Signed out");
-      // User is signed out
-      // ...
+// Export auth functions
+export const signIn = async () => {
+  try {
+    await signInAnonymously(auth);
+    return true;
+  } catch (error) {
+    console.error("Error signing in:", error);
+    return false;
+  }
+};
+
+// Helper to ensure we're authenticated before operations
+const ensureAuthenticated = async () => {
+  if (!currentUser) {
+    const success = await signIn();
+    if (!success) {
+      throw new Error("Failed to authenticate");
     }
-  });
+  }
+};
 
 export const fetchAllItems = async (setItems) => {
   try {
+    await ensureAuthenticated();
     const querySnapshot = await getDocs(collection(db, "item"));
     const data = querySnapshot.docs.map((doc) => ({
       id: doc.id,
@@ -53,38 +61,41 @@ export const fetchAllItems = async (setItems) => {
     setItems(data);
   } catch (e) {
     console.error("Error fetching items:", e);
+    throw e;
   }
 };
 
 export const fetchItemsByIds = async (ids, setItems) => {
-  var items = []
-  // console.log("fetching items with ids " + ids);
-  for (let id of ids) {
-    if (id) {
-      // console.log("fetching item with id " + id);
-      const docRef = doc(db, 'item', id);
-      const docSnap = await getDoc(docRef);
+  try {
+    await ensureAuthenticated();
+    const items = [];
+    for (let id of ids) {
+      if (id) {
+        const docRef = doc(db, 'item', id);
+        const docSnap = await getDoc(docRef);
 
-      if (docSnap.exists()) {
-        const data = {
-          id: docSnap.id,
-          ...docSnap.data()
+        if (docSnap.exists()) {
+          const data = {
+            id: docSnap.id,
+            ...docSnap.data()
+          }
+          items.push(data);
+        } else {
+          console.log("No item with id " + id);
         }
-        items.push(data)
-      } else {
-        console.log("No item with id " + id);
       }
     }
+    setItems(items);
+  } catch (error) {
+    console.error("Error fetching items by IDs:", error);
+    throw error;
   }
-
-  // console.log("setting items " + items.map(item => item.name));
-  setItems(items)
-}
+};
 
 export const fetchItemById = async (id, setItem) => {
   try {
+    await ensureAuthenticated();
     if (id) {
-      console.log("fetching item with id " + id);
       const docRef = doc(db, 'item', id);
       const docSnap = await getDoc(docRef);
 
@@ -93,7 +104,7 @@ export const fetchItemById = async (id, setItem) => {
           id: docSnap.id,
           ...docSnap.data()
         }
-        setItem(data)
+        setItem(data);
       } else {
         console.log("No item with id " + id);
         return null;
@@ -103,10 +114,11 @@ export const fetchItemById = async (id, setItem) => {
     console.error("Error fetching item " + id, error);
     throw error;
   }
-}
+};
 
 export const sellItem = async (item, customerName) => {
   try {
+    await ensureAuthenticated();
     const saleData = {
       itemId: item.id,
       itemName: item.name,
