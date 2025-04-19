@@ -62,18 +62,9 @@ export default function ({ onPaymentSuccess }) {
             const itemsList = items.map(item => `- ${item.name} (£${item.price})`).join('\n');
             
             try {
-              console.log('Sending email with data:', {
-                itemName: items.length === 1 ? items[0].name : `${items.length} items`,
-                customerName: data.customer_details?.name || 'Unknown Customer',
-                customerEmail: data.customer_details?.email || 'No email provided',
-                customerAddress: data.customer_details?.address ? 
-                  `${data.customer_details.address.line1}, ${data.customer_details.address.city}, ${data.customer_details.address.postal_code}, ${data.customer_details.address.country}` : 
-                  'No address provided',
-                itemCost: totalAmount,
-                itemsList: itemsList
-              });
-
-              const response = await fetch('/api/send-sale-email', {
+              // Send seller notification email
+              console.log('Sending seller notification email');
+              const sellerResponse = await fetch('/api/send-sale-email', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -86,17 +77,44 @@ export default function ({ onPaymentSuccess }) {
                     `${data.customer_details.address.line1}, ${data.customer_details.address.city}, ${data.customer_details.address.postal_code}, ${data.customer_details.address.country}` : 
                     'No address provided',
                   itemCost: totalAmount,
-                  itemsList: itemsList
+                  itemsList: itemsList,
+                  isCustomerEmail: false
                 }),
               });
 
-              if (!response.ok) {
-                const errorData = await response.json();
-                console.error('Email sending failed:', errorData);
-                throw new Error('Failed to send email');
+              if (!sellerResponse.ok) {
+                const errorData = await sellerResponse.json();
+                console.error('Seller email sending failed:', errorData);
+                throw new Error('Failed to send seller email');
+              }
+
+              // Send customer confirmation email
+              console.log('Sending customer confirmation email');
+              const customerResponse = await fetch('/api/send-sale-email', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  itemName: items.length === 1 ? items[0].name : `${items.length} items`,
+                  customerName: data.customer_details?.name || 'Unknown Customer',
+                  customerEmail: data.customer_details?.email || 'No email provided',
+                  customerAddress: data.customer_details?.address ? 
+                    `${data.customer_details.address.line1}, ${data.customer_details.address.city}, ${data.customer_details.address.postal_code}, ${data.customer_details.address.country}` : 
+                    'No address provided',
+                  itemCost: totalAmount,
+                  itemsList: itemsList,
+                  isCustomerEmail: true
+                }),
+              });
+
+              if (!customerResponse.ok) {
+                const errorData = await customerResponse.json();
+                console.error('Customer email sending failed:', errorData);
+                throw new Error('Failed to send customer email');
               }
             } catch (error) {
-              console.error('Error sending email notification:', error);
+              console.error('Error sending email notifications:', error);
             }
           }
         } catch (err) {
