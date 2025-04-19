@@ -14,14 +14,41 @@ export async function POST(request) {
       isCustomerEmail
     });
 
-    // Create a transporter using Gmail
+    // Log SMTP configuration (without sensitive data)
+    console.log('SMTP Configuration:', {
+      host: process.env.SMTP_HOST,
+      port: process.env.SMTP_PORT,
+      secure: process.env.SMTP_SECURE,
+      user: process.env.EMAIL_USER ? '***' : 'undefined',
+    });
+
+    // Create a transporter using IONOS SMTP
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT),
+      secure: process.env.SMTP_SECURE === 'true',
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_APP_PASSWORD,
       },
+      debug: true, // Enable debug logging
+      logger: true, // Enable logger
     });
+
+    // Verify the transporter configuration
+    try {
+      console.log('Attempting to verify SMTP connection...');
+      await transporter.verify();
+      console.log('SMTP connection verified successfully');
+    } catch (error) {
+      console.error('SMTP verification failed:', {
+        error: error.message,
+        code: error.code,
+        response: error.response,
+        stack: error.stack
+      });
+      throw error;
+    }
 
     let mailOptions;
     if (isCustomerEmail) {
