@@ -4,14 +4,14 @@ import { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from "@stripe/react-stripe-js";
 import { useMarmaladeContext } from "../context/MarmaladeContext";
-import { fetchItemsByIds } from "../firebase";
+import { fetchItemsByIds, sellItem } from "../firebase";
 import PaymentSuccess from "./PaymentSuccess";
 import styles from "./StripeCheckout.module.scss";
 
 // Replace with your Stripe publishable key
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
-export default function StripeCheckout({ onPaymentSuccess }) {
+export default function ({ onPaymentSuccess }) {
   const { basketIds, clearBasket } = useMarmaladeContext();
   const [items, setItems] = useState([]);
   const [clientSecret, setClientSecret] = useState("");
@@ -32,19 +32,28 @@ export default function StripeCheckout({ onPaymentSuccess }) {
       // Verify the payment status
       fetch(`/api/checkout-status?session_id=${sessionId}`)
         .then((res) => res.json())
-        .then((data) => {
+        .then(async (data) => {
           if (data.status === "complete" || data.payment_status === "paid") {
             setPaymentSuccess(true);
             onPaymentSuccess?.();
             // Clear the basket after successful payment
             clearBasket();
+            
+            // Record the sale in Firebase for each item
+            for (const item of items) {
+              try {
+                await sellItem(item, data.customer_details?.name || "Anonymous");
+              } catch (error) {
+                console.error("Error recording sale for item:", item.id, error);
+              }
+            }
           }
         })
         .catch((err) => {
           console.error("Error checking payment status:", err);
         });
     }
-  }, [clearBasket, onPaymentSuccess]);
+  }, [clearBasket, onPaymentSuccess, items]);
 
   useEffect(() => {
     if (items.length > 0 && !paymentSuccess) {
@@ -117,4 +126,4 @@ export default function StripeCheckout({ onPaymentSuccess }) {
       )}
     </div>
   );
-} 
+}

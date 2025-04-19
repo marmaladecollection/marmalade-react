@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useMarmaladeContext } from "../../context/MarmaladeContext";
 import styles from "./itemactions.module.scss";
-
+import { sellItem } from "../../firebase";
 export default function ItemActions({ item }) {
   const router = useRouter();
   const { basketIds, addToBasket } = useMarmaladeContext();
@@ -12,8 +12,9 @@ export default function ItemActions({ item }) {
 
   const add = () => {
     if (!isInBasket) {
-      addToBasket(item.id);
-      router.push("/basket");
+      sellItem(item, "Anonymous");
+      // addToBasket(item.id);
+      // router.push("/basket");
     }
   }
 

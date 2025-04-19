@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { collection, doc, getDoc, getDocs, getFirestore } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, getFirestore, addDoc } from "firebase/firestore";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDAy3UOEf3Occ9dRnfO8i-NawSc81jMuIY",
@@ -13,6 +14,34 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+
+const auth = getAuth();
+signInAnonymously(auth)
+  .then(() => {
+    console.log("Signed in");
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.error("Error signing in: ", errorCode, errorMessage);
+  });
+
+
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/auth.user
+      const uid = user.uid;
+      console.log("Signed in as " + uid);
+      // ...
+    } else {
+      console.log("Signed out");
+      // User is signed out
+      // ...
+    }
+  });
 
 export const fetchAllItems = async (setItems) => {
   try {
@@ -75,3 +104,23 @@ export const fetchItemById = async (id, setItem) => {
     throw error;
   }
 }
+
+export const sellItem = async (item, customerName) => {
+  try {
+    const saleData = {
+      itemId: item.id,
+      itemName: item.name,
+      customerName: customerName,
+      saleDate: new Date(),
+      price: item.price || 0
+    };
+
+    const docRef = await addDoc(collection(db, "sale"), saleData);
+    console.log("Sale recorded with ID: ", docRef.id);
+    return docRef.id;
+  } catch (error) {
+    console.error("Error recording sale: ", error);
+    throw error;
+  }
+};
+
