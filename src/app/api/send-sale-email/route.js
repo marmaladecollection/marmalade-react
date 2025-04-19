@@ -80,14 +80,16 @@ The Marmalade Team`,
       // Seller notification email
       mailOptions = {
         from: process.env.EMAIL_USER,
-        to: 'madeleine.spencer.marmalade@gmail.com',
-        subject: `${itemName} has just been sold!`,
-        text: `${customerName} has just bought ${itemName} for £${itemCost}
-Their email is: ${customerEmail}
-Their address is: ${customerAddress}
+        to: 'team@marmaladecollection.com',
+        subject: `New sale: ${itemsList.split('\n').map(item => item.replace(/^- /, '').replace(/ \(£\d+.*\)$/, '')).join(', ')}!`,
+        text: `You have a new sale from ${customerName} for £${itemCost}!
 
-Items purchased:
-${itemsList}`,
+Items sold:
+${itemsList}
+
+Customer Details:
+Email: ${customerEmail}
+Delivery Address: ${customerAddress}`,
       };
     }
 
