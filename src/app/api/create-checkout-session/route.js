@@ -22,6 +22,10 @@ export async function POST(request) {
         quantity: 1,
       })),
       mode: 'payment',
+      billing_address_collection: 'required',
+      shipping_address_collection: {
+        allowed_countries: ['GB'],
+      },
       return_url: `${origin}/checkout?session_id={CHECKOUT_SESSION_ID}`,
     });
 
