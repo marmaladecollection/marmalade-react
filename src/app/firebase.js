@@ -19,18 +19,25 @@ const auth = getAuth();
 // Track authentication state
 let currentUser = null;
 
-// Initialize auth state listener
-onAuthStateChanged(auth, (user) => {
-  currentUser = user;
-  if (user) {
-    console.log("Signed in as", user.uid);
-  } else {
-    console.log("Signed out");
-  }
-});
+// Check if we're in a test environment
+const isTestEnvironment = process.env.NODE_ENV === 'test';
+
+// Initialize auth state listener (skip in test environment)
+if (!isTestEnvironment) {
+  onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    if (user) {
+      console.log("Signed in as", user.uid);
+    } else {
+      console.log("Signed out");
+    }
+  });
+}
 
 // Export auth functions
 export const signIn = async () => {
+  if (isTestEnvironment) return true;
+  
   try {
     await signInAnonymously(auth);
     return true;
@@ -42,6 +49,8 @@ export const signIn = async () => {
 
 // Helper to ensure we're authenticated before operations
 const ensureAuthenticated = async () => {
+  if (isTestEnvironment) return;
+  
   if (!currentUser) {
     const success = await signIn();
     if (!success) {

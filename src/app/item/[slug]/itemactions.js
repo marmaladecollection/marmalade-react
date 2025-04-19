@@ -12,9 +12,9 @@ export default function ItemActions({ item }) {
 
   const add = () => {
     if (!isInBasket) {
-      sellItem(item, "Anonymous");
-      // addToBasket(item.id);
-      // router.push("/basket");
+
+      addToBasket(item.id);
+      router.push("/basket");
     }
   }
 
