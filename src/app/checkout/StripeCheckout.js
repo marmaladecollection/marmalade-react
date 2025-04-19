@@ -28,19 +28,23 @@ export default function ({ onPaymentSuccess }) {
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get('session_id');
     
-    if (sessionId) {
-      // Verify the payment status
-      fetch(`/api/checkout-status?session_id=${sessionId}`)
-        .then((res) => res.json())
-        .then(async (data) => {
-          if (data.status === "complete" || data.payment_status === "paid") {
+    if (sessionId && !paymentSuccess) {
+      let isMounted = true;
+      
+      const checkPaymentStatus = async () => {
+        try {
+          const response = await fetch(`/api/checkout-status?session_id=${sessionId}`);
+          if (!response.ok) throw new Error('Failed to fetch payment status');
+          
+          const data = await response.json();
+          if (isMounted && (data.status === "complete" || data.payment_status === "paid")) {
             setPaymentSuccess(true);
             onPaymentSuccess?.();
             // Clear the basket after successful payment
             clearBasket();
             
-            // Record the sale in Firebase for each item
-            const basketId = data?.id || `basket-${Date.now()}`; // Generate a single basket ID for all items
+
+            const basketId = data?.id || `basket-${Date.now()}`;
             for (const item of items) {
               try {
                 console.log("selling item " + item.id);
@@ -50,12 +54,21 @@ export default function ({ onPaymentSuccess }) {
               }
             }
           }
-        })
-        .catch((err) => {
-          console.error("Error checking payment status:", err);
-        });
+        } catch (err) {
+          if (isMounted) {
+            console.error("Error checking payment status:", err);
+          }
+        }
+      };
+
+      checkPaymentStatus();
+      
+      // Cleanup function
+      return () => {
+        isMounted = false;
+      };
     }
-  }, [clearBasket, onPaymentSuccess, items]);
+  }, [clearBasket, onPaymentSuccess, items, paymentSuccess]);
 
   useEffect(() => {
     if (items.length > 0 && !paymentSuccess) {
