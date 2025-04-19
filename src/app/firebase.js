@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { collection, doc, getDoc, getDocs, getFirestore, addDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, getFirestore, addDoc, setDoc } from "firebase/firestore";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
 
 const firebaseConfig = {
@@ -181,9 +181,10 @@ export const sellItem = async (item, stripeData, basketId) => {
       saleData.paymentMethodDetails = stripeData.payment_method_details;
     }
 
-    const docRef = await addDoc(collection(db, "sale"), saleData);
-    console.log("Sale recorded with ID: ", docRef.id);
-    return docRef.id;
+    const docRef = doc(db, "sale", basketId);
+    await setDoc(docRef, saleData);
+    console.log("Sale recorded with ID: ", basketId);
+    return basketId;
   } catch (error) {
     console.error("Error recording sale: ", error);
     throw error;

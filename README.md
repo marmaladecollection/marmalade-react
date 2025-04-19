@@ -45,6 +45,8 @@ ssh root@217.154.9.107
 To transfer images from local machine to server...
 
 ## Config
+(hint - Use Warp AI to help resolve deployment problems)
+
 Go to IONOS Domains and SSL 
 Select your domain
 Go to DNS

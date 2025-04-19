@@ -8,6 +8,7 @@ import { fetchItemsByIds, sellItem } from "../firebase";
 import PaymentSuccess from "./PaymentSuccess";
 import styles from "./StripeCheckout.module.scss";
 
+
 // Replace with your Stripe publishable key
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
@@ -43,11 +44,11 @@ export default function ({ onPaymentSuccess }) {
             // Clear the basket after successful payment
             clearBasket();
             
-
-            const basketId = data?.id || `basket-${Date.now()}`;
+            const timeString = new Date().toTimeString().split(' ')[0].split(':').slice(0, 2).join('');
+            const basketId = `${new Date().toISOString().split('T')[0]}-${timeString}-${Math.floor(Math.random() * 1000000)}`;
             for (const item of items) {
               try {
-                console.log("selling item " + item.id);
+                console.log("selling item " + item.id + " with basket id " + basketId);
                 await sellItem(item, data, basketId);
               } catch (error) {
                 console.error("Error recording sale for item:", item.id, error);
