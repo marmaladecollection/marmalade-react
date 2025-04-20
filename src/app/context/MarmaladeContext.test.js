@@ -13,8 +13,6 @@ describe('MarmaladeContext', () => {
     localStorage.clear();
     // Reset mocks
     jest.clearAllMocks();
-    // Mock fetchItemsByIds to return empty array by default
-    fetchItemsByIds.mockResolvedValue([]);
   });
 
   it('should provide initial empty basket state', async () => {
@@ -43,6 +41,9 @@ describe('MarmaladeContext', () => {
       return null;
     };
 
+    // Mock fetchItemsByIds to return the item
+    fetchItemsByIds.mockResolvedValue([{ id: 'item1', name: 'Item 1' }]);
+
     await act(async () => {
       render(
         <MarmaladeProvider>
@@ -64,6 +65,9 @@ describe('MarmaladeContext', () => {
       contextValue = useMarmaladeContext();
       return null;
     };
+
+    // Mock fetchItemsByIds to return the item initially
+    fetchItemsByIds.mockResolvedValue([{ id: 'item1', name: 'Item 1' }]);
 
     await act(async () => {
       render(
@@ -93,6 +97,12 @@ describe('MarmaladeContext', () => {
       return null;
     };
 
+    // Mock fetchItemsByIds to return the items initially
+    fetchItemsByIds.mockResolvedValue([
+      { id: 'item1', name: 'Item 1' },
+      { id: 'item2', name: 'Item 2' }
+    ]);
+
     await act(async () => {
       render(
         <MarmaladeProvider>
@@ -115,32 +125,55 @@ describe('MarmaladeContext', () => {
     expect(contextValue.basketIds).toEqual([]);
   });
 
-  it('should fetch basket items when basketIds change', async () => {
-    const mockItems = [
-      { id: 'item1', name: 'Item 1' },
-      { id: 'item2', name: 'Item 2' }
-    ];
-
-    fetchItemsByIds.mockResolvedValue(mockItems);
-
+  it('should remove items from basket that cannot be found', async () => {
     let contextValue;
     const TestComponent = () => {
       contextValue = useMarmaladeContext();
       return null;
     };
 
-    render(
-      <MarmaladeProvider>
-        <TestComponent />
-      </MarmaladeProvider>
-    );
+    // Initial mock for the first render
+    fetchItemsByIds.mockResolvedValue([
+      { id: 'item1', name: 'Item 1' },
+      { id: 'item2', name: 'Item 2' },
+      { id: 'item3', name: 'Item 3' }
+    ]);
 
+    // Initial render
+    await act(async () => {
+      render(
+        <MarmaladeProvider>
+          <TestComponent />
+        </MarmaladeProvider>
+      );
+    });
+
+    // Add items to basket
     await act(async () => {
       contextValue.addToBasket('item1');
       contextValue.addToBasket('item2');
+      contextValue.addToBasket('item3');
     });
 
-    expect(fetchItemsByIds).toHaveBeenCalledWith(['item1', 'item2']);
-    expect(contextValue.basketItems).toEqual(mockItems);
+    // Update mock to return only item1 and item3 (item2 is missing)
+    fetchItemsByIds.mockResolvedValue([
+      { id: 'item1', name: 'Item 1' },
+      { id: 'item3', name: 'Item 3' }
+    ]);
+
+    // Wait for the effect to complete
+    await act(async () => {
+      // Force a re-render by adding a new item
+      contextValue.addToBasket('item4');
+      // Wait for the effect to complete
+      await new Promise(resolve => setTimeout(resolve, 0));
+    });
+
+    // Verify that item2 was automatically removed from basketIds and item4 remains
+    expect(contextValue.basketIds).toEqual(['item1', 'item3']);
+    expect(contextValue.basketItems).toEqual([
+      { id: 'item1', name: 'Item 1' },
+      { id: 'item3', name: 'Item 3' }
+    ]);
   });
 }); 

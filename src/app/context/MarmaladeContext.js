@@ -53,13 +53,26 @@ export const MarmaladeProvider = ({ children }) => {
         const fetchItems = async () => {
             try {
                 const items = await fetchItemsByIds(basketIds);
-                setBasketItems(items);
+                // Ensure items is an array
+                const validItems = Array.isArray(items) ? items : [];
+                setBasketItems(validItems);
+                
+                // Remove any basketIds that don't have corresponding items
+                const foundIds = validItems.map(item => item.id);
+                const missingIds = basketIds.filter(id => !foundIds.includes(id));
+                if (missingIds.length > 0) {
+                    setBasketIds(prevIds => prevIds.filter(id => !missingIds.includes(id)));
+                }
             } catch (error) {
                 console.error('Error fetching basket items:', error);
                 setBasketItems([]);
             }
         };
-        fetchItems();
+        if (basketIds.length > 0) {
+            fetchItems();
+        } else {
+            setBasketItems([]);
+        }
     }, [basketIds]);
 
     // Function to add an ID
