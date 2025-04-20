@@ -16,8 +16,8 @@ export default function ReturnsPage() {
           <h2>Questions?</h2>
           <p>
             If you have any questions about returns, please contact us at{' '}
-            <a href="mailto:returns@marmalade.com" className={styles.email}>
-              returns@marmalade.com
+            <a href="mailto:team@marmaladecollection.com" className={styles.email}>
+              team@marmaladecollection.com
             </a>
           </p>
       </div>

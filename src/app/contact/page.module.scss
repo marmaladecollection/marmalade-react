@@ -8,6 +8,16 @@
     margin: 0;
     padding: 20px;
   }
+
+  h1 {
+    @extend .heading1
+  }
+  h2 {
+    @extend .heading2;
+  }
+  p {
+    @extend .paragraph;
+  }
 }
 
 .content {
@@ -15,62 +25,4 @@
   max-width: 800px;
   margin: 0 auto;
   gap: 30px;
-
-  h1 {
-    font-size: 1.7rem;
-    margin-bottom: 20px;
-  }
-
-  p {
-    font-size: 1.2rem;
-    line-height: 2;
-  }
 }
-
-.email {
-  color: #000;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  
-  &:hover {
-    opacity: 0.8;
-  }
-}
-
-.form {
-  @extend .spaced-down;
-  gap: 20px;
-  width: 100%;
-
-  input, textarea {
-    padding: 12px;
-    border: 1px solid #ebebeb;
-    border-radius: 3px;
-    font-size: 1rem;
-    width: 100%;
-
-    &:focus {
-      outline: none;
-      border-color: #000;
-    }
-  }
-
-  textarea {
-    min-height: 150px;
-    resize: vertical;
-  }
-
-  button {
-    @extend .button;
-    padding: 12px 24px;
-    background-color: #000;
-    color: white;
-    border: none;
-    width: fit-content;
-    margin-top: 20px;
-
-    &:hover {
-      opacity: 0.9;
-    }
-  }
-} 
