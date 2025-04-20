@@ -83,7 +83,7 @@ $breakpoints: (
 // Common heading styles
 .heading1 {
   font-size: 1.7rem;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 
   @include mobile {
     font-size: 1.4rem;
@@ -92,13 +92,12 @@ $breakpoints: (
 }
 
 .heading2 {
-  font-size: 1.4rem;
-  margin-top: 20px;
+  font-size: 1.3rem;
+  margin-top: 0px;
+  margin-bottom: 0px;
 
   @include mobile {
     font-size: 1.1rem;
-    margin-top: 10px; 
-    margin-bottom: 0px;
   }
 }
 

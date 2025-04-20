@@ -6,12 +6,21 @@ export default function DeliveryPage() {
       <div className={styles.content}>
         <h1>Delivery Information</h1>
         <p>
-          We currently deliver to the following areas:
+          We deliver to areas to the following areas:
         </p>
-        <p>
-          <strong>East Sussex:</strong> Hastings, St Leonards, Bexhill, Battle, Rye, and surrounding areas<br />
-          <strong>Kent:</strong> Ashford, Tenterden, and surrounding areas
-        </p>
+        
+        <div className={styles.deliveryAreas}>
+          <h2>East Sussex</h2>
+          <p>
+            Brightling, Battle, Hastings, St Leonards, Bexhill, Rye, Heathfield, Mayfield, 
+            Etchingham, Wadhurst, Crowborough, Uckfield, Lewes, Hailsham, Eastbourne
+          </p>
+
+          <h2>Kent</h2>
+          <p>
+            Ashford, Tenterden, Cranbrook, Hawkhurst, Tonbridge, Tunbridge Wells
+          </p>
+        </div>
 
         <h2>Delivery Charges</h2>
         <p>

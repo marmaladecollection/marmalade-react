@@ -1,14 +1,13 @@
 "use client";
 
-
 import { useState, useEffect } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
 import { useMarmaladeContext } from '../context/MarmaladeContext';
 import { sellItem } from '../firebase';
 import PaymentSuccess from './PaymentSuccess';
+import DeliveryAddressForm from './DeliveryAddressForm';
 import styles from './StripeCheckout.module.scss';
-
 
 // Replace with your Stripe publishable key
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
@@ -20,6 +19,40 @@ export default function ({ onPaymentSuccess }) {
   const [error, setError] = useState(null);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [sessionId, setSessionId] = useState(null);
+  const [showAddressForm, setShowAddressForm] = useState(true);
+
+  const handleAddressSubmit = async (address) => {
+    try {
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          items: basketItems.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+          })),
+          shippingAddress: address
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to create checkout session');
+      }
+
+      const data = await response.json();
+      setClientSecret(data.clientSecret);
+      setLoading(false);
+      setShowAddressForm(false);
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+      setError(error.message);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     // Check if we're returning from a successful payment
@@ -47,7 +80,8 @@ export default function ({ onPaymentSuccess }) {
           });
 
           if (!response.ok) {
-            throw new Error('Failed to create checkout session');
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to create checkout session');
           }
 
           const data = await response.json();
@@ -162,24 +196,28 @@ export default function ({ onPaymentSuccess }) {
     }
   }, [sessionId, paymentSuccess]);
 
+  if (paymentSuccess) {
+    return <PaymentSuccess />;
+  }
+
+  if (showAddressForm) {
+    return <DeliveryAddressForm onSubmit={handleAddressSubmit} />;
+  }
+
   return (
     <div className={styles.page}>
-      {paymentSuccess ? (
-        <PaymentSuccess />
-      ) : (
-        <div className={styles.checkoutContainer}>
-          {error && <div className={styles.error}>{error}</div>}
-          {loading && <div className={styles.loading}>Loading checkout...</div>}
-          {clientSecret && (
-            <EmbeddedCheckoutProvider
-              stripe={stripePromise}
-              options={{ clientSecret }}
-            >
-              <EmbeddedCheckout />
-            </EmbeddedCheckoutProvider>
-          )}
-        </div>
-      )}
+      <div className={styles.checkoutContainer}>
+        {error && <div className={styles.error}>{error}</div>}
+        {loading && <div className={styles.loading}>Loading checkout...</div>}
+        {clientSecret && (
+          <EmbeddedCheckoutProvider
+            stripe={stripePromise}
+            options={{ clientSecret }}
+          >
+            <EmbeddedCheckout />
+          </EmbeddedCheckoutProvider>
+        )}
+      </div>
     </div>
   );
 }
