@@ -7,11 +7,10 @@ describe('Footer', () => {
     
     // Check that all links are present and have correct attributes
     const links = screen.getAllByRole('link');
-    expect(links).toHaveLength(5);
+    expect(links).toHaveLength(4);
     
     // Verify each link has the correct text and href
     const expectedLinks = [
-      { text: 'Help', href: '/help' },
       { text: 'Delivery', href: '/delivery' },
       { text: 'Returns', href: '/returns' },
       { text: 'Contact Us', href: '/contact' },

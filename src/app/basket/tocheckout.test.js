@@ -35,7 +35,6 @@ describe('ToCheckout', () => {
     expect(screen.getByText('We accept the payment methods')).toBeInTheDocument();
     expect(screen.getByAltText('Visa')).toBeInTheDocument();
     expect(screen.getByAltText('Mastercard')).toBeInTheDocument();
-    expect(screen.getByAltText('PayPal')).toBeInTheDocument();
-    expect(screen.getByAltText('Apple Pay')).toBeInTheDocument();
+    expect(screen.getByAltText('Pay with Link')).toBeInTheDocument();
   });
 }); 
