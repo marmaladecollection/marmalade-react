@@ -16,7 +16,7 @@ export default function DeliveryPage() {
         <h2>Delivery Charges</h2>
         <p>
           Standard Delivery: £10.00<br />
-          Free delivery on orders over £50
+          Free delivery on orders over £150
         </p>
 
         <h2>Need Help?</h2>
