@@ -5,11 +5,11 @@ import styles from "./footer.module.scss";
 export default function Footer() {
   return (
     <div className={styles.footer}>
-      <div>Help</div>
-      <div>Delivery</div>
-      <div>Returns</div>
-      <div>Contact Us</div>
-      <div>About Us</div>
+      <a href="/help">Help</a>
+      <a href="/delivery">Delivery</a>
+      <a href="/returns">Returns</a>
+      <a href="/contact">Contact Us</a>
+      <a href="/about">About Us</a>
     </div>
   );
 }
