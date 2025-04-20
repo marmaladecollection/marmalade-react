@@ -1,9 +1,9 @@
-@import '../common.scss';
+@use '../common.scss' as common;
 
 .content {
-  @extend .spaced-across;
+  @extend common, .spaced-across !optional;
 
-  @include mobile {
+  @include common.mobile {
     flex-direction: column-reverse;
   } 
 }
@@ -11,47 +11,46 @@
 .main {
   margin: 0 60px;
 
-  @include mobile {
+  @include common.mobile {
     margin: 0px;
   }
 
   h1 {
-    @extend .heading1
+    @extend common, .heading1 !optional
   }
   h2 {
-    @extend .heading2;
+    @extend common, .heading2 !optional;
   }
   p {
-    @extend .paragraph;
-  }
-}
-
-.imageContainer {
-  width: 40%;
-  position: relative;
-  overflow: hidden;
-  min-height: 500px;
-
-  @include mobile {
-    width: 100%;
+    @extend common, .paragraph !optional;
   }
 }
 
 .textContainer {
-    @extend .spaced-down;
-
+    @extend common, .spaced-down !optional;
     justify-content: center;
     width: 60%;
     font-size: 1.2rem;
     line-height: 2;
     margin-bottom: 40px;
 
-    @include mobile {
+    @include common.mobile {
         width: 100%;
 
         p {
           margin: 20px;
         }
+    }
+}
+
+.imageContainer {
+    width: 40%;
+    position: relative;
+    overflow: hidden;
+    min-height: 500px;
+
+    @include common.mobile {
+        width: 100%;
     }
 }
 

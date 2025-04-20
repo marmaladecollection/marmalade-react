@@ -1,11 +1,10 @@
-@import '../../common.scss';
+@use '../../common.scss' as common;
 
 .mainBit {
-    @extend .spaced-across;
-
+    @extend common, .spaced-across !optional;
     align-items: flex-start;
 
-    @include mobile {
+    @include common.mobile {
         flex-direction: column-reverse;
         margin-left: 20px;
     }
@@ -13,15 +12,14 @@
 
 .left {
     max-width: 400px;
-    flex: 0 0    auto;
-    @include mobile {
+    flex: 0 0 auto;
+    @include common.mobile {
         max-width: 100%;
-        margin-right: 40px;
     }
 }
 
 .actions {
-    @extend .spaced-down;
+    @extend common, .spaced-down !optional;
     margin-left: 20px !important;
     margin-right: 20px;
 

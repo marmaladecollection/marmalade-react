@@ -1,12 +1,12 @@
-@import '../../common.scss';
+@use '../../common.scss' as common;
 
 .buttons {
-    @extend .spaced-across;
+    @extend common, .spaced-across !optional;
 
     margin-bottom: 32px;
 
     a {
-        @extend .button;
+        @extend common, .button !optional;
 
         flex: 0 1 calc(50%);
         font-size: small;

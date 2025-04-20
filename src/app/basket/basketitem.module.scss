@@ -1,14 +1,14 @@
-@import '../common.scss';
+@use '../common.scss' as common;
 
 .page {
-    @extend .spaced-across;
+    @extend common, .spaced-across !optional;
     align-items: flex-start;
     padding: 20px 0;
     justify-content: space-between;
 }
 
 .leftSection {
-    @extend .spaced-across;
+    @extend common, .spaced-across !optional;
     align-items: flex-start;
     gap: 20px;
 }
@@ -29,7 +29,7 @@
 }
 
 .remove {
-    @extend .underline-button;
+    @extend common, .underline-button !optional;
     font-size: smaller;
     font-family: var(--font-ss);
     margin-top: 20px;
@@ -37,7 +37,7 @@
 }
 
 .details {
-    @extend .spaced-down;
+    @extend common, .spaced-down !optional;
     align-items: flex-start;
 }
 

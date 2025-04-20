@@ -1,7 +1,7 @@
-@import 'common.scss';
+@use 'common.scss' as common;
 
 .main {
-    @extend .spaced-down;
+    @extend common, .spaced-down !optional;
     text-align: start;
     margin-bottom: 12px;
 
@@ -26,8 +26,7 @@
 }
 
 .save {
-    @extend .button;
-
+    @extend common, .button !optional;
     align-self: end;
     margin-top: -28px;
     margin-right: 4px;

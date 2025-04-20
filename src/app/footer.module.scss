@@ -1,15 +1,16 @@
-@import 'common.scss';
+@use 'common.scss' as common;
 
 .footer {
-    @extend .spaced-across, .top-divider;
+    @extend common, .spaced-across !optional;
+    @extend common, .top-divider !optional;
     
     position: fixed;
     bottom: 0;
     left: 20px;
     right: 20px;
+    padding: 24px;
     background-color: white;
     z-index: 1000;
-    padding: 24px;
     font-size: x-small;
     text-transform: uppercase;
 

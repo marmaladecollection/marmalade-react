@@ -1,4 +1,4 @@
-@import 'common.scss';
+@use 'common.scss' as common;
 
 .gallery {
     columns: 4 350px;

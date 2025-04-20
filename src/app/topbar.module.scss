@@ -1,7 +1,7 @@
-@import 'common.scss';
+@use 'common.scss' as common;
 
 #topBar {
-    @extend .divider;
+    @extend common, .divider !optional;
     position: relative;
     padding: 16px;
     margin-bottom: 40px;
@@ -16,7 +16,7 @@
     color: white;
     -webkit-text-stroke: 1px #5C4033;
     
-    @include mobile {
+    @include common.mobile {
         font-size: 32px;
         text-align: left;
     }

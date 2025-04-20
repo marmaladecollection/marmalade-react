@@ -1,35 +1,37 @@
-@import '../common.scss';
+@use '../common.scss' as common;
 
 .page {
-    @extend .spaced-across;
+    @extend common, .spaced-across !optional;
     align-items: flex-start;
     height: 100%;
     margin-left: 20px;
     margin-right: 20px;
 
-    @include mobile {
+    @include common.mobile {
         flex-direction: column;
     } 
 }
 
 .list {
-    @extend .spaced-down, .right-divider;
+    @extend common, .spaced-down !optional;
+    @extend common, .right-divider !optional;
     width: 50%;
     padding-left: 40px;
 
-    @include mobile {
+    @include common.mobile {
         width: 100%;
         padding-left: 0px;
     }
 }
 
 .summary {
-    @extend .spaced-down, .right-divider;
+    @extend common, .spaced-down !optional;
+    @extend common, .right-divider !optional;
     width: 50%;
     margin: 20px 40px 40px 40px;
     padding-right: 40px;
 
-    @include mobile {
+    @include common.mobile {
         width: 100%;
         margin: 0px;
         padding-right: 0px;

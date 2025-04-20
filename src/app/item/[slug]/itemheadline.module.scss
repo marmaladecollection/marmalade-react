@@ -1,7 +1,8 @@
-@import '../../common.scss';
+@use '../../common.scss' as common;
 
 .summary {
-    @extend .spaced-down, .divider;
+    @extend common, .spaced-down !optional;
+    @extend common, .divider !optional;
 
     align-items: flex-start;
     padding-bottom: 20px;

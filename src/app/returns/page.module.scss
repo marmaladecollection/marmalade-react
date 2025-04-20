@@ -1,28 +1,28 @@
-@import '../common.scss';
+@use '../common.scss' as common;
 
 .main {
   margin: 0 60px;
-  @extend .spaced-down;
+  @extend common, .spaced-down !optional;
   gap: 20px;
 
   h1 {
-    @extend .heading1
+    @extend common, .heading1 !optional
   }
   h2 {
-    @extend .heading2;
+    @extend common, .heading2 !optional;
   }
   p {
-    @extend .paragraph;
+    @extend common, .paragraph !optional;
   }
 
-  @include mobile {
+  @include common.mobile {
     margin: 0;
     padding: 0 20px;
   }
 }
 
 .content {
-  @extend .spaced-down;
+  @extend common, .spaced-down !optional;
   max-width: 800px;
   margin: 0 auto;
   gap: 30px;
