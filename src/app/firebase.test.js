@@ -2,17 +2,19 @@ import { collection, getDocs, doc, getDoc, getFirestore } from 'firebase/firesto
 import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 import { fetchAllItems, fetchItemsByIds, fetchItemById } from './firebase';
 
+jest.mock('firebase/firestore');
+const mockCollection = jest.fn();
+collection.mockImplementation(mockCollection);
+
 // Mock Firebase
 jest.mock('firebase/firestore', () => ({
   collection: jest.fn(),
   getDocs: jest.fn(),
-  doc: jest.fn((db, collection, id) => ({
-    path: `${collection}/${id}`
-  })),
+  doc: jest.fn((db, collectionName, id) => ({ path: `${collectionName}/${id}` })),
   getDoc: jest.fn(),
-  getFirestore: jest.fn(() => ({
-    // Return a mock database object
-  })),
+  getFirestore: jest.fn(),
+  addDoc: jest.fn(),
+  setDoc: jest.fn(),
 }));
 
 // Mock Firebase app initialization
@@ -24,10 +26,8 @@ jest.mock('firebase/app', () => ({
 
 // Mock Firebase Auth
 jest.mock('firebase/auth', () => ({
-  getAuth: jest.fn(() => ({
-    // Return a mock auth object
-  })),
-  signInAnonymously: jest.fn(() => Promise.resolve({})),
+  getAuth: jest.fn(),
+  signInAnonymously: jest.fn(),
   onAuthStateChanged: jest.fn(),
 }));
 
@@ -112,72 +112,50 @@ describe('fetchItemsByIds', () => {
   });
 
   it('should not return items that exist in the sale collection', async () => {
-    // Mock items
-    const mockItems = [
-      { id: 'item1', name: 'Item 1', price: 100 },
-      { id: 'item2', name: 'Item 2', price: 200 },
-      { id: 'item3', name: 'Item 3', price: 300 },
-    ];
-
-    // Mock sale collection - item2 is sold
-    const mockSales = [
-      { id: 'item2', itemId: 'item2', saleDate: new Date() },
-    ];
-
-    // Mock getDoc to handle both item and sale collection checks
+    // Mock getDoc responses
     getDoc.mockImplementation((docRef) => {
-      const [collection, id] = docRef.path.split('/');
-      
+      const path = docRef.path.split('/');
+      const collection = path[0];
+      const id = path[1];
+
       if (collection === 'item') {
-        const item = mockItems.find(i => i.id === id);
-        if (item) {
-          return Promise.resolve({
-            exists: () => true,
-            id: item.id,
-            data: () => ({ name: item.name, price: item.price })
-          });
-        }
-      } else if (collection === 'sale') {
-        const sale = mockSales.find(s => s.id === id);
-        return Promise.resolve({
-          exists: () => !!sale,
-          data: () => sale
-        });
+        const items = {
+          'item1': { name: 'Item 1', price: 100 },
+          'item2': { name: 'Item 2', price: 200 },
+          'item3': { name: 'Item 3', price: 300 },
+        };
+        return {
+          exists: () => items[id] !== undefined,
+          id: id,
+          data: () => items[id],
+        };
       }
-      
-      return Promise.resolve({
-        exists: () => false
-      });
+      if (collection === 'sale') {
+        return {
+          exists: () => id === 'item2',
+        };
+      }
     });
 
-    // Mock setItems function
-    const setItems = jest.fn();
-
-    // Call fetchItemsByIds with all item IDs
-    await fetchItemsByIds(['item1', 'item2', 'item3'], setItems);
-
-    // Verify that setItems was called with only unsold items
-    expect(setItems).toHaveBeenCalledWith([
+    const items = await fetchItemsByIds(['item1', 'item2', 'item3']);
+    expect(items).toEqual([
       { id: 'item1', name: 'Item 1', price: 100 },
       { id: 'item3', name: 'Item 3', price: 300 },
     ]);
   });
 
   it('should handle empty array of IDs', async () => {
-    const setItems = jest.fn();
-    await fetchItemsByIds([], setItems);
-    expect(setItems).toHaveBeenCalledWith([]);
+    const items = await fetchItemsByIds([]);
+    expect(items).toEqual([]);
   });
 
   it('should handle non-existent items', async () => {
-    // Mock getDoc to return non-existent for all items
-    getDoc.mockImplementation(() => Promise.resolve({
-      exists: () => false
+    getDoc.mockImplementation(() => ({
+      exists: () => false,
     }));
 
-    const setItems = jest.fn();
-    await fetchItemsByIds(['non-existent-id'], setItems);
-    expect(setItems).toHaveBeenCalledWith([]);
+    const items = await fetchItemsByIds(['non-existent-id']);
+    expect(items).toEqual([]);
   });
 });
 

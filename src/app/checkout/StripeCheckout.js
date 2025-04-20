@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from "@stripe/react-stripe-js";
 import { useMarmaladeContext } from "../context/MarmaladeContext";
-import { fetchItemsByIds, sellItem } from "../firebase";
+import { sellItem } from "../firebase";
 import PaymentSuccess from "./PaymentSuccess";
 import styles from "./StripeCheckout.module.scss";
 
@@ -13,22 +13,21 @@ import styles from "./StripeCheckout.module.scss";
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 export default function ({ onPaymentSuccess }) {
-  const { basketIds, clearBasket } = useMarmaladeContext();
-  const [items, setItems] = useState([]);
+  const { basketIds, basketItems, clearBasket } = useMarmaladeContext();
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
-
-  useEffect(() => {
-    fetchItemsByIds(basketIds, setItems);
-  }, [basketIds]);
+  const [sessionId, setSessionId] = useState(null);
 
   useEffect(() => {
     // Check if we're returning from a successful payment
     const urlParams = new URLSearchParams(window.location.search);
-    const sessionId = urlParams.get('session_id');
-    
+    const newSessionId = urlParams.get('session_id');
+    setSessionId(newSessionId);
+  }, []);
+
+  useEffect(() => {
     if (sessionId && !paymentSuccess) {
       let isMounted = true;
       
@@ -46,7 +45,7 @@ export default function ({ onPaymentSuccess }) {
            
             
             // Process all items first
-            for (const item of items) {
+            for (const item of basketItems) {
               try {
                 console.log("selling item " + item.id);
                 await sellItem(item, data);
@@ -56,8 +55,8 @@ export default function ({ onPaymentSuccess }) {
             }
 
             // Send a single email with all items
-            const totalAmount = items.reduce((sum, item) => sum + item.price, 0);
-            const itemsList = items.map(item => `- ${item.name} (£${item.price})`).join('\n');
+            const totalAmount = basketItems.reduce((sum, item) => sum + item.price, 0);
+            const itemsList = basketItems.map(item => `- ${item.name} (£${item.price})`).join('\n');
             
             try {
               // Send seller notification email
@@ -68,7 +67,7 @@ export default function ({ onPaymentSuccess }) {
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                  itemName: items.length === 1 ? items[0].name : `${items.length} items`,
+                  itemName: basketItems.length === 1 ? basketItems[0].name : `${basketItems.length} items`,
                   customerName: data.customer_details?.name || 'Unknown Customer',
                   customerEmail: data.customer_details?.email || 'No email provided',
                   customerAddress: data.customer_details?.address ? 
@@ -94,7 +93,7 @@ export default function ({ onPaymentSuccess }) {
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                  itemName: items.length === 1 ? items[0].name : `${items.length} items`,
+                  itemName: basketItems.length === 1 ? basketItems[0].name : `${basketItems.length} items`,
                   customerName: data.customer_details?.name || 'Unknown Customer',
                   customerEmail: data.customer_details?.email || 'No email provided',
                   customerAddress: data.customer_details?.address ? 
@@ -115,90 +114,34 @@ export default function ({ onPaymentSuccess }) {
               console.error('Error sending email notifications:', error);
             }
           }
-        } catch (err) {
-          if (isMounted) {
-            console.error("Error checking payment status:", err);
-          }
+        } catch (error) {
+          console.error('Error checking payment status:', error);
+          setError(error.message);
         }
       };
-
+      
       checkPaymentStatus();
-      
-      // Cleanup function
-      return () => {
-        isMounted = false;
-      };
+      return () => { isMounted = false; };
     }
-  }, [clearBasket, onPaymentSuccess, items, paymentSuccess]);
-
-  useEffect(() => {
-    if (items.length > 0 && !paymentSuccess) {
-      // Calculate the total amount
-      const amount = items.reduce((sum, item) => sum + item.price, 0);
-      
-      // Create a checkout session on your server
-      fetch('/api/create-checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          amount: amount * 100, // Convert to cents
-          items: items.map(item => ({
-            id: item.id,
-            name: item.name,
-            price: item.price
-          }))
-        }),
-      })
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error('Failed to create checkout session');
-          }
-          return res.json();
-        })
-        .then((data) => {
-          setClientSecret(data.clientSecret);
-          setLoading(false);
-        })
-        .catch((err) => {
-          setError(err.message);
-          setLoading(false);
-        });
-    } else if (items.length === 0) {
-      setLoading(false);
-    }
-  }, [items, paymentSuccess]);
-
-  if (paymentSuccess) {
-    return (
-      <div className={styles.fullWidthContainer}>
-        <PaymentSuccess />
-      </div>
-    );
-  }
-
-  if (loading) {
-    return <div className={styles.loading}>Loading payment form...</div>;
-  }
-
-  if (error) {
-    return <div className={styles.error}>{error}</div>;
-  }
-
-  if (items.length === 0) {
-    return <div className={styles.empty}>Your basket is empty</div>;
-  }
+  }, [sessionId, paymentSuccess]);
 
   return (
-    <div className={styles.checkoutForm}>
-      {clientSecret && (
-        <EmbeddedCheckoutProvider
-          stripe={stripePromise}
-          options={{ clientSecret }}
-        >
-          <EmbeddedCheckout />
-        </EmbeddedCheckoutProvider>
+    <div className={styles.page}>
+      {paymentSuccess ? (
+        <PaymentSuccess />
+      ) : (
+        <div className={styles.checkoutContainer}>
+          {error && <div className={styles.error}>{error}</div>}
+          {loading && <div className={styles.loading}>Loading checkout...</div>}
+          {clientSecret && (
+            <EmbeddedCheckoutProvider
+              stripe={stripePromise}
+              options={{ clientSecret }}
+            >
+              <EmbeddedCheckout />
+            </EmbeddedCheckoutProvider>
+          )}
+        </div>
       )}
     </div>
   );

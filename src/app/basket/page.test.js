@@ -13,6 +13,7 @@ jest.mock('../context/MarmaladeContext', () => ({
   ...jest.requireActual('../context/MarmaladeContext'),
   useMarmaladeContext: () => ({
     basketIds: [],
+    basketItems: [],
     addToBasket: jest.fn(),
     removeFromBasket: jest.fn(),
   }),
@@ -28,6 +29,7 @@ describe('BasketPage', () => {
     // Reset the MarmaladeContext mock before each test
     jest.spyOn(require('../context/MarmaladeContext'), 'useMarmaladeContext').mockImplementation(() => ({
       basketIds: [],
+      basketItems: [],
       addToBasket: jest.fn(),
       removeFromBasket: jest.fn(),
     }));
@@ -54,6 +56,7 @@ describe('BasketPage', () => {
     // Override the mock to include items
     jest.spyOn(require('../context/MarmaladeContext'), 'useMarmaladeContext').mockImplementation(() => ({
       basketIds: ['item1'],
+      basketItems: [{ id: 'item1', name: 'Test Item 1', price: 100 }],
       addToBasket: jest.fn(),
       removeFromBasket: jest.fn(),
     }));
@@ -74,6 +77,7 @@ describe('BasketPage', () => {
     // Ensure the mock is set to empty basket
     jest.spyOn(require('../context/MarmaladeContext'), 'useMarmaladeContext').mockImplementation(() => ({
       basketIds: [],
+      basketItems: [],
       addToBasket: jest.fn(),
       removeFromBasket: jest.fn(),
     }));
@@ -92,6 +96,10 @@ describe('BasketPage', () => {
     // Override the mock to include items
     jest.spyOn(require('../context/MarmaladeContext'), 'useMarmaladeContext').mockImplementation(() => ({
       basketIds: ['item1', 'item2'],
+      basketItems: [
+        { id: 'item1', name: 'Test Item 1', price: 100 },
+        { id: 'item2', name: 'Test Item 2', price: 200 }
+      ],
       addToBasket: jest.fn(),
       removeFromBasket: jest.fn(),
     }));

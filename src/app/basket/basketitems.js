@@ -1,24 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useMarmaladeContext } from "../context/MarmaladeContext";
-import { fetchItemsByIds } from "../firebase";
 import BasketItem from "./basketitem";
 import BasketHeader from "./basketheader";
 import styles from "./basketitems.module.scss";
 
 export default function BasketItems() {
-  const { basketIds, removeFromBasket } = useMarmaladeContext();
-  const [items, setItems] = useState([]);
-
-  useEffect(() => {
-      fetchItemsByIds(basketIds, setItems);
-  }, [basketIds]);
+  const { basketItems } = useMarmaladeContext();
 
   return (
     <div className={styles.page}>
       <BasketHeader />
-      {items.map((item) => (
+      {basketItems.map((item) => (
         <BasketItem key={item.id + Math.random()} item={item} />
       ))}
     </div>

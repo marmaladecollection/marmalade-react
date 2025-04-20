@@ -1,10 +1,12 @@
 'use client'; 
 import { createContext, useContext, useEffect, useState } from 'react';
+import { fetchItemsByIds } from '../firebase';
 
 const MarmaladeContext = createContext();
 
 export const MarmaladeProvider = ({ children }) => {
     const [basketIds, setBasketIds] = useState([]);
+    const [basketItems, setBasketItems] = useState([]);
 
     // Effect to read from local storage on mount and handle storage events
     useEffect(() => {
@@ -46,6 +48,20 @@ export const MarmaladeProvider = ({ children }) => {
         }
     }, [basketIds]);
 
+    // Effect to fetch basket items whenever basketIds change
+    useEffect(() => {
+        const fetchItems = async () => {
+            try {
+                const items = await fetchItemsByIds(basketIds);
+                setBasketItems(items);
+            } catch (error) {
+                console.error('Error fetching basket items:', error);
+                setBasketItems([]);
+            }
+        };
+        fetchItems();
+    }, [basketIds]);
+
     // Function to add an ID
     const addToBasket = (newId) => {
         setBasketIds((prevIds) => [...prevIds, newId]);
@@ -61,11 +77,25 @@ export const MarmaladeProvider = ({ children }) => {
         setBasketIds([]);
     };
 
+    const value = {
+        basketIds,
+        basketItems,
+        addToBasket,
+        removeFromBasket,
+        clearBasket
+    };
+
     return (
-        <MarmaladeContext.Provider value={{ basketIds, addToBasket, removeFromBasket, clearBasket }}>
+        <MarmaladeContext.Provider value={value}>
             {children}
         </MarmaladeContext.Provider>
     );
 };
 
-export const useMarmaladeContext = () => useContext(MarmaladeContext);
+export const useMarmaladeContext = () => {
+    const context = useContext(MarmaladeContext);
+    if (!context) {
+        throw new Error('useMarmaladeContext must be used within a MarmaladeProvider');
+    }
+    return context;
+};

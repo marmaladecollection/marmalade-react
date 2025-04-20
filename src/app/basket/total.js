@@ -1,19 +1,11 @@
 "use client";
 
 import styles from "./total.module.scss";
-import { useEffect, useState } from "react";
 import { useMarmaladeContext } from "../context/MarmaladeContext";
-import { fetchItemsByIds } from "../firebase";
 
 export default function Total() {
-  const { basketIds } = useMarmaladeContext();
-  const [items, setItems] = useState([]);
-
-  useEffect(() => {
-      fetchItemsByIds(basketIds, setItems);
-  }, [basketIds]);
-
-  const totalPrice = items.reduce((total, item) => total + item.price, 0);
+  const { basketItems } = useMarmaladeContext();
+  const totalPrice = basketItems.reduce((total, item) => total + item.price, 0);
 
   return (
     <div className={styles.page}>

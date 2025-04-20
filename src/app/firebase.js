@@ -84,7 +84,7 @@ export const fetchAllItems = async (setItems) => {
   }
 };
 
-export const fetchItemsByIds = async (ids, setItems) => {
+export const fetchItemsByIds = async (ids) => {
   try {
     await ensureAuthenticated();
     const items = [];
@@ -108,7 +108,7 @@ export const fetchItemsByIds = async (ids, setItems) => {
         }
       }
     }
-    setItems(items);
+    return items;
   } catch (error) {
     console.error("Error fetching items by IDs:", error);
     throw error;
