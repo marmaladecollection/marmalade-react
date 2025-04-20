@@ -13,7 +13,7 @@ import styles from './StripeCheckout.module.scss';
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 export default function ({ onPaymentSuccess }) {
-  const { basketIds, basketItems, clearBasket } = useMarmaladeContext();
+  const { basketItems, clearBasket } = useMarmaladeContext();
   const [clientSecret, setClientSecret] = useState("");
   const [error, setError] = useState(null);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
@@ -84,10 +84,11 @@ export default function ({ onPaymentSuccess }) {
       }
 
       const data = await response.json();
+      setShowAddressForm(false);
       console.log("Setting delivery address:", address);
       setDeliveryAddress(address);
       setClientSecret(data.clientSecret);
-      setShowAddressForm(false);
+
       
       // Store the sale data in localStorage
       const newSaleData = {
@@ -252,6 +253,15 @@ export default function ({ onPaymentSuccess }) {
   }
 
   if (showAddressForm) {
+    if (sessionId) {
+      return (
+        <div className={styles.page}>
+          <div className={styles.checkoutContainer}>
+            <p>Please wait while we process your payment...</p>
+          </div>
+        </div>
+      );
+    }
     console.log("Showing address form");
     return <DeliveryAddressForm onSubmit={handleAddressSubmit} />;
   }
