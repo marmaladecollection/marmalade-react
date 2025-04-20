@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Category from "./category";
 import { fetchAllItems } from "./firebase";
 import Gallery from "./gallery";
 
