@@ -101,4 +101,44 @@ describe('ItemActions', () => {
     expect(mockAddToBasket).not.toHaveBeenCalled();
     expect(mockRouter.push).not.toHaveBeenCalled();
   });
+
+  it('should disable Add to bag button when item is sold', () => {
+    const soldItem = { ...mockItem, sold: true };
+    jest.spyOn(require('../../context/MarmaladeContext'), 'useMarmaladeContext').mockImplementation(() => ({
+      basketIds: [],
+      addToBasket: jest.fn(),
+      removeFromBasket: jest.fn(),
+    }));
+
+    render(
+      <MarmaladeProvider>
+        <ItemActions item={soldItem} />
+      </MarmaladeProvider>
+    );
+
+    const addButton = screen.getByText('Add to bag');
+    expect(addButton).toHaveClass('disabled');
+  });
+
+  it('should not add item to basket when Add to bag button is clicked and item is sold', () => {
+    const soldItem = { ...mockItem, sold: true };
+    const mockAddToBasket = jest.fn();
+    jest.spyOn(require('../../context/MarmaladeContext'), 'useMarmaladeContext').mockImplementation(() => ({
+      basketIds: [],
+      addToBasket: mockAddToBasket,
+      removeFromBasket: jest.fn(),
+    }));
+
+    render(
+      <MarmaladeProvider>
+        <ItemActions item={soldItem} />
+      </MarmaladeProvider>
+    );
+
+    const addButton = screen.getByText('Add to bag');
+    fireEvent.click(addButton);
+
+    expect(mockAddToBasket).not.toHaveBeenCalled();
+    expect(mockRouter.push).not.toHaveBeenCalled();
+  });
 }); 

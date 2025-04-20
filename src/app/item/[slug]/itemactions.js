@@ -11,9 +11,10 @@ export default function ItemActions({ item }) {
   const { basketIds, addToBasket } = useMarmaladeContext();
 
   const isInBasket = basketIds.includes(item.id);
+  const isSold = item.sold;
 
   const add = () => {
-    if (!isInBasket) {
+    if (!isInBasket && !isSold) {
       addToBasket(item.id);
       router.push("/basket");
     }
@@ -22,7 +23,7 @@ export default function ItemActions({ item }) {
   return (
     <div className={styles.buttons}>
       <a 
-        className={`${styles.addToBag} ${isInBasket ? styles.disabled : ''}`} 
+        className={`${styles.addToBag} ${(isInBasket || isSold) ? styles.disabled : ''}`} 
         onClick={add}
       >
         Add to bag
