@@ -69,7 +69,7 @@ Total Amount: £${itemCost}
 Delivery Address:
 ${customerAddress}
 
-We'll be in touch soon with delivery updates. If you have any questions about your order, please don't hesitate to contact us at madeleine.spencer.marmalade@gmail.com.
+We'll be in touch soon with delivery updates. If you have any questions about your order, please don't hesitate to contact us at team@marmaladecollection.com.
 
 Thank you for supporting Marmalade!
 
