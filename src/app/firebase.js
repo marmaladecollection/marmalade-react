@@ -115,7 +115,7 @@ export const fetchItemsByIds = async (ids, setItems) => {
   }
 };
 
-export const fetchItemById = async (id, setItem) => {
+export const fetchItemById = async (id, setItem, itemSold) => {
   try {
     await ensureAuthenticated();
     if (id) {
@@ -127,6 +127,16 @@ export const fetchItemById = async (id, setItem) => {
           id: docSnap.id,
           ...docSnap.data()
         }
+
+        // Check if item exists in sale collection
+        const saleDoc = await getDoc(doc(db, "sale", id));
+        if (saleDoc.exists()) {
+          if (itemSold) {
+            itemSold(data);
+          }
+          return;
+        }
+
         setItem(data);
       } else {
         console.log("No item with id " + id);

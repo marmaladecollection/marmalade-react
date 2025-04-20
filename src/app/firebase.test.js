@@ -1,6 +1,6 @@
 import { collection, getDocs, doc, getDoc, getFirestore } from 'firebase/firestore';
 import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
-import { fetchAllItems, fetchItemsByIds } from './firebase';
+import { fetchAllItems, fetchItemsByIds, fetchItemById } from './firebase';
 
 // Mock Firebase
 jest.mock('firebase/firestore', () => ({
@@ -178,5 +178,124 @@ describe('fetchItemsByIds', () => {
     const setItems = jest.fn();
     await fetchItemsByIds(['non-existent-id'], setItems);
     expect(setItems).toHaveBeenCalledWith([]);
+  });
+});
+
+describe('fetchItemById', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should call itemSold callback when item exists in sale collection', async () => {
+    // Mock item
+    const mockItem = {
+      id: 'item1',
+      name: 'Test Item',
+      price: 100
+    };
+
+    // Mock sale for the item
+    const mockSale = {
+      id: 'item1',
+      itemId: 'item1',
+      saleDate: new Date()
+    };
+
+    // Mock getDoc to handle both item and sale collection checks
+    getDoc.mockImplementation((docRef) => {
+      const [collection, id] = docRef.path.split('/');
+      
+      if (collection === 'item') {
+        if (id === mockItem.id) {
+          return Promise.resolve({
+            exists: () => true,
+            id: mockItem.id,
+            data: () => ({ name: mockItem.name, price: mockItem.price })
+          });
+        }
+      } else if (collection === 'sale') {
+        if (id === mockSale.id) {
+          return Promise.resolve({
+            exists: () => true,
+            data: () => mockSale
+          });
+        }
+      }
+      
+      return Promise.resolve({
+        exists: () => false
+      });
+    });
+
+    // Mock setItem function
+    const setItem = jest.fn();
+    // Mock itemSold callback
+    const itemSold = jest.fn();
+
+    // Call fetchItemById
+    await fetchItemById('item1', setItem, itemSold);
+
+    // Verify that itemSold was called
+    expect(itemSold).toHaveBeenCalled();
+    // Verify that setItem was not called
+    expect(setItem).not.toHaveBeenCalled();
+  });
+
+  it('should set item when it exists and is not in sale collection', async () => {
+    // Mock item
+    const mockItem = {
+      id: 'item1',
+      name: 'Test Item',
+      price: 100
+    };
+
+    // Mock getDoc to handle item check
+    getDoc.mockImplementation((docRef) => {
+      const [collection, id] = docRef.path.split('/');
+      
+      if (collection === 'item' && id === mockItem.id) {
+        return Promise.resolve({
+          exists: () => true,
+          id: mockItem.id,
+          data: () => ({ name: mockItem.name, price: mockItem.price })
+        });
+      }
+      
+      return Promise.resolve({
+        exists: () => false
+      });
+    });
+
+    // Mock setItem function
+    const setItem = jest.fn();
+    // Mock itemSold callback
+    const itemSold = jest.fn();
+
+    // Call fetchItemById
+    await fetchItemById('item1', setItem, itemSold);
+
+    // Verify that setItem was called with the item data
+    expect(setItem).toHaveBeenCalledWith({
+      id: 'item1',
+      name: 'Test Item',
+      price: 100
+    });
+    // Verify that itemSold was not called
+    expect(itemSold).not.toHaveBeenCalled();
+  });
+
+  it('should handle non-existent items', async () => {
+    // Mock getDoc to return non-existent
+    getDoc.mockImplementation(() => Promise.resolve({
+      exists: () => false
+    }));
+
+    const setItem = jest.fn();
+    const itemSold = jest.fn();
+
+    await fetchItemById('non-existent-id', setItem, itemSold);
+
+    expect(setItem).not.toHaveBeenCalled();
+    expect(itemSold).not.toHaveBeenCalled();
   });
 }); 
