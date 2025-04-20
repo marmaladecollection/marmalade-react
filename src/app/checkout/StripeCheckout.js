@@ -7,6 +7,7 @@ import { useMarmaladeContext } from '../context/MarmaladeContext';
 import { sellItem } from '../firebase';
 import PaymentSuccess from './PaymentSuccess';
 import DeliveryAddressForm from './DeliveryAddressForm';
+import LoadingSpinner from './LoadingSpinner';
 import styles from './StripeCheckout.module.scss';
 
 // Replace with your Stripe publishable key
@@ -20,6 +21,7 @@ export default function ({ onPaymentSuccess }) {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [sessionId, setSessionId] = useState(null);
   const [showAddressForm, setShowAddressForm] = useState(true);
+  const [processingPayment, setProcessingPayment] = useState(false);
 
   const handleAddressSubmit = async (address) => {
     try {
@@ -34,7 +36,13 @@ export default function ({ onPaymentSuccess }) {
             name: item.name,
             price: item.price,
           })),
-          shippingAddress: address
+          shippingAddress: {
+            line1: address.line1,
+            line2: address.line2,
+            city: address.city,
+            postal_code: address.postcode,
+            country: address.country
+          }
         }),
       });
 
@@ -55,48 +63,13 @@ export default function ({ onPaymentSuccess }) {
   };
 
   useEffect(() => {
-    // Check if we're returning from a successful payment
     const urlParams = new URLSearchParams(window.location.search);
     const newSessionId = urlParams.get('session_id');
-    setSessionId(newSessionId);
-  }, []);
-
-  useEffect(() => {
-    if (!sessionId && basketItems.length > 0) {
-      const createCheckoutSession = async () => {
-        try {
-          const response = await fetch('/api/create-checkout-session', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              items: basketItems.map(item => ({
-                id: item.id,
-                name: item.name,
-                price: item.price,
-              })),
-            }),
-          });
-
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to create checkout session');
-          }
-
-          const data = await response.json();
-          setClientSecret(data.clientSecret);
-          setLoading(false);
-        } catch (error) {
-          console.error('Error creating checkout session:', error);
-          setError(error.message);
-          setLoading(false);
-        }
-      };
-
-      createCheckoutSession();
+    if (newSessionId) {
+      setSessionId(newSessionId);
+      setProcessingPayment(true);
     }
-  }, [basketItems, sessionId]);
+  }, []);
 
   useEffect(() => {
     if (sessionId && !paymentSuccess) {
@@ -110,12 +83,10 @@ export default function ({ onPaymentSuccess }) {
           const data = await response.json();
           if (isMounted && (data.status === "complete" || data.payment_status === "paid")) {
             setPaymentSuccess(true);
+            setProcessingPayment(false);
             onPaymentSuccess?.();
-            // Clear the basket after successful payment
             clearBasket();
-           
             
-            // Process all items first
             for (const item of basketItems) {
               try {
                 console.log("selling item " + item.id);
@@ -125,12 +96,10 @@ export default function ({ onPaymentSuccess }) {
               }
             }
 
-            // Send a single email with all items
             const totalAmount = basketItems.reduce((sum, item) => sum + item.price, 0);
             const itemsList = basketItems.map(item => `- ${item.name} (£${item.price})`).join('\n');
             
             try {
-              // Send seller notification email
               console.log('Sending seller notification email');
               const sellerResponse = await fetch('/api/send-sale-email', {
                 method: 'POST',
@@ -156,7 +125,6 @@ export default function ({ onPaymentSuccess }) {
                 throw new Error('Failed to send seller email');
               }
 
-              // Send customer confirmation email
               console.log('Sending customer confirmation email');
               const customerResponse = await fetch('/api/send-sale-email', {
                 method: 'POST',
@@ -188,6 +156,7 @@ export default function ({ onPaymentSuccess }) {
         } catch (error) {
           console.error('Error checking payment status:', error);
           setError(error.message);
+          setProcessingPayment(false);
         }
       };
       
@@ -198,6 +167,10 @@ export default function ({ onPaymentSuccess }) {
 
   if (paymentSuccess) {
     return <PaymentSuccess />;
+  }
+
+  if (processingPayment) {
+    return <LoadingSpinner />;
   }
 
   if (showAddressForm) {

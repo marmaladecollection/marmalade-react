@@ -34,9 +34,6 @@ export async function POST(request) {
       })),
       mode: 'payment',
       billing_address_collection: 'required',
-      shipping_address_collection: {
-        allowed_countries: ['GB'],
-      },
       shipping_options: [
         {
           shipping_rate_data: {
