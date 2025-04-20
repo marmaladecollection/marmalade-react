@@ -3,21 +3,22 @@
 .main {
   @extend common, .spaced-down !optional;
   margin: 0 60px;
-  padding: 40px 0;
+  padding: 10px;
 
   h1 {
     @extend common, .heading1 !optional
   }
   h2 {
     @extend common, .heading2 !optional;
+    margin-bottom: -5px !important;
   }
   p {
     @extend common, .paragraph !optional;
+    padding-top: 0px;
   }
   
   @include common.mobile {
     margin: 0;
-    padding: 20px;
   }
 }
 
@@ -31,7 +32,7 @@
 .deliveryAreas {
   @extend common, .spaced-down !optional;
   gap: 20px;
-  margin: 20px 0;
+
 
   h2 {
     margin-bottom: 10px;
