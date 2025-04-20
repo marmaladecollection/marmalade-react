@@ -20,6 +20,22 @@ export default function ({ onPaymentSuccess }) {
   const [sessionId, setSessionId] = useState(null);
   const [showAddressForm, setShowAddressForm] = useState(true);
   const [itemsToSell, setItemsToSell] = useState([]);
+  const [deliveryAddress, setDeliveryAddress] = useState(null);
+  const [saleData, setSaleData] = useState(() => {
+    // Try to load sale data from localStorage on initial render
+    if (typeof window !== 'undefined') {
+      const savedData = localStorage.getItem('pendingSaleData');
+      if (savedData) {
+        try {
+          return JSON.parse(savedData);
+        } catch (e) {
+          console.error('Error parsing saved sale data:', e);
+          return null;
+        }
+      }
+    }
+    return null;
+  });
 
   // Initialize itemsToSell when basketItems changes
   useEffect(() => {
@@ -38,6 +54,7 @@ export default function ({ onPaymentSuccess }) {
 
   const handleAddressSubmit = async (address) => {
     try {
+      console.log("Address form submitted with address:", address);
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: {
@@ -65,13 +82,28 @@ export default function ({ onPaymentSuccess }) {
       }
 
       const data = await response.json();
+      console.log("Setting delivery address:", address);
+      setDeliveryAddress(address);
       setClientSecret(data.clientSecret);
       setShowAddressForm(false);
+      
+      // Store the sale data in localStorage
+      const newSaleData = {
+        items: [...basketItems],
+        address: address
+      };
+      setSaleData(newSaleData);
+      localStorage.setItem('pendingSaleData', JSON.stringify(newSaleData));
     } catch (error) {
       console.error('Error creating checkout session:', error);
       setError(error.message);
     }
   };
+
+  // Add effect to log delivery address changes
+  useEffect(() => {
+    console.log("Delivery address state changed:", deliveryAddress);
+  }, [deliveryAddress]);
 
   // Add event listener for Stripe checkout completion
   useEffect(() => {
@@ -100,25 +132,23 @@ export default function ({ onPaymentSuccess }) {
           
           if (isMounted && (data.status === "complete" || data.payment_status === "paid")) {
             console.log("Payment successful, proceeding with sale recording");
-            console.log("Items to sell:", itemsToSell);
+            console.log("Sale data:", saleData);
             
-            if (!itemsToSell || itemsToSell.length === 0) {
+            if (!saleData?.items || saleData.items.length === 0) {
               console.error("No items to record sales for");
               setError("No items found to record sales for");
               return;
             }
-
-            setPaymentSuccess(true);
-            onPaymentSuccess?.();
             
             // Record sales using the stored items
             try {
-              for (const item of itemsToSell) {
+              for (const item of saleData.items) {
                 try {
                   console.log("Starting sale recording for item:", item.id);
                   console.log("Item data:", item);
                   console.log("Stripe data being passed:", data);
-                  await sellItem(item, data);
+                  console.log("Delivery address:", saleData.address);
+                  await sellItem(item, data, saleData.address);
                   console.log("Successfully recorded sale for item:", item.id);
                 } catch (error) {
                   console.error("Failed to record sale for item:", item.id, error);
@@ -128,12 +158,17 @@ export default function ({ onPaymentSuccess }) {
               
               console.log("All sales recorded successfully");
               
-              // Only clear basket after all operations are complete
+              // Clear localStorage after successful sale recording
+              localStorage.removeItem('pendingSaleData');
+              
+              // Only clear basket and set payment success after all operations are complete
               clearBasket();
               console.log("Basket cleared after successful sale recording");
+              setPaymentSuccess(true);
+              onPaymentSuccess?.();
 
-              const totalAmount = itemsToSell.reduce((sum, item) => sum + item.price, 0);
-              const itemsList = itemsToSell.map(item => `- ${item.name} (£${item.price})`).join('\n');
+              const totalAmount = saleData.items.reduce((sum, item) => sum + item.price, 0);
+              const itemsList = saleData.items.map(item => `- ${item.name} (£${item.price})`).join('\n');
             
               try {
                 console.log('Sending seller notification email');
@@ -143,11 +178,11 @@ export default function ({ onPaymentSuccess }) {
                     'Content-Type': 'application/json',
                   },
                   body: JSON.stringify({
-                    itemName: itemsToSell.length === 1 ? itemsToSell[0].name : `${itemsToSell.length} items`,
+                    itemName: saleData.items.length === 1 ? saleData.items[0].name : `${saleData.items.length} items`,
                     customerName: data.customer_details?.name || 'Unknown Customer',
                     customerEmail: data.customer_details?.email || 'No email provided',
-                    customerAddress: data.customer_details?.address ? 
-                      `${data.customer_details.address.line1}, ${data.customer_details.address.city}, ${data.customer_details.address.postal_code}, ${data.customer_details.address.country}` : 
+                    customerAddress: saleData.address ? 
+                      `${saleData.address.line1}${saleData.address.line2 ? ', ' + saleData.address.line2 : ''}, ${saleData.address.city}, ${saleData.address.postcode}, ${saleData.address.country}` : 
                       'No address provided',
                     itemCost: totalAmount,
                     itemsList: itemsList,
@@ -168,11 +203,11 @@ export default function ({ onPaymentSuccess }) {
                     'Content-Type': 'application/json',
                   },
                   body: JSON.stringify({
-                    itemName: itemsToSell.length === 1 ? itemsToSell[0].name : `${itemsToSell.length} items`,
+                    itemName: saleData.items.length === 1 ? saleData.items[0].name : `${saleData.items.length} items`,
                     customerName: data.customer_details?.name || 'Unknown Customer',
                     customerEmail: data.customer_details?.email || 'No email provided',
-                    customerAddress: data.customer_details?.address ? 
-                      `${data.customer_details.address.line1}, ${data.customer_details.address.city}, ${data.customer_details.address.postal_code}, ${data.customer_details.address.country}` : 
+                    customerAddress: saleData.address ? 
+                      `${saleData.address.line1}${saleData.address.line2 ? ', ' + saleData.address.line2 : ''}, ${saleData.address.city}, ${saleData.address.postcode}, ${saleData.address.country}` : 
                       'No address provided',
                     itemCost: totalAmount,
                     itemsList: itemsList,
@@ -203,7 +238,7 @@ export default function ({ onPaymentSuccess }) {
       checkPaymentStatus();
       return () => { isMounted = false; };
     }
-  }, [sessionId, paymentSuccess, itemsToSell]);
+  }, [sessionId, paymentSuccess, saleData]);
 
   if (paymentSuccess) {
     return <PaymentSuccess />;

@@ -149,10 +149,11 @@ export const fetchItemById = async (id, setItem, itemSold) => {
   }
 };
 
-export const sellItem = async (item, stripeData) => {
+export const sellItem = async (item, stripeData, deliveryAddress) => {
   try {
     console.log("Starting sellItem for item:", item.id);
     console.log("Stripe data received:", stripeData);
+    console.log("Delivery address received:", deliveryAddress);
     
     await ensureAuthenticated();
     console.log("Authentication successful");
@@ -172,9 +173,18 @@ export const sellItem = async (item, stripeData) => {
       if (stripeData.customer_details.email) {
         saleData.customerEmail = stripeData.customer_details.email;
       }
-      if (stripeData.customer_details.address) {
-        saleData.customerAddress = stripeData.customer_details.address;
-      }
+    }
+
+    // Add delivery address if provided
+    if (deliveryAddress) {
+      console.log("Adding delivery address");
+      saleData.deliveryAddress = {
+        line1: deliveryAddress.line1,
+        line2: deliveryAddress.line2 || '',
+        city: deliveryAddress.city,
+        postal_code: deliveryAddress.postcode,
+        country: deliveryAddress.country
+      };
     }
 
     // Add payment details if available
@@ -201,9 +211,6 @@ export const sellItem = async (item, stripeData) => {
     }
     if (stripeData?.customer_details?.phone) {
       saleData.phone = stripeData.customer_details.phone;
-    }
-    if (stripeData?.shipping?.address) {
-      saleData.shippingAddress = stripeData.shipping.address;
     }
     if (stripeData?.payment_method_details) {
       saleData.paymentMethodDetails = stripeData.payment_method_details;
