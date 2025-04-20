@@ -13,28 +13,29 @@
 }
 
 .list {
-    @extend .spaced-down, .right-divider;
-    width: 60%;
-    padding-right: 40px;
+    @extend .spaced-down;
+    width: 50%;
+    padding-left: 40px;
 
     @include mobile {
         width: 100%;
-        padding-right: 0px;
-        border-right: none;
+        padding-left: 0px;
     }
 }
 
 .summary {
-    @extend .spaced-down;
-    width: 40%;
-    margin: 40px;
+    @extend .spaced-down, .right-divider;
+    width: 50%;
+    margin: 20px 40px 40px 40px;
+    padding-right: 40px;
 
     @include mobile {
         width: 100%;
         margin: 0px;
+        padding-right: 0px;
+        border-right: none;
     }
 }
-
 
 .continue {
     @extend .button;
@@ -43,6 +44,6 @@
     background-color: white;
     letter-spacing: 2px;
     padding: 15px 30px;
-    margin-bottom: 60px;
+    margin-bottom: 80px;
     cursor: pointer;
 }

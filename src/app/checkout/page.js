@@ -18,7 +18,7 @@ export default function CheckoutPage() {
         </div>
       ) : (
         <>
-          <div className={styles.checkout}>
+          <div className={styles.summary}>
             <StripeCheckout onPaymentSuccess={() => setPaymentSuccess(true)} />
           </div>
           <div className={styles.list}>
