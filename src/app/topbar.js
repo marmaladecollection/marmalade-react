@@ -9,11 +9,19 @@ export default function TopBar() {
   const { basketIds } = useMarmaladeContext();
 
   const handleLogoClick = () => {
+    console.log('Logo clicked, navigating to home');
     router.push('/'); // Redirect to the root of the website
   };
 
   const handleBagClick = () => {
-    router.push('/basket');
+    console.log('Bag clicked, current basketIds:', basketIds);
+    console.log('Attempting to navigate to /basket');
+    try {
+      router.push('/basket');
+    } catch (error) {
+      console.error('Error navigating to basket:', error);
+      console.error('Error stack:', error.stack);
+    }
   };
 
   return (
