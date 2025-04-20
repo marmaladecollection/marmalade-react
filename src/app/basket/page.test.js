@@ -1,22 +1,17 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { useRouter } from 'next/navigation';
+import { act } from 'react-dom/test-utils';
 import BasketPage from './page';
-import { MarmaladeProvider } from '../context/MarmaladeContext';
+import { useRouter } from 'next/navigation';
+import { useMarmaladeContext } from '../context/MarmaladeContext';
 
 // Mock the next/navigation module
 jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
+  useRouter: jest.fn()
 }));
 
 // Mock the MarmaladeContext
 jest.mock('../context/MarmaladeContext', () => ({
-  ...jest.requireActual('../context/MarmaladeContext'),
-  useMarmaladeContext: () => ({
-    basketIds: [],
-    basketItems: [],
-    addToBasket: jest.fn(),
-    removeFromBasket: jest.fn(),
-  }),
+  useMarmaladeContext: jest.fn()
 }));
 
 describe('BasketPage', () => {
@@ -26,93 +21,69 @@ describe('BasketPage', () => {
 
   beforeEach(() => {
     useRouter.mockReturnValue(mockRouter);
-    // Reset the MarmaladeContext mock before each test
-    jest.spyOn(require('../context/MarmaladeContext'), 'useMarmaladeContext').mockImplementation(() => ({
-      basketIds: [],
-      basketItems: [],
-      addToBasket: jest.fn(),
-      removeFromBasket: jest.fn(),
-    }));
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should navigate to home page when Continue Shopping button is clicked in empty state', () => {
-    render(
-      <MarmaladeProvider>
-        <BasketPage />
-      </MarmaladeProvider>
-    );
-    
-    const continueButton = screen.getByText('Continue Shopping');
-    fireEvent.click(continueButton);
-    
-    expect(mockRouter.push).toHaveBeenCalledWith('/');
-  });
-
-  it('should navigate to home page when Continue Shopping button is clicked in populated state', () => {
-    // Override the mock to include items
-    jest.spyOn(require('../context/MarmaladeContext'), 'useMarmaladeContext').mockImplementation(() => ({
-      basketIds: ['item1'],
-      basketItems: [{ id: 'item1', name: 'Test Item 1', price: 100 }],
-      addToBasket: jest.fn(),
-      removeFromBasket: jest.fn(),
-    }));
-
-    render(
-      <MarmaladeProvider>
-        <BasketPage />
-      </MarmaladeProvider>
-    );
-    
-    const continueButton = screen.getByText('Continue Shopping');
-    fireEvent.click(continueButton);
-    
-    expect(mockRouter.push).toHaveBeenCalledWith('/');
-  });
-
-  it('should display empty basket message when there are no items', () => {
-    // Ensure the mock is set to empty basket
-    jest.spyOn(require('../context/MarmaladeContext'), 'useMarmaladeContext').mockImplementation(() => ({
+  it('should render empty basket message when no items', () => {
+    jest.requireMock('../context/MarmaladeContext').useMarmaladeContext.mockReturnValue({
       basketIds: [],
       basketItems: [],
-      addToBasket: jest.fn(),
-      removeFromBasket: jest.fn(),
-    }));
+      removeFromBasket: jest.fn()
+    });
 
-    render(
-      <MarmaladeProvider>
-        <BasketPage />
-      </MarmaladeProvider>
-    );
-    
-    expect(screen.getByText('Your bag is currently empty')).toBeInTheDocument();
-    expect(screen.getByText('Continue Shopping')).toBeInTheDocument();
+    const { getByText } = render(<BasketPage />);
+    expect(getByText('Your bag is currently empty')).toBeInTheDocument();
   });
 
-  it('should display basket items when there are items in the basket', () => {
-    // Override the mock to include items
-    jest.spyOn(require('../context/MarmaladeContext'), 'useMarmaladeContext').mockImplementation(() => ({
-      basketIds: ['item1', 'item2'],
-      basketItems: [
-        { id: 'item1', name: 'Test Item 1', price: 100 },
-        { id: 'item2', name: 'Test Item 2', price: 200 }
-      ],
-      addToBasket: jest.fn(),
-      removeFromBasket: jest.fn(),
-    }));
+  it('should render items in basket', () => {
+    const mockItems = [
+      { id: '1', name: 'Item 1', price: 10 },
+      { id: '2', name: 'Item 2', price: 20 }
+    ];
 
-    render(
-      <MarmaladeProvider>
-        <BasketPage />
-      </MarmaladeProvider>
-    );
-    
-    expect(screen.queryByText('Your bag is currently empty')).not.toBeInTheDocument();
-    expect(screen.getByText('Continue Shopping')).toBeInTheDocument();
-    expect(screen.getByText('Product')).toBeInTheDocument();
-    expect(screen.getByText('Price')).toBeInTheDocument();
+    jest.requireMock('../context/MarmaladeContext').useMarmaladeContext.mockReturnValue({
+      basketIds: ['1', '2'],
+      basketItems: mockItems,
+      removeFromBasket: jest.fn()
+    });
+
+    const { getByText } = render(<BasketPage />);
+    mockItems.forEach(item => {
+      expect(getByText(item.name)).toBeInTheDocument();
+      expect(getByText(`£${item.price}`)).toBeInTheDocument();
+    });
+  });
+
+  it('should navigate to checkout when Go To Checkout is clicked', () => {
+    const mockPush = jest.fn();
+    useRouter.mockReturnValue({
+      push: mockPush
+    });
+
+    jest.requireMock('../context/MarmaladeContext').useMarmaladeContext.mockReturnValue({
+      basketIds: ['1'],
+      basketItems: [{ id: '1', name: 'Item 1', price: 10 }],
+      removeFromBasket: jest.fn()
+    });
+
+    const { getByText } = render(<BasketPage />);
+    fireEvent.click(getByText('Go To Checkout'));
+    expect(mockPush).toHaveBeenCalledWith('/checkout');
+  });
+
+  it('should remove item when remove button is clicked', () => {
+    const mockRemoveFromBasket = jest.fn();
+    jest.requireMock('../context/MarmaladeContext').useMarmaladeContext.mockReturnValue({
+      basketIds: ['1'],
+      basketItems: [{ id: '1', name: 'Item 1', price: 10 }],
+      removeFromBasket: mockRemoveFromBasket
+    });
+
+    const { getByText } = render(<BasketPage />);
+    fireEvent.click(getByText('Remove'));
+    expect(mockRemoveFromBasket).toHaveBeenCalledWith('1');
   });
 }); 

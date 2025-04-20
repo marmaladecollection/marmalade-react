@@ -1,17 +1,23 @@
 // External dependencies
 import { fireEvent, render, screen } from '@testing-library/react';
 import { useRouter } from 'next/navigation';
+import { act } from 'react-dom/test-utils';
 
 // Internal dependencies
 import { MarmaladeProvider } from './context/MarmaladeContext';
 import TopBar from './topbar';
+import { renderWithMarmalade } from './test-utils';
+import { useMarmaladeContext } from './context/MarmaladeContext';
 
-// Mock Next.js's useRouter
-const mockPush = jest.fn();
+// Mock the next/navigation module
 jest.mock('next/navigation', () => ({
-  useRouter: () => ({
-    push: mockPush,
-  }),
+  useRouter: jest.fn(),
+  usePathname: jest.fn(),
+}));
+
+// Mock the MarmaladeContext
+jest.mock('./context/MarmaladeContext', () => ({
+  useMarmaladeContext: jest.fn()
 }));
 
 // Create a wrapper component that provides the context with initial state
@@ -28,42 +34,78 @@ const TestWrapper = ({ children, initialBasketIds = [] }) => {
 };
 
 describe('TopBar', () => {
+  const mockRouter = {
+    push: jest.fn(),
+  };
+
   beforeEach(() => {
-    // Clear localStorage before each test
-    localStorage.clear();
-    // Clear all mocks before each test
+    useRouter.mockReturnValue(mockRouter);
+  });
+
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('redirects to the root when clicking the MARMALADE logo', () => {
-    render(<TopBar />, { wrapper: TestWrapper });
+  it('renders the logo', () => {
+    jest.requireMock('./context/MarmaladeContext').useMarmaladeContext.mockReturnValue({
+      basketIds: []
+    });
 
-    const logo = screen.getByTestId('marmalade-logo');
-    fireEvent.click(logo);
+    const { getByTestId } = render(<TopBar />);
+    expect(getByTestId('marmalade-logo')).toBeInTheDocument();
+  });
 
+  it('navigates to home when logo is clicked', () => {
+    const mockPush = jest.fn();
+    useRouter.mockReturnValue({
+      push: mockPush
+    });
+
+    jest.requireMock('./context/MarmaladeContext').useMarmaladeContext.mockReturnValue({
+      basketIds: []
+    });
+
+    const { getByTestId } = render(<TopBar />);
+    fireEvent.click(getByTestId('marmalade-logo'));
     expect(mockPush).toHaveBeenCalledWith('/');
   });
 
-  it('displays the correct number of items in the bag', () => {
-    // Render with initial basket items
-    render(<TopBar />, { 
-      wrapper: ({ children }) => (
-        <TestWrapper initialBasketIds={['item1', 'item2', 'item3']}>
-          {children}
-        </TestWrapper>
-      )
+  it('navigates to basket when bag count is clicked', () => {
+    const mockPush = jest.fn();
+    useRouter.mockReturnValue({
+      push: mockPush
     });
 
-    // The bag should show 3 items
-    expect(screen.getByTestId('bag-count')).toHaveTextContent('BAG (3)');
+    jest.requireMock('./context/MarmaladeContext').useMarmaladeContext.mockReturnValue({
+      basketIds: []
+    });
+
+    const { getByTestId } = render(<TopBar />);
+    fireEvent.click(getByTestId('bag-count'));
+    expect(mockPush).toHaveBeenCalledWith('/basket');
+  });
+
+  it('displays the correct number of items in the bag', () => {
+    jest.requireMock('./context/MarmaladeContext').useMarmaladeContext.mockReturnValue({
+      basketIds: ['item1', 'item2', 'item3']
+    });
+
+    const { getByTestId } = render(<TopBar />);
+    expect(getByTestId('bag-count')).toHaveTextContent('BAG (3)');
   });
 
   it('redirects to the basket page when clicking the BAG label', () => {
-    render(<TopBar />, { wrapper: TestWrapper });
+    const mockPush = jest.fn();
+    useRouter.mockReturnValue({
+      push: mockPush
+    });
 
-    const bagLabel = screen.getByTestId('bag-count');
-    fireEvent.click(bagLabel);
+    jest.requireMock('./context/MarmaladeContext').useMarmaladeContext.mockReturnValue({
+      basketIds: []
+    });
 
+    const { getByTestId } = render(<TopBar />);
+    fireEvent.click(getByTestId('bag-count'));
     expect(mockPush).toHaveBeenCalledWith('/basket');
   });
 });

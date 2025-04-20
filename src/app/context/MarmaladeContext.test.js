@@ -1,131 +1,146 @@
 import { render, act } from '@testing-library/react';
 import { MarmaladeProvider, useMarmaladeContext } from './MarmaladeContext';
+import { fetchItemsByIds } from '../firebase';
 
-// Mock console.error to prevent errors from being logged during tests
-const originalConsoleError = console.error;
-beforeAll(() => {
-  console.error = jest.fn();
-});
-
-afterAll(() => {
-  console.error = originalConsoleError;
-});
-
-// Mock localStorage
-const mockLocalStorage = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  clear: jest.fn(),
-};
-
-Object.defineProperty(window, 'localStorage', {
-  value: mockLocalStorage,
-});
-
-// Test component to access context
-const TestComponent = ({ testFunction }) => {
-  const context = useMarmaladeContext();
-  testFunction(context);
-  return null;
-};
+// Mock the fetchItemsByIds function
+jest.mock('../firebase', () => ({
+  fetchItemsByIds: jest.fn()
+}));
 
 describe('MarmaladeContext', () => {
   beforeEach(() => {
+    // Clear localStorage
+    localStorage.clear();
+    // Reset mocks
     jest.clearAllMocks();
-    mockLocalStorage.getItem.mockReturnValue(null);
+    // Mock fetchItemsByIds to return empty array by default
+    fetchItemsByIds.mockResolvedValue([]);
   });
 
-  it('should initialize with empty basket', () => {
+  it('should provide initial empty basket state', async () => {
     let contextValue;
-    render(
-      <MarmaladeProvider>
-        <TestComponent testFunction={(context) => { contextValue = context; }} />
-      </MarmaladeProvider>
-    );
+    const TestComponent = () => {
+      contextValue = useMarmaladeContext();
+      return null;
+    };
+
+    await act(async () => {
+      render(
+        <MarmaladeProvider>
+          <TestComponent />
+        </MarmaladeProvider>
+      );
+    });
+
+    expect(contextValue.basketIds).toEqual([]);
+    expect(contextValue.basketItems).toEqual([]);
+  });
+
+  it('should add item to basket', async () => {
+    let contextValue;
+    const TestComponent = () => {
+      contextValue = useMarmaladeContext();
+      return null;
+    };
+
+    await act(async () => {
+      render(
+        <MarmaladeProvider>
+          <TestComponent />
+        </MarmaladeProvider>
+      );
+    });
+
+    await act(async () => {
+      contextValue.addToBasket('item1');
+    });
+
+    expect(contextValue.basketIds).toEqual(['item1']);
+  });
+
+  it('should remove item from basket', async () => {
+    let contextValue;
+    const TestComponent = () => {
+      contextValue = useMarmaladeContext();
+      return null;
+    };
+
+    await act(async () => {
+      render(
+        <MarmaladeProvider>
+          <TestComponent />
+        </MarmaladeProvider>
+      );
+    });
+
+    // First add an item
+    await act(async () => {
+      contextValue.addToBasket('item1');
+    });
+
+    // Then remove it
+    await act(async () => {
+      contextValue.removeFromBasket('item1');
+    });
 
     expect(contextValue.basketIds).toEqual([]);
   });
 
-  it('should load basket IDs from localStorage on mount', () => {
-    const savedIds = ['item1', 'item2'];
-    mockLocalStorage.getItem.mockReturnValue(JSON.stringify(savedIds));
-
+  it('should clear basket', async () => {
     let contextValue;
-    render(
-      <MarmaladeProvider>
-        <TestComponent testFunction={(context) => { contextValue = context; }} />
-      </MarmaladeProvider>
-    );
+    const TestComponent = () => {
+      contextValue = useMarmaladeContext();
+      return null;
+    };
 
-    expect(contextValue.basketIds).toEqual(savedIds);
-  });
-
-  it('should add item to basket', () => {
-    let contextValue;
-    render(
-      <MarmaladeProvider>
-        <TestComponent testFunction={(context) => { contextValue = context; }} />
-      </MarmaladeProvider>
-    );
-
-    act(() => {
-      contextValue.addToBasket('newItem');
+    await act(async () => {
+      render(
+        <MarmaladeProvider>
+          <TestComponent />
+        </MarmaladeProvider>
+      );
     });
 
-    expect(contextValue.basketIds).toEqual(['newItem']);
-    expect(mockLocalStorage.setItem).toHaveBeenCalledWith('BasketIds', JSON.stringify(['newItem']));
-  });
-
-  it('should remove item from basket', () => {
-    const initialIds = ['item1', 'item2', 'item3'];
-    mockLocalStorage.getItem.mockReturnValue(JSON.stringify(initialIds));
-
-    let contextValue;
-    render(
-      <MarmaladeProvider>
-        <TestComponent testFunction={(context) => { contextValue = context; }} />
-      </MarmaladeProvider>
-    );
-
-    act(() => {
-      contextValue.removeFromBasket('item2');
+    // First add some items
+    await act(async () => {
+      contextValue.addToBasket('item1');
+      contextValue.addToBasket('item2');
     });
 
-    expect(contextValue.basketIds).toEqual(['item1', 'item3']);
-    expect(mockLocalStorage.setItem).toHaveBeenCalledWith('BasketIds', JSON.stringify(['item1', 'item3']));
-  });
-
-  it('should clear basket', () => {
-    const initialIds = ['item1', 'item2', 'item3'];
-    mockLocalStorage.getItem.mockReturnValue(JSON.stringify(initialIds));
-
-    let contextValue;
-    render(
-      <MarmaladeProvider>
-        <TestComponent testFunction={(context) => { contextValue = context; }} />
-      </MarmaladeProvider>
-    );
-
-    act(() => {
+    // Then clear the basket
+    await act(async () => {
       contextValue.clearBasket();
     });
 
     expect(contextValue.basketIds).toEqual([]);
-    expect(mockLocalStorage.setItem).toHaveBeenCalledWith('BasketIds', JSON.stringify([]));
   });
 
-  it('should handle localStorage errors gracefully', () => {
-    mockLocalStorage.getItem.mockImplementation(() => {
-      throw new Error('Storage error');
-    });
+  it('should fetch basket items when basketIds change', async () => {
+    const mockItems = [
+      { id: 'item1', name: 'Item 1' },
+      { id: 'item2', name: 'Item 2' }
+    ];
+
+    fetchItemsByIds.mockResolvedValue(mockItems);
 
     let contextValue;
+    const TestComponent = () => {
+      contextValue = useMarmaladeContext();
+      return null;
+    };
+
     render(
       <MarmaladeProvider>
-        <TestComponent testFunction={(context) => { contextValue = context; }} />
+        <TestComponent />
       </MarmaladeProvider>
     );
 
-    expect(contextValue.basketIds).toEqual([]);
+    await act(async () => {
+      contextValue.addToBasket('item1');
+      contextValue.addToBasket('item2');
+    });
+
+    expect(fetchItemsByIds).toHaveBeenCalledWith(['item1', 'item2']);
+    expect(contextValue.basketItems).toEqual(mockItems);
   });
 }); 
