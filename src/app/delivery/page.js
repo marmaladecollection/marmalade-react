@@ -6,7 +6,7 @@ export default function DeliveryPage() {
       <div className={styles.content}>
         <h1>Delivery Information</h1>
         <p>
-          We deliver to areas to the following areas:
+          We deliver to the following areas:
         </p>
         
         <div className={styles.deliveryAreas}>
