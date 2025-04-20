@@ -1,10 +1,10 @@
 "use client";
 
-import Images from "./images";
-import ItemActions from "./itemactions";
-import ItemHeadline from "./itemheadline";
-import styles from "./itemprimary.module.scss";
-import Blurb from "./blurb";
+import Images from './images';
+import ItemActions from './itemactions';
+import ItemHeadline from './itemheadline';
+import styles from './itemprimary.module.scss';
+import Blurb from './blurb';
 
 export default function ItemPrimary({ item }) {
   return (

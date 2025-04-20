@@ -1,7 +1,7 @@
 "use client";
 
 import styles from './gallery.module.scss';
-import Item from "./item";
+import Item from './item';
 
 export default function Gallery({ items }) {
   return (

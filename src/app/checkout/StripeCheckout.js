@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import { EmbeddedCheckoutProvider, EmbeddedCheckout } from "@stripe/react-stripe-js";
-import { useMarmaladeContext } from "../context/MarmaladeContext";
-import { sellItem } from "../firebase";
-import PaymentSuccess from "./PaymentSuccess";
-import styles from "./StripeCheckout.module.scss";
+
+import { useState, useEffect } from 'react';
+import { loadStripe } from '@stripe/stripe-js';
+import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
+import { useMarmaladeContext } from '../context/MarmaladeContext';
+import { sellItem } from '../firebase';
+import PaymentSuccess from './PaymentSuccess';
+import styles from './StripeCheckout.module.scss';
 
 
 // Replace with your Stripe publishable key

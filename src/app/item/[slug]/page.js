@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { fetchItemById } from "../../firebase";
-import ItemPrimary from "./itemprimary";
-import ConditionReport from "./conditionreport";
-import styles from "./page.module.scss";
+
+import { useEffect, useState } from 'react';
+import { fetchItemById } from '../../firebase';
+import ItemPrimary from './itemprimary';
+import ConditionReport from './conditionreport';
+import styles from './page.module.scss';
 
 export default function ItemPage() {
   const [item, setItem] = useState(null);

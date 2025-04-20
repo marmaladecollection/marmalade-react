@@ -1,8 +1,9 @@
 "use client";
-import Link from "next/link";
-import styles from "./item.module.scss";
-import Thumbnail from "./thumbnail";
-import UnderThumbnail from "./underthumbnail";
+
+import Link from 'next/link';
+import styles from './item.module.scss';
+import Thumbnail from './thumbnail';
+import UnderThumbnail from './underthumbnail';
 
 export default function Item({ item }) {
   return (

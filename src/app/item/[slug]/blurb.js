@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./blurb.module.scss";
+import styles from './blurb.module.scss';
 
 function parseTextWithTooltips(text) {
   if (!text) return null;

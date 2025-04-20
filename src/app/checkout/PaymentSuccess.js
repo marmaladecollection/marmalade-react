@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import styles from "./PaymentSuccess.module.scss";
+import { useRouter } from 'next/navigation';
+import styles from './PaymentSuccess.module.scss';
 
 export default function PaymentSuccess() {
   const router = useRouter();

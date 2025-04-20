@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./itemheadline.module.scss";
+import styles from './itemheadline.module.scss';
 
 export default function ItemHeadline({ item }) {
 

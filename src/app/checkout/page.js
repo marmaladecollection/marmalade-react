@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import styles from "./page.module.scss";
-import { useRouter } from "next/navigation";
-import Bill from "./Bill";
-import StripeCheckout from "./StripeCheckout";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import styles from './page.module.scss';
+import Bill from './Bill';
+import StripeCheckout from './StripeCheckout';
 
 export default function CheckoutPage() {
   const router = useRouter();
