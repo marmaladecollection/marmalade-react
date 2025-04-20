@@ -33,7 +33,6 @@ export async function POST(request) {
         quantity: 1,
       })),
       mode: 'payment',
-      billing_address_collection: 'required',
       shipping_options: [
         {
           shipping_rate_data: {
