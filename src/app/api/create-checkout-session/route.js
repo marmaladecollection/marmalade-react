@@ -34,19 +34,8 @@ export async function POST(request) {
       })),
       mode: 'payment',
       payment_method_types: ['card'],
-      allow_promotion_codes: true,
-      shipping_options: [
-        {
-          shipping_rate_data: {
-            type: 'fixed_amount',
-            fixed_amount: {
-              amount: 0,
-              currency: 'gbp',
-            },
-            display_name: 'Free delivery',
-          },
-        },
-      ],
+      allow_promotion_codes: false,
+      submit_type: 'pay',
       return_url: `${origin}/checkout?session_id={CHECKOUT_SESSION_ID}`,
     });
 

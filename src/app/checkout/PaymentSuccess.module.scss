@@ -1,3 +1,5 @@
+@use '../common.scss' as common;
+
 .successContainer {
   display: flex;
   justify-content: center;
@@ -6,6 +8,9 @@
   width: 100%;
   padding: 2rem;
   margin: 0 auto;
+  @include common.mobile {
+    padding: 0;
+  }
 }
 
 .successContent {
@@ -17,6 +22,9 @@
   max-width: 500px;
   width: 100%;
   margin: 0 auto;
+  @include common.mobile {
+    padding: 1rem;
+  }
 }
 
 .successIcon {
@@ -50,17 +58,12 @@
 }
 
 .continueButton {
-  background-color: #000;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 14px 28px;
-  font-size: 1.1rem;
-  font-weight: 600;
+  @extend .button;
+  border: 1px solid black;
+  background-color: white;
+  color: black;
+  letter-spacing: 2px;
+  padding: 15px 30px;
+  margin-bottom: 20px;
   cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: #333;
-  }
 } 
