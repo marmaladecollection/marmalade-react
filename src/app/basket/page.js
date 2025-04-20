@@ -30,14 +30,16 @@ export default function BasketPage() {
   }
 
   return (
-    <div className={styles.page}>
-      <div className={styles.summary}>
-        <button className={styles.continue} onClick={() => router.push('/')}>Continue Shopping</button>
-        <Total />
-        <ToCheckout />
-      </div>
-      <div className={styles.list}>
-        <BasketItems />
+    <div className={styles.main}>
+      <button className={styles.continue} onClick={() => router.push('/')}>Continue Shopping</button>
+      <div className={styles.page}>
+        <div className={styles.summary}>
+          <Total />
+          <ToCheckout />
+        </div>
+        <div className={styles.list}>
+          <BasketItems />
+        </div>
       </div>
     </div>
   );

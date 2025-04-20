@@ -1,5 +1,11 @@
+@use '../../common.scss' as common;
+
 .images {
     margin-left: 20px;
+
+    @include common.mobile {
+        margin-right: 40px;
+    }
 
     overflow: hidden;
     position: relative;

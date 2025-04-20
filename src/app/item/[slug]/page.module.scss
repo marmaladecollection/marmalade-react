@@ -1,10 +1,18 @@
+@use '../../common.scss' as common;
+
 .container {
   position: relative;
   width: 100%;
+
 }
 
 .content {
   position: relative;
+  margin: 0 20px;
+
+  @include common.mobile {
+    margin: 0 6px;
+  }
 }
 
 .sold {

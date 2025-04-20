@@ -2,7 +2,7 @@
 
 import { useMarmaladeContext } from '../context/MarmaladeContext';
 import Thumbnail from '../thumbnail';
-import styles from './Bill.module.css';
+import styles from './Bill.module.scss';
 
 export default function Bill() {
   const { basketItems } = useMarmaladeContext();

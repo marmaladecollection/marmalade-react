@@ -1,6 +1,8 @@
 @use '../../common.scss' as common;
 
 .conditionReport {
+  @extend common, .top-divider !optional;
+
   padding-top: 50px;
   font-family: var(--font-ss);
   margin: 30px;
@@ -49,13 +51,18 @@
 .scratchGallery {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  align-items: center;
+  gap: 20px;
   margin-top: 20px;
 }
 
 .scratchImage {
-  max-width: 200px;
-  height: auto;
+  max-width: 300px;
+  // height: auto;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  @include common.mobile {
+    max-width: 100%;
+  }
 } 

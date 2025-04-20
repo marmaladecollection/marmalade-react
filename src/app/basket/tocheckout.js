@@ -9,7 +9,9 @@ export default function ToCheckout() {
 
   return (
     <div className={styles.page}>
-      <button className={styles.checkout} onClick={() => router.push('/checkout')}>Go To Checkout</button>
+      <div className={styles.buttons}>
+        <button className={styles.checkout} onClick={() => router.push('/checkout')}>Go To Checkout</button>
+      </div>
       <div className={styles.paymentMethods}>We accept the payment methods</div>
       <div className={styles.paymentSymbols}>
         <Image 

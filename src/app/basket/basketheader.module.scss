@@ -8,4 +8,9 @@
 
   padding-bottom: 20px;
   margin-bottom: 20px;
+  margin-right: 20px;
+
+  @include common.mobile {
+    margin-right: 0;
+  }
 }

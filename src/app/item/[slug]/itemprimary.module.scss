@@ -3,6 +3,7 @@
 .mainBit {
     @extend common, .spaced-across !optional;
     align-items: flex-start;
+    margin-bottom: 60px;
 
     @include common.mobile {
         flex-direction: column-reverse;

@@ -4,6 +4,7 @@
     @extend common, .spaced-across !optional;
     align-items: flex-start;
     padding: 20px 0;
+    margin-right: 20px; 
     justify-content: space-between;
 }
 

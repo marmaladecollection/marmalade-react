@@ -1,8 +1,15 @@
+@use '../common.scss' as common;
+
 .bill {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  margin-top: 60px;
+
+  @include common.mobile {
+    margin-top: 20px;
+  }
 }
 
 .items {
