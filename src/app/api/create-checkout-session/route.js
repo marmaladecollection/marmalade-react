@@ -33,6 +33,8 @@ export async function POST(request) {
         quantity: 1,
       })),
       mode: 'payment',
+      payment_method_types: ['card'],
+      allow_promotion_codes: true,
       shipping_options: [
         {
           shipping_rate_data: {

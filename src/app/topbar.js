@@ -13,7 +13,8 @@ export default function TopBar() {
     router.push('/'); // Redirect to the root of the website
   };
 
-  const handleBagClick = () => {
+  const handleBagClick = (e) => {
+    e.stopPropagation(); // Prevent the event from bubbling up
     console.log('Bag clicked, current basketIds:', basketIds);
     console.log('Attempting to navigate to /basket');
     try {
