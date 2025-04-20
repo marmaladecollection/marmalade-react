@@ -28,6 +28,42 @@ export default function ({ onPaymentSuccess }) {
   }, []);
 
   useEffect(() => {
+    if (!sessionId && basketItems.length > 0) {
+      const createCheckoutSession = async () => {
+        try {
+          const response = await fetch('/api/create-checkout-session', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              items: basketItems.map(item => ({
+                id: item.id,
+                name: item.name,
+                price: item.price,
+              })),
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to create checkout session');
+          }
+
+          const data = await response.json();
+          setClientSecret(data.clientSecret);
+          setLoading(false);
+        } catch (error) {
+          console.error('Error creating checkout session:', error);
+          setError(error.message);
+          setLoading(false);
+        }
+      };
+
+      createCheckoutSession();
+    }
+  }, [basketItems, sessionId]);
+
+  useEffect(() => {
     if (sessionId && !paymentSuccess) {
       let isMounted = true;
       
