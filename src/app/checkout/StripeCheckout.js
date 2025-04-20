@@ -43,15 +43,13 @@ export default function ({ onPaymentSuccess }) {
             onPaymentSuccess?.();
             // Clear the basket after successful payment
             clearBasket();
-            
-            const timeString = new Date().toTimeString().split(' ')[0].split(':').slice(0, 2).join('');
-            const basketId = `${new Date().toISOString().split('T')[0]}-${timeString}-${Math.floor(Math.random() * 1000000)}`;
+           
             
             // Process all items first
             for (const item of items) {
               try {
-                console.log("selling item " + item.id + " with basket id " + basketId);
-                await sellItem(item, data, basketId);
+                console.log("selling item " + item.id);
+                await sellItem(item, data);
               } catch (error) {
                 console.error("Error recording sale for item:", item.id, error);
               }

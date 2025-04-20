@@ -40,7 +40,12 @@ On IONOS skw@g u-i
 ## Deploying
 npm run build
 rsync -avz --exclude '.git' --exclude 'node_modules' . root@217.154.9.107:/srv/marmalade/
+
+## SSL Certificate
+Generate from IONOS every April
+Follow ChatGPT guidance to download correct files
 rsync -a marmalade* root@217.154.9.107:/srv/marmalade/ssl/
+on server: pm2 restart marmalade
 
 ssh root@217.154.9.107
 /srv/marmalade/

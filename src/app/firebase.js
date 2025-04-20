@@ -63,11 +63,21 @@ export const fetchAllItems = async (setItems) => {
   try {
     await ensureAuthenticated();
     const querySnapshot = await getDocs(collection(db, "item"));
-    const data = querySnapshot.docs.map((doc) => ({
+    const items = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
-    setItems(data);
+
+    // Filter out items that exist in the sale collection
+    const filteredItems = [];
+    for (const item of items) {
+      const saleDoc = await getDoc(doc(db, "sale", item.id));
+      if (!saleDoc.exists()) {
+        filteredItems.push(item);
+      }
+    }
+
+    setItems(filteredItems);
   } catch (e) {
     console.error("Error fetching items:", e);
     throw e;
@@ -125,13 +135,12 @@ export const fetchItemById = async (id, setItem) => {
   }
 };
 
-export const sellItem = async (item, stripeData, basketId) => {
+export const sellItem = async (item, stripeData) => {
   try {
     await ensureAuthenticated();
     
     // Create a base sale data object with required fields
     const saleData = {
-      basketId: basketId,
       itemId: item.id,
       itemName: item.name,
       saleDate: new Date(),
@@ -181,10 +190,10 @@ export const sellItem = async (item, stripeData, basketId) => {
       saleData.paymentMethodDetails = stripeData.payment_method_details;
     }
 
-    const docRef = doc(db, "sale", basketId);
+    const docRef = doc(db, "sale", item.id);
     await setDoc(docRef, saleData);
-    console.log("Sale recorded with ID: ", basketId);
-    return basketId;
+    console.log("Sale recorded with ID: ", item.id);
+    return item.id;
   } catch (error) {
     console.error("Error recording sale: ", error);
     throw error;
