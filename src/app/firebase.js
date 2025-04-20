@@ -151,7 +151,11 @@ export const fetchItemById = async (id, setItem, itemSold) => {
 
 export const sellItem = async (item, stripeData) => {
   try {
+    console.log("Starting sellItem for item:", item.id);
+    console.log("Stripe data received:", stripeData);
+    
     await ensureAuthenticated();
+    console.log("Authentication successful");
     
     // Create a base sale data object with required fields
     const saleData = {
@@ -163,6 +167,7 @@ export const sellItem = async (item, stripeData) => {
 
     // Add customer details if available
     if (stripeData?.customer_details) {
+      console.log("Adding customer details from Stripe");
       saleData.customerName = stripeData.customer_details.name || "Anonymous";
       if (stripeData.customer_details.email) {
         saleData.customerEmail = stripeData.customer_details.email;
@@ -204,12 +209,21 @@ export const sellItem = async (item, stripeData) => {
       saleData.paymentMethodDetails = stripeData.payment_method_details;
     }
 
+    console.log("Prepared sale data:", saleData);
     const docRef = doc(db, "sale", item.id);
+    console.log("Attempting to write to Firestore at path:", docRef.path);
+    
     await setDoc(docRef, saleData);
-    console.log("Sale recorded with ID: ", item.id);
+    console.log("Successfully wrote sale to Firestore for item:", item.id);
     return item.id;
   } catch (error) {
-    console.error("Error recording sale: ", error);
+    console.error("Error in sellItem function:", error);
+    console.error("Error details:", {
+      message: error.message,
+      stack: error.stack,
+      code: error.code,
+      name: error.name
+    });
     throw error;
   }
 };
