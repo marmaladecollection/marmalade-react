@@ -1,6 +1,6 @@
 import { collection, getDocs, doc, getDoc, getFirestore } from 'firebase/firestore';
 import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
-import { fetchAllItems } from './firebase';
+import { fetchAllItems, fetchItemsByIds } from './firebase';
 
 // Mock Firebase
 jest.mock('firebase/firestore', () => ({
@@ -102,6 +102,81 @@ describe('fetchAllItems', () => {
     const setItems = jest.fn();
     await fetchAllItems(setItems);
 
+    expect(setItems).toHaveBeenCalledWith([]);
+  });
+});
+
+describe('fetchItemsByIds', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should not return items that exist in the sale collection', async () => {
+    // Mock items
+    const mockItems = [
+      { id: 'item1', name: 'Item 1', price: 100 },
+      { id: 'item2', name: 'Item 2', price: 200 },
+      { id: 'item3', name: 'Item 3', price: 300 },
+    ];
+
+    // Mock sale collection - item2 is sold
+    const mockSales = [
+      { id: 'item2', itemId: 'item2', saleDate: new Date() },
+    ];
+
+    // Mock getDoc to handle both item and sale collection checks
+    getDoc.mockImplementation((docRef) => {
+      const [collection, id] = docRef.path.split('/');
+      
+      if (collection === 'item') {
+        const item = mockItems.find(i => i.id === id);
+        if (item) {
+          return Promise.resolve({
+            exists: () => true,
+            id: item.id,
+            data: () => ({ name: item.name, price: item.price })
+          });
+        }
+      } else if (collection === 'sale') {
+        const sale = mockSales.find(s => s.id === id);
+        return Promise.resolve({
+          exists: () => !!sale,
+          data: () => sale
+        });
+      }
+      
+      return Promise.resolve({
+        exists: () => false
+      });
+    });
+
+    // Mock setItems function
+    const setItems = jest.fn();
+
+    // Call fetchItemsByIds with all item IDs
+    await fetchItemsByIds(['item1', 'item2', 'item3'], setItems);
+
+    // Verify that setItems was called with only unsold items
+    expect(setItems).toHaveBeenCalledWith([
+      { id: 'item1', name: 'Item 1', price: 100 },
+      { id: 'item3', name: 'Item 3', price: 300 },
+    ]);
+  });
+
+  it('should handle empty array of IDs', async () => {
+    const setItems = jest.fn();
+    await fetchItemsByIds([], setItems);
+    expect(setItems).toHaveBeenCalledWith([]);
+  });
+
+  it('should handle non-existent items', async () => {
+    // Mock getDoc to return non-existent for all items
+    getDoc.mockImplementation(() => Promise.resolve({
+      exists: () => false
+    }));
+
+    const setItems = jest.fn();
+    await fetchItemsByIds(['non-existent-id'], setItems);
     expect(setItems).toHaveBeenCalledWith([]);
   });
 }); 

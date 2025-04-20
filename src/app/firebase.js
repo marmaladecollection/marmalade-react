@@ -94,11 +94,15 @@ export const fetchItemsByIds = async (ids, setItems) => {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          const data = {
-            id: docSnap.id,
-            ...docSnap.data()
+          // Check if item exists in sale collection
+          const saleDoc = await getDoc(doc(db, "sale", id));
+          if (!saleDoc.exists()) {
+            const data = {
+              id: docSnap.id,
+              ...docSnap.data()
+            }
+            items.push(data);
           }
-          items.push(data);
         } else {
           console.log("No item with id " + id);
         }
