@@ -1,0 +1,65 @@
+@import '../common.scss';
+
+.main {
+  margin: 0 60px;
+  padding: 40px 0;
+
+  @include mobile {
+    margin: 0;
+    padding: 20px;
+  }
+}
+
+.content {
+  @extend .spaced-down;
+  max-width: 800px;
+  margin: 0 auto;
+  gap: 30px;
+
+  h1 {
+    font-size: 1.7rem;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 1.2rem;
+    line-height: 2;
+  }
+}
+
+.main {
+  @extend .spaced-down;
+  gap: 20px;
+
+  h2 {
+    font-size: 1.4rem;
+    margin-top: 20px;
+  }
+}
+
+.email {
+  color: #000;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.button {
+  padding: 12px 24px;
+  background-color: #000;
+  color: white;
+  border: none;
+  width: fit-content;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 1rem;
+  border-radius: 3px;
+
+  &:hover {
+    opacity: 0.9;
+  }
+} 
