@@ -8,6 +8,9 @@
 .buttons {
     @extend common, .spaced-across !optional;
     margin: 50px 0;
+    @include common.mobile {
+        margin: 20px 0;
+    }
 }
 
 .checkout {
