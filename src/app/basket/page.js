@@ -7,10 +7,23 @@ import ToCheckout from "./tocheckout";
 import EmptyBasket from "./emptybasket";
 import { useRouter } from 'next/navigation';
 import { useMarmaladeContext } from "../context/MarmaladeContext";
+import { useState, useEffect } from 'react';
 
 export default function BasketPage() {
   const router = useRouter();
-  const { basketIds } = useMarmaladeContext();
+  const { basketIds, basketItems } = useMarmaladeContext();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Only consider loading complete when we have either items or confirmed empty basket
+    if (basketItems.length > 0 || basketIds.length === 0) {
+      setIsLoading(false);
+    }
+  }, [basketItems, basketIds]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   if (basketIds.length === 0) {
     return <EmptyBasket />;
