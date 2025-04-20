@@ -48,6 +48,8 @@ export default function ({ onPaymentSuccess }) {
     const urlParams = new URLSearchParams(window.location.search);
     const newSessionId = urlParams.get('session_id');
     if (newSessionId) {
+      console.log("New session ID found:", newSessionId);
+      setPaymentSuccess(true);
       setSessionId(newSessionId);
     }
   }, []);
@@ -241,10 +243,12 @@ export default function ({ onPaymentSuccess }) {
   }, [sessionId, paymentSuccess, saleData]);
 
   if (paymentSuccess) {
+    console.log("Showing payment success page");
     return <PaymentSuccess />;
   }
 
   if (showAddressForm) {
+    console.log("Showing address form");
     return <DeliveryAddressForm onSubmit={handleAddressSubmit} />;
   }
 
