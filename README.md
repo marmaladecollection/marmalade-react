@@ -72,6 +72,9 @@ sudo resolvectl flush-caches     (flush DNS)
 pm2 startup
 sudo netstat -tulnp | grep :3000
 
+## Maintenance
+Uses uptime robot (with duck email) for status monitoring
+
 
 ## Troubleshooting
 Can't see my images - Switch off VPN
