@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react";
 import styles from "./conditionreport.module.scss";
+import ImageZoomModal from "./ImageZoomModal";
 
 export default function ConditionReport({ item }) {
   const [scratchImages, setScratchImages] = useState([]);
+  const [zoomSrc, setZoomSrc] = useState(null);
 
   useEffect(() => {
     const loadImages = async () => {
@@ -58,15 +60,19 @@ export default function ConditionReport({ item }) {
       {scratchImages.length > 0 && (
         <div className={styles.scratchGallery}>
           {scratchImages.map((src, index) => (
-            <img 
-              key={index} 
-              src={src} 
-              alt={`Scratch detail ${index + 1}`}
+            <img
+              key={index}
+              src={src}
               className={styles.scratchImage}
+              onClick={() => setZoomSrc(src)}
+              style={{ cursor: "zoom-in" }}
             />
           ))}
         </div>
       )}
+      {zoomSrc && (
+        <ImageZoomModal src={zoomSrc} onClose={() => setZoomSrc(null)} />
+      )}
     </div>
   );
-} 
+}
