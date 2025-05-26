@@ -1,3 +1,5 @@
+@use '../../common.scss' as common;
+
 .productBlurb {
     @media only screen and (min-width: 1016px) {
         // margin-left: 20px !important;
@@ -45,6 +47,18 @@
     border-radius: 4px;
     font-size: 14px;
     width: 600px;
+    font-family: var(--font-ss);
+    font-weight: 400;
+
+    @include common.mobile {
+        position: fixed;
+        width: calc(100vw - 20px);
+        transform: translateY(-50%);
+        top: calc(20px + 50%);
+        left: 10px;
+        line-height: 1.5;
+    }
+
     white-space: normal;
     word-wrap: break-word;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
