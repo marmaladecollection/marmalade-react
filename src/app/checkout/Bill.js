@@ -25,9 +25,9 @@ export default function Bill() {
         </div>
         <div className={styles.totalRow}>
           <h3>Total</h3>
-          <h3>£{basketItems.reduce((sum, item) => sum + item.price, 0)}</h3>
+          <h3>£{basketItems.reduce((sum, item) => sum + Number(item.price), 0)}</h3>
         </div>
       </div>
     </div>
   );
-} 
+}
