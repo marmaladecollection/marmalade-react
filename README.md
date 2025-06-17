@@ -31,16 +31,26 @@ Use nodemailer and nextjs app endpoints to ensure they are sent from the server 
 No other cloud code is required.
 
 ## Adding an item
+1. Add webp image under public/images matching the name in firestore.
+  1.1 For multiple images name them name.webp for the main image, then name-n.webp for others.
+  1.2 For condition report name them name-scratch-n.webp
 1. Add item to [Firestore](https://console.firebase.google.com/u/3/project/marmalade-collection/firestore/databases/-default-/data/~2Fitem~2Ftable-2)
-2. Add wepp image under public/images matching the name in firestore
+    item should have key matching image filename and fields:
+        blurb
+        condition
+        conditionDetail
+        dimensions "?D x ?W x ?H" in cm
+        name
+        price
 
 ## Hosting
 On IONOS skw@g u-i
 
 ## Deploying
-npm run build
+npm install
 rsync -avz --exclude '.git' --exclude 'node_modules' . root@217.154.9.107:/srv/marmalade/
 ssh on to box
+npm run build
 pm2 restart marmalade
 
 ## SSL Certificate

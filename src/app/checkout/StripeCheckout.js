@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { EmbeddedCheckout, EmbeddedCheckoutProvider } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
+import { useEffect, useState } from 'react';
 import { useMarmaladeContext } from '../context/MarmaladeContext';
 import { sellItem } from '../firebase';
-import PaymentSuccess from './PaymentSuccess';
 import DeliveryAddressForm from './DeliveryAddressForm';
+import PaymentSuccess from './PaymentSuccess';
 import styles from './StripeCheckout.module.scss';
 
 // Replace with your Stripe publishable key
@@ -168,7 +168,8 @@ export default function ({ onPaymentSuccess }) {
               clearBasket();
               console.log("[Payment Flow] Basket cleared after successful sale recording");
 
-              const totalAmount = saleData.items.reduce((sum, item) => sum + item.price, 0);
+              // FIX: Ensure item.price is treated as a number
+              const totalAmount = saleData.items.reduce((sum, item) => sum + Number(item.price), 0);
               const itemsList = saleData.items.map(item => `- ${item.name} (£${item.price})`).join('\n');
             
               try {
