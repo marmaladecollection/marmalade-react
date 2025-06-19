@@ -30,16 +30,17 @@
     text-decoration: none !important;
     color: #222;  // Set explicit color for the feature
 
-    &:hover {
-      .featureTitle {
-        color: #222;
-      }
-    }
-
     .featureTitle {
       color: #e88b7c;
       font-size: 1.2rem;
       margin: 16px 0 8px;
+      transition: color 0.1s ease-in-out;  // Back to 0.2s for a snappier transition
+    }
+
+    &:hover {
+      .featureTitle {
+        color: #222;
+      }
     }
 
     .featureDesc {
