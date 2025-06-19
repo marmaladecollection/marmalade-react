@@ -1,0 +1,18 @@
+<svg width="64" height="48" viewBox="0 0 64 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <!-- Three horizontal lines -->
+    <path d="M8 16h44" stroke="#1A2B4B" stroke-width="5" stroke-linecap="round"/>
+    <path d="M8 24h40" stroke="#1A2B4B" stroke-width="5" stroke-linecap="round"/>
+    <path d="M8 32h36" stroke="#1A2B4B" stroke-width="5" stroke-linecap="round"/>
+    
+    <!-- Cab - solid filled shape -->
+    <path d="M52 14h4l6 10v10h-10V14z" fill="#1A2B4B"/>
+    
+    <!-- Wheel connector -->
+    <path d="M16 38h36" stroke="#1A2B4B" stroke-width="5" stroke-linecap="round"/>
+    
+    <!-- Wheels -->
+    <circle cx="20" cy="38" r="6" fill="#FF6666"/>
+    <circle cx="48" cy="38" r="6" fill="#FF6666"/>
+  </g>
+</svg>

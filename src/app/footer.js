@@ -8,7 +8,16 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={styles.topRow}>
         <div className={styles.feature}>
-          <Image src="/file.svg" alt="Free Delivery" width={60} height={60} />
+          <Image
+            src="/images/footer/van.png"
+            alt="Free Delivery"
+            width={60}
+            height={30} // Adjusted for a more natural 2:1 aspect ratio
+            style={{
+              width: "60px",
+              height: "auto", // This ensures the image maintains its natural aspect ratio
+            }}
+          />
           <div className={styles.featureTitle}>Free Delivery</div>
           <div className={styles.featureDesc}>
             Free shipping on all orders over £99+.
@@ -16,10 +25,14 @@ export default function Footer() {
         </div>
         <div className={styles.feature}>
           <Image
-            src="/calendar.svg"
+            src="/images/footer/returns.png"
             alt="Simple Returns"
             width={60}
-            height={60}
+            height={30}
+            style={{
+              width: "60px",
+              height: "auto",
+            }}
           />
           <div className={styles.featureTitle}>Simple Returns</div>
           <div className={styles.featureDesc}>
@@ -28,10 +41,14 @@ export default function Footer() {
         </div>
         <div className={styles.feature}>
           <Image
-            src="/vercel.svg"
+            src="/images/footer/environment.png"
             alt="Environmentally friendly"
             width={60}
-            height={60}
+            height={30}
+            style={{
+              width: "60px",
+              height: "auto",
+            }}
           />
           <div className={styles.featureTitle}>Environmentally friendly</div>
           <div className={styles.featureDesc}>
