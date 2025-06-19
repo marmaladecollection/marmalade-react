@@ -102,11 +102,18 @@
   }
 
   .contactValue {
+    color: #222;
     text-align: center;
-  }
 
-  .email {
-    color: #e88b7c;
+    .email {
+      color: #444;
+      text-decoration: none;
+
+      &:hover {
+        color: #000;
+        text-decoration: underline;
+      }
+    }
   }
 
   a {

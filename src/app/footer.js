@@ -68,7 +68,9 @@ export default function Footer() {
           <div className={styles.contactItem}>
             <div className={styles.contactLabel}>✉️ Email:</div>
             <div className={styles.contactValue}>
-              <span className={styles.email}>team@marmaladecollection.com</span>
+              <a href="mailto:team@marmaladecollection.com" className={styles.email}>
+                team@marmaladecollection.com
+              </a>
             </div>
           </div>
         </div>
@@ -80,9 +82,6 @@ export default function Footer() {
         </div>
         <div className={styles.col}>
           <a href="/about">About Us</a>
-          <a href="/delivery">Delivery</a>
-          <a href="/returns">Returns</a>
-          <a href="/contact">Contact Us</a>
         </div>
       </div>
     </footer>
