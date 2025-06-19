@@ -2,8 +2,37 @@
 
 import styles from './gallery.module.scss';
 import Item from './item';
+import { useEffect, useState } from 'react';
+
+function SkeletonItem() {
+  return (
+    <div className={styles.item}>
+      <div className={styles.skeleton} />
+    </div>
+  );
+}
 
 export default function Gallery({ items }) {
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
+    if (items && items.length > 0) {
+      setIsLoading(false);
+    }
+  }, [items]);
+
+  if (isLoading) {
+    return (
+      <main>
+        <div className={styles.gallery}>
+          {[...Array(8)].map((_, index) => (
+            <SkeletonItem key={`skeleton-${index}`} />
+          ))}
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main>
       <div className={styles.gallery}>
