@@ -50,7 +50,7 @@ On IONOS skw@g u-i
 npm install
 npm run testa
 rsync -avz --exclude '.git' --exclude 'node_modules' . root@217.154.9.107:/srv/marmalade/
-ssh on to box
+ssh root@217.154.9.107
 npm run build
 pm2 restart marmalade
 
@@ -60,11 +60,8 @@ Follow ChatGPT guidance to download correct files
 rsync -a marmalade* root@217.154.9.107:/srv/marmalade/ssl/
 on server: pm2 restart marmalade
 
-ssh root@217.154.9.107
 /srv/marmalade/
 (see IONOS console for details and password)
-
-To transfer images from local machine to server...
 
 ## Config
 (hint - Use Warp AI to help resolve deployment problems)
@@ -85,7 +82,6 @@ sudo netstat -tulnp | grep :3000
 
 ## Maintenance
 Uses uptime robot (with duck email) for status monitoring
-
 
 ## Troubleshooting
 Can't see my images - Switch off VPN
