@@ -8,6 +8,7 @@ export default function Header() {
     <div className={styles.header}>
       <div className={styles.contact}>
         <Link href="/contact">Contact Us</Link>
+        <Link href="/about">About Us</Link>
       </div>
     </div>
   );

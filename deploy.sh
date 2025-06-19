@@ -12,6 +12,17 @@ fi
 
 echo "Starting deployment..."
 
+# Install dependencies
+echo "Installing dependencies..."
+npm install
+INSTALL_EXIT_CODE=$?
+
+if [ $INSTALL_EXIT_CODE -ne 0 ]; then
+    echo "✗ Dependencies installation failed. Aborting deployment."
+    exit 1
+fi
+echo "✓ Dependencies installed successfully"
+
 # Sync files using rsync with sshpass
 echo "Syncing files to server..."
 sshpass -e rsync -avz --progress --ignore-times --exclude '.git' --exclude '.next' --exclude 'node_modules' . root@217.154.9.107:/srv/marmalade/

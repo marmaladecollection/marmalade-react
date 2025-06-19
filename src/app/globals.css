@@ -15,7 +15,6 @@ body {
   font-family: var(--font-ss);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding-bottom: 40px; /* Add padding to prevent content from being hidden behind footer */
 }
 
 * {

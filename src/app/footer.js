@@ -41,27 +41,6 @@ export default function Footer() {
           </div>
         </Link>
       </div>
-      <div className={styles.bottomRow}>
-        <div className={styles.col}>
-          <div className={styles.contactItem}>
-            <div className={styles.contactLabel}>✉️ Email:</div>
-            <div className={styles.contactValue}>
-              <a href="mailto:team@marmaladecollection.com" className={styles.email}>
-                team@marmaladecollection.com
-              </a>
-            </div>
-          </div>
-        </div>
-        <div className={styles.col}>
-          <div className={styles.contactItem}>
-            <div className={styles.contactLabel}>🕒 Working Days/Hours:</div>
-            <div className={styles.contactValue}>Mon – Sat / 9:00AM – 5:00PM</div>
-          </div>
-        </div>
-        <div className={styles.col}>
-          <a href="/about">About Us</a>
-        </div>
-      </div>
     </footer>
   );
 }

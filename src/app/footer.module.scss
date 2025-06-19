@@ -1,20 +1,19 @@
 @use 'common.scss' as common;
 
 .footer {
-  background: #f6f8fa;
-  color: #222;
-  font-size: 0.9rem;  // Reduced from 1.1rem
+  background: #f7f7f7;
+  color: #666;
+  font-size: 0.9rem;
   margin-top: 48px;
   width: 100%;
+  border-top: 1px solid #eaeaea;
   
   .topRow {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10vw;
-    background: #fff;
     padding: 40px 0;
-    border-bottom: 1px solid #e5e8ec;
     
     @include common.mobile {
       flex-direction: column;
@@ -50,51 +49,6 @@
 
   .featureDesc {
     white-space: nowrap;
-  }
-
-  .bottomRow {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    padding: 20px 20px;
-    min-height: 20px;
-    margin: 0 auto;     // Center the row
-    
-    @include common.mobile {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 30px 20px;
-    }
-
-    .col {
-      text-align: center;
-      min-width: 250px;  // Increased min-width
-      height: 100%;
-      margin: 0 32px;    // Increased margin
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      
-      @include common.mobile {
-        margin: 20px 0;
-        min-width: unset;
-        width: 100%;
-        max-width: 300px;
-      }
-
-      a {
-        display: block;
-        color: #444;
-        text-decoration: none;
-        margin-bottom: 8px;
-        
-        &:hover {
-          color: #222;
-        }
-      }
-    }
   }
 
   .contactItem {

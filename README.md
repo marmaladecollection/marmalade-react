@@ -47,12 +47,11 @@ No other cloud code is required.
 On IONOS skw@g u-i
 
 ## Deploying
-npm install
-npm run test
-./deploy.sh
-cd /srv/marmalade/
-npm run build
-pm2 restart marmalade
+(uses sshpass for server credentials)
+First confirm tests pass
+`npm run test`
+Then
+`./deploy.sh`
 
 ## SSL Certificate
 Generate from IONOS every April
