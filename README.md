@@ -49,8 +49,7 @@ On IONOS skw@g u-i
 ## Deploying
 npm install
 npm run test
-rsync -avz --exclude '.git' --exclude '.next' --exclude 'node_modules' . root@217.154.9.107:/srv/marmalade/
-ssh root@217.154.9.107
+./deploy.sh
 cd /srv/marmalade/
 npm run build
 pm2 restart marmalade

@@ -1,8 +1,8 @@
 "use client";
 
+import { useEffect, useState } from 'react';
 import styles from './gallery.module.scss';
 import Item from './item';
-import { useEffect, useState } from 'react';
 
 function SkeletonItem() {
   return (
