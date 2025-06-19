@@ -1,12 +1,71 @@
 @use 'common.scss' as common;
 
-#banner {
-    background-color: black;
-    color: white;
-    font-size: x-small;
-    font-weight: 600;
-    text-transform: uppercase !important;
-    padding: 10px;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 24px;
+  background-color: #f7f7f7;
+  font-size: 14px;
+  color: #666;
+  border-bottom: 1px solid #eaeaea;
 
+  @include common.mobile {
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+  }
+}
+
+.contact {
+  display: flex;
+  gap: 24px;
+
+  .contactItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    img {
+      opacity: 0.7;
+    }
+  }
+
+  @include common.mobile {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .separator {
+    color: #999;
+  }
+
+  @include common.mobile {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
 }
  
