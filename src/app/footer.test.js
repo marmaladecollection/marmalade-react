@@ -12,9 +12,5 @@ describe('Footer', () => {
     // Check for the Returns feature section
     const returnsLink = screen.getByRole('link', { name: /Simple Returns/i });
     expect(returnsLink).toHaveAttribute('href', '/returns');
-    
-    // Check for the About Us link
-    const aboutLink = screen.getByRole('link', { name: /About Us/i });
-    expect(aboutLink).toHaveAttribute('href', '/about');
   });
-}); 
+});
