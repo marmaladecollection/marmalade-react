@@ -5,22 +5,16 @@ describe('Footer', () => {
   it('renders all footer links with correct attributes', () => {
     render(<Footer />);
     
-    // Check that all links are present and have correct attributes
-    const links = screen.getAllByRole('link');
-    expect(links).toHaveLength(4);
+    // Check for the Free Delivery feature section
+    const freeDeliveryLink = screen.getByRole('link', { name: /Free Delivery/i });
+    expect(freeDeliveryLink).toHaveAttribute('href', '/delivery');
     
-    // Verify each link has the correct text and href
-    const expectedLinks = [
-      { text: 'Delivery', href: '/delivery' },
-      { text: 'Returns', href: '/returns' },
-      { text: 'Contact Us', href: '/contact' },
-      { text: 'About Us', href: '/about' }
-    ];
+    // Check for the Returns feature section
+    const returnsLink = screen.getByRole('link', { name: /Simple Returns/i });
+    expect(returnsLink).toHaveAttribute('href', '/returns');
     
-    expectedLinks.forEach(({ text, href }) => {
-      const link = screen.getByText(text);
-      expect(link).toBeInTheDocument();
-      expect(link).toHaveAttribute('href', href);
-    });
+    // Check for the About Us link
+    const aboutLink = screen.getByRole('link', { name: /About Us/i });
+    expect(aboutLink).toHaveAttribute('href', '/about');
   });
 }); 

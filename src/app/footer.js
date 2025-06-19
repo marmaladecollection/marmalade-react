@@ -1,13 +1,14 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import styles from "./footer.module.scss";
 
 export default function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.topRow}>
-        <div className={styles.feature}>
+        <Link href="/delivery" className={styles.feature}>
           <Image
             src="/images/footer/van.png"
             alt="Free Delivery"
@@ -22,8 +23,8 @@ export default function Footer() {
           <div className={styles.featureDesc}>
             Free shipping on all orders over £150.
           </div>
-        </div>
-        <div className={styles.feature}>
+        </Link>
+        <Link href="/returns" className={styles.feature}>
           <Image
             src="/images/footer/returns.png"
             alt="Simple Returns"
@@ -38,7 +39,7 @@ export default function Footer() {
           <div className={styles.featureDesc}>
             Not happy? Our team is always on hand!
           </div>
-        </div>
+        </Link>
         <div className={styles.feature}>
           <Image
             src="/images/footer/environment.png"
@@ -78,7 +79,10 @@ export default function Footer() {
           </div>
         </div>
         <div className={styles.col}>
-          <a href="#">About us</a>
+          <a href="/about">About Us</a>
+          <a href="/delivery">Delivery</a>
+          <a href="/returns">Returns</a>
+          <a href="/contact">Contact Us</a>
         </div>
       </div>
     </footer>

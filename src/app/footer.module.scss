@@ -27,6 +27,14 @@
   .feature {
     text-align: center;
     max-width: 320px;
+    text-decoration: none;
+    color: inherit;
+    
+    &:hover {
+      .featureTitle {
+        text-decoration: underline;
+      }
+    }
   }
 
   .featureTitle {
@@ -48,23 +56,35 @@
       text-align: center;
       padding: 30px 20px;
     }
-  }
 
-  .col {
-    text-align: center;
-    min-width: 200px;
-    height: 100%;  // Take full height of parent
-    margin: 0 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;  // Center content vertically
-    
-    @include common.mobile {
-      margin: 20px 0;
-      min-width: unset;
-      width: 100%;
-      max-width: 300px;
+    .col {
+      text-align: center;
+      min-width: 200px;
+      height: 100%;  // Take full height of parent
+      margin: 0 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;  // Center content vertically
+      
+      @include common.mobile {
+        margin: 20px 0;
+        min-width: unset;
+        width: 100%;
+        max-width: 300px;
+      }
+
+      a {
+        display: block;
+        color: #444;
+        text-decoration: none;
+        margin-bottom: 8px;
+        
+        &:hover {
+          color: #000;
+          text-decoration: underline;
+        }
+      }
     }
   }
 
