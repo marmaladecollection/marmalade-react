@@ -48,9 +48,6 @@ On IONOS skw@g u-i
 
 ## Deploying
 (uses sshpass for server credentials)
-First confirm tests pass
-`npm run test`
-Then
 `./deploy.sh`
 
 ## SSL Certificate
