@@ -22,12 +22,16 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${serifFont.variable} ${sansSerifFont.variable}`}>
-        <MarmaladeProvider>
-          <Header/>
-          <TopBar/>
-          {children}
-        </MarmaladeProvider>
-        <Footer/>
+        <div className="page-wrapper">
+          <div className="content-wrapper">
+            <MarmaladeProvider>
+              <Header/>
+              <TopBar/>
+              {children}
+            </MarmaladeProvider>
+          </div>
+          <Footer/>
+        </div>
       </body>
     </html>
   );

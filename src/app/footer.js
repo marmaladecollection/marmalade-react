@@ -26,7 +26,7 @@ export default function Footer() {
         </Link>
         <Link href="/returns" className={styles.feature}>
           <Image
-            src="/images/footer/returns.png"
+            src="/images/footer/returns2.png"
             alt="Simple Returns"
             width={60}
             height={30}
