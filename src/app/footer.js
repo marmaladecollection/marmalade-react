@@ -21,7 +21,7 @@ export default function Footer() {
           />
           <div className={styles.featureTitle}>Free Delivery</div>
           <div className={styles.featureDesc}>
-            Free shipping on all orders over £150.
+            Free local delivery on all orders over £150.
           </div>
         </Link>
         <Link href="/returns" className={styles.feature}>
@@ -40,30 +40,8 @@ export default function Footer() {
             Not happy? Our team is always on hand!
           </div>
         </Link>
-        <div className={styles.feature}>
-          <Image
-            src="/images/footer/environment.png"
-            alt="Environmentally friendly"
-            width={60}
-            height={30}
-            style={{
-              width: "60px",
-              height: "auto",
-            }}
-          />
-          <div className={styles.featureTitle}>Environmentally friendly</div>
-          <div className={styles.featureDesc}>
-            Being Eco-friendly is at the heart of what we do!
-          </div>
-        </div>
       </div>
       <div className={styles.bottomRow}>
-        <div className={styles.col}>
-          <div className={styles.contactItem}>
-            <div className={styles.contactLabel}>📞 Phone:</div>
-            <div className={styles.contactValue}>000 0000 0000</div>
-          </div>
-        </div>
         <div className={styles.col}>
           <div className={styles.contactItem}>
             <div className={styles.contactLabel}>✉️ Email:</div>

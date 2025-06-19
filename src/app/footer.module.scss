@@ -27,28 +27,37 @@
   .feature {
     text-align: center;
     max-width: 320px;
-    text-decoration: none;
-    color: inherit;
-    
+    text-decoration: none !important;
+    color: #222;  // Set explicit color for the feature
+
     &:hover {
       .featureTitle {
-        text-decoration: underline;
+        color: #222;
       }
+    }
+
+    .featureTitle {
+      color: #e88b7c;
+      font-size: 1.2rem;
+      margin: 16px 0 8px;
+    }
+
+    .featureDesc {
+      color: #222;  // Set explicit color for description
     }
   }
 
-  .featureTitle {
-    color: #e88b7c;
-    font-size: 1.2rem;  // Reduced from 1.4rem to maintain proportion
-    margin: 16px 0 8px;
+  .featureDesc {
+    white-space: nowrap;
   }
 
   .bottomRow {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     padding: 20px 20px;
-    min-height: 20px;  // Ensure enough height for vertical centering
+    min-height: 20px;
+    margin: 0 auto;     // Center the row
     
     @include common.mobile {
       flex-direction: column;
@@ -59,13 +68,13 @@
 
     .col {
       text-align: center;
-      min-width: 200px;
-      height: 100%;  // Take full height of parent
-      margin: 0 16px;
+      min-width: 250px;  // Increased min-width
+      height: 100%;
+      margin: 0 32px;    // Increased margin
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;  // Center content vertically
+      justify-content: center;
       
       @include common.mobile {
         margin: 20px 0;
