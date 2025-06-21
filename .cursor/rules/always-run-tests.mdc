@@ -3,3 +3,12 @@ description:
 globs:
 alwaysApply: false
 ---
+# Always Run Tests After Every Change
+
+After every code change, you must:
+
+1. Run all unit tests (e.g., with `npm test` or equivalent).
+2. Run all Cypress integration tests (e.g., with `npx cypress run`).
+3. If any test fails, you must fix the error and rerun the tests until all pass before proceeding with further changes.
+
+This rule applies to all files and all types of changes.

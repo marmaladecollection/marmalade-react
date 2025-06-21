@@ -1,6 +1,6 @@
 import { collection, getDocs, doc, getDoc, getFirestore } from 'firebase/firestore';
 import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
-import { fetchAllItems, fetchItemsByIds, fetchItemById } from './firebase';
+import { fetchAllItems, fetchItemsByIds, fetchItemById, fetchSoldItems } from './firebase';
 
 jest.mock('firebase/firestore');
 const mockCollection = jest.fn();
@@ -275,5 +275,81 @@ describe('fetchItemById', () => {
 
     expect(setItem).not.toHaveBeenCalled();
     expect(itemSold).not.toHaveBeenCalled();
+  });
+});
+
+describe('fetchSoldItems', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should return all items that have a sale record (happy path)', async () => {
+    const mockSales = [
+      { id: 'sale1', itemId: 'item1' },
+      { id: 'sale2', itemId: 'item2' },
+    ];
+    const mockItems = [
+      { id: 'item1', name: 'Item 1', price: 100 },
+      { id: 'item2', name: 'Item 2', price: 200 },
+      { id: 'item3', name: 'Item 3', price: 300 },
+    ];
+    // First getDocs call: sales, second: items
+    require('firebase/firestore').getDocs
+      .mockResolvedValueOnce({ docs: mockSales.map(sale => ({ id: sale.id, data: () => ({ itemId: sale.itemId }) })) })
+      .mockResolvedValueOnce({ docs: mockItems.map(item => ({ id: item.id, data: () => ({ name: item.name, price: item.price }) })) });
+    const result = await fetchSoldItems();
+    expect(result).toEqual([
+      { id: 'item1', name: 'Item 1', price: 100 },
+      { id: 'item2', name: 'Item 2', price: 200 },
+    ]);
+  });
+
+  it('should return an empty array if there are no sales', async () => {
+    require('firebase/firestore').getDocs
+      .mockResolvedValueOnce({ docs: [] }); // sales
+    const result = await fetchSoldItems();
+    expect(result).toEqual([]);
+  });
+
+  it('should return only items that exist in both collections (ignore missing items)', async () => {
+    const mockSales = [
+      { id: 'sale1', itemId: 'item1' },
+      { id: 'sale2', itemId: 'itemX' }, // itemX does not exist
+    ];
+    const mockItems = [
+      { id: 'item1', name: 'Item 1', price: 100 },
+      { id: 'item2', name: 'Item 2', price: 200 },
+    ];
+    require('firebase/firestore').getDocs
+      .mockResolvedValueOnce({ docs: mockSales.map(sale => ({ id: sale.id, data: () => ({ itemId: sale.itemId }) })) })
+      .mockResolvedValueOnce({ docs: mockItems.map(item => ({ id: item.id, data: () => ({ name: item.name, price: item.price }) })) });
+    const result = await fetchSoldItems();
+    expect(result).toEqual([
+      { id: 'item1', name: 'Item 1', price: 100 },
+    ]);
+  });
+
+  it('should return all items if all are sold', async () => {
+    const mockSales = [
+      { id: 'sale1', itemId: 'item1' },
+      { id: 'sale2', itemId: 'item2' },
+      { id: 'sale3', itemId: 'item3' },
+    ];
+    const mockItems = [
+      { id: 'item1', name: 'Item 1', price: 100 },
+      { id: 'item2', name: 'Item 2', price: 200 },
+      { id: 'item3', name: 'Item 3', price: 300 },
+    ];
+    require('firebase/firestore').getDocs
+      .mockResolvedValueOnce({ docs: mockSales.map(sale => ({ id: sale.id, data: () => ({ itemId: sale.itemId }) })) })
+      .mockResolvedValueOnce({ docs: mockItems.map(item => ({ id: item.id, data: () => ({ name: item.name, price: item.price }) })) });
+    const result = await fetchSoldItems();
+    expect(result).toEqual(mockItems);
+  });
+
+  it('should throw and log error if Firestore fails', async () => {
+    const error = new Error('Firestore error');
+    require('firebase/firestore').getDocs.mockRejectedValueOnce(error);
+    await expect(fetchSoldItems()).rejects.toThrow('Firestore error');
   });
 }); 

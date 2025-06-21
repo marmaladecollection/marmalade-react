@@ -235,3 +235,23 @@ export const sellItem = async (item, stripeData, deliveryAddress) => {
   }
 };
 
+export const fetchSoldItems = async () => {
+  try {
+    await ensureAuthenticated();
+    // Get all sales
+    const salesSnapshot = await getDocs(collection(db, "sale"));
+    const sales = salesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    if (sales.length === 0) return [];
+    // Get all item IDs that have a sale
+    const soldItemIds = sales.map(sale => sale.itemId);
+    // Fetch the corresponding items
+    const itemsSnapshot = await getDocs(collection(db, "item"));
+    const items = itemsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    // Return only items that are in the soldItemIds list
+    return items.filter(item => soldItemIds.includes(item.id));
+  } catch (e) {
+    console.error("Error fetching sold items:", e);
+    throw e;
+  }
+};
+
