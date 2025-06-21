@@ -89,11 +89,11 @@
 }
 
 .itemListHeading {
-  margin-top: 0;
-  font-size: 1.05rem;
+  text-align: center;
+  width: 100%;
+  font-size: 1.1rem;
   font-weight: 600;
-  color: #444;
-  letter-spacing: 0.5px;
+  margin-bottom: 10px;
 }
 
 .itemCard {
@@ -134,34 +134,47 @@
 .tableContainer {
   width: 100vw;
   max-width: 100vw;
-  margin-bottom: 32px;
+  margin-bottom: 64px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 820px;
 }
 
 .itemTable {
-  margin: 0;
-  font-size: 0.85rem;
-  width: 98vw;
-  max-width: 800px;
-  min-width: 320px;
-  overflow-x: auto;
+  width: 100vw;
+  max-width: 100vw;
+  min-width: 100vw;
   table-layout: fixed;
-  word-break: break-word;
+  background: #fff;
 }
 
-.itemTable th,
-.itemTable td {
+.itemTable th, .itemTable td {
   padding: 6px 10px;
-  text-align: left;
+  text-align: center;
   vertical-align: top;
   word-break: break-word;
   white-space: pre-line;
-  max-width: 180px;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   background: #f8fafc;
+}
+
+.itemTable th.price, .itemTable td.price,
+.itemTable th.sale-date, .itemTable td.sale-date,
+.itemTable th.customer-name, .itemTable td.customer-name,
+.itemTable th.payment-status, .itemTable td.payment-status,
+.itemTable th.payment-method, .itemTable td.payment-method {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+}
+
+.itemTable th.price, .itemTable td.price {
+  text-align: right;
+}
+
+.itemTable th.customer-email, .itemTable td.customer-email {
+  max-width: 320px;
+  min-width: 180px;
 }
 
 .itemTable th {
@@ -183,6 +196,46 @@
   transition: background 0.2s;
 }
 
+/* Make price, payment status, and sale date columns narrower and right-aligned where appropriate */
+.itemTable th:nth-child(2), /* Name */
+.itemTable td:nth-child(2) {
+  max-width: 180px;
+  min-width: 120px;
+}
+
+.itemTable th:nth-child(3), /* Price */
+.itemTable td:nth-child(3) {
+  max-width: 70px;
+  width: 70px;
+  text-align: right;
+}
+
+.itemTable th:last-child, /* Payment Status */
+.itemTable td:last-child {
+  max-width: 110px;
+  width: 110px;
+  text-align: center;
+}
+.itemTable th:nth-last-child(2), /* Sale Date */
+.itemTable td:nth-last-child(2) {
+  max-width: 150px;
+  width: 150px;
+  text-align: center;
+}
+
+.itemTable th:nth-last-child(3), /* Payment Method */
+.itemTable td:nth-last-child(3) {
+  max-width: 70px;
+  width: 70px;
+}
+
+/* Customer Email: find the column after Customer Name */
+.itemTable th.customer-email,
+.itemTable td.customer-email {
+  max-width: 320px;
+  min-width: 180px;
+}
+
 @media (max-width: 900px) {
   .itemTable, .tableContainer {
     max-width: 98vw;
@@ -191,4 +244,15 @@
     max-width: 100px;
     font-size: 0.8rem;
   }
+}
+
+.tableContainer, .main, .content, .textContainer {
+  width: 100vw;
+  max-width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+.tableContainer--large-gap {
+  margin-bottom: 40px;
 } 

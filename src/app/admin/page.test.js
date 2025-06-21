@@ -7,6 +7,45 @@ jest.mock('../firebase', () => ({
   fetchSoldItems: jest.fn(),
 }));
 
+// Helper to convert snake_case or camelCase/PascalCase to Title Case with spaces
+function toTitleCase(str) {
+  return str
+    .replace(/_/g, ' ')
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+    .replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1));
+}
+
+// Helper to format date as 'Fri, 10th May 25, 15:45'
+function formatSaleDate(ts) {
+  if (!ts) return '';
+  // If already formatted as string, return as is
+  if (typeof ts === 'string' && ts.match(/\d{4}-\d{2}-\d{2}/)) return ts;
+  if (typeof ts === 'object' && typeof ts.seconds === 'number') {
+    const date = new Date(ts.seconds * 1000);
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const day = date.getDate();
+    const daySuffix = (d) => {
+      if (d > 3 && d < 21) return 'th';
+      switch (d % 10) {
+        case 1: return 'st';
+        case 2: return 'nd';
+        case 3: return 'rd';
+        default: return 'th';
+      }
+    };
+    const dayStr = `${day}${daySuffix(day)}`;
+    const weekday = days[date.getDay()];
+    const month = months[date.getMonth()];
+    const year = String(date.getFullYear()).slice(-2);
+    const hour = String(date.getHours()).padStart(2, '0');
+    const min = String(date.getMinutes()).padStart(2, '0');
+    return `${weekday}, ${dayStr} ${month} ${year}, ${hour}:${min}`;
+  }
+  return String(ts);
+}
+
 describe('AdminPage', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -47,12 +86,20 @@ describe('AdminPage', () => {
     expect(await screen.findByText('Sold Items')).toBeInTheDocument();
     // Check all table headers
     for (const key of Object.keys(soldItems[0]).filter(k => k !== 'id')) {
-      expect(await screen.findByText(key)).toBeInTheDocument();
+      expect(await screen.findByText(toTitleCase(key))).toBeInTheDocument();
     }
     // Check all cell values
     for (const item of soldItems) {
       for (const key of Object.keys(item).filter(k => k !== 'id')) {
-        expect(await screen.findByText(String(item[key]))).toBeInTheDocument();
+        let expectedValue;
+        if (key === 'price') {
+          expectedValue = `£${item[key]}`;
+        } else if (key === 'saleDate') {
+          expectedValue = formatSaleDate(item[key]);
+        } else {
+          expectedValue = String(item[key]);
+        }
+        expect(await screen.findByText(expectedValue)).toBeInTheDocument();
       }
     }
   });

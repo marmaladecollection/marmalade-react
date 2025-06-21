@@ -42,10 +42,12 @@ function formatDeliveryAddress(addr) {
   return restEntries.join(', ').replace(/, /g, '\n');
 }
 
-// Helper to convert snake_case to Title Case with spaces
+// Helper to convert snake_case or camelCase/PascalCase to Title Case with spaces
 function toTitleCase(str) {
   return str
     .replace(/_/g, ' ')
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
     .replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1));
 }
 
@@ -77,14 +79,36 @@ export default function AdminPage() {
         ].includes(k))
     : [];
 
-  // Move 'name' to the first and 'price' to the second position if present
+  // Move 'saleDate' to the first position if present
+  if (soldKeys.includes('saleDate')) {
+    soldKeys = soldKeys.filter(k => k !== 'saleDate');
+    soldKeys.unshift('saleDate');
+  }
+  // Move 'name' to the second and 'price' to the third position if present
   if (soldKeys.includes('name')) {
     soldKeys = soldKeys.filter(k => k !== 'name');
-    soldKeys.unshift('name');
+    soldKeys.splice(1, 0, 'name');
   }
   if (soldKeys.includes('price')) {
     soldKeys = soldKeys.filter(k => k !== 'price');
-    soldKeys.splice(1, 0, 'price');
+    soldKeys.splice(2, 0, 'price');
+  }
+  // Move 'paymentStatus' to last position if present
+  if (soldKeys.includes('paymentStatus')) {
+    soldKeys = soldKeys.filter(k => k !== 'paymentStatus');
+    soldKeys.push('paymentStatus');
+  }
+  // Move 'customerName' before 'customerEmail' if both are present
+  const nameIdx = soldKeys.indexOf('customerName');
+  const emailIdx = soldKeys.indexOf('customerEmail');
+  if (nameIdx !== -1 && emailIdx !== -1 && nameIdx > emailIdx) {
+    soldKeys.splice(nameIdx, 1);
+    soldKeys.splice(emailIdx, 0, 'customerName');
+  }
+  // Move 'paymentMethod' to last position if present
+  if (soldKeys.includes('paymentMethod')) {
+    soldKeys = soldKeys.filter(k => k !== 'paymentMethod');
+    soldKeys.push('paymentMethod');
   }
 
   return (
@@ -92,30 +116,82 @@ export default function AdminPage() {
       <div className={styles.content}>
         <div className={styles.textContainer}>
           {/* Sold Items table on top */}
-          <div className={styles.tableContainer}>
+          <div className={styles.tableContainer + ' ' + styles['tableContainer--large-gap']}>
             {soldItems.length > 0 && (
               <>
                 <div className={styles.itemListHeading}>Sold Items</div>
                 <table className={styles.itemTable}>
+                  <colgroup>
+                    {soldKeys.map(key => (
+                      key === 'price' ? (
+                        <col key={key} style={{ width: '24px' }} />
+                      ) :
+                      [
+                        'saleDate',
+                        'customerName',
+                      ].includes(key) ? (
+                        <col key={key} style={{ width: '80px' }} />
+                      ) :
+                      [
+                        'name',
+                        'customerEmail',
+                      ].includes(key) ? (
+                        <col key={key} style={{ width: '96px' }} />
+                      ) :
+                      [
+                        'paymentStatus',
+                        'paymentMethod',
+                      ].includes(key) ? (
+                        <col key={key} style={{ width: '40px' }} />
+                      ) : (
+                        <col key={key} />
+                      )
+                    ))}
+                  </colgroup>
                   <thead>
                     <tr>
                       {soldKeys.map(key => (
-                        <th key={key}>{toTitleCase(key)}</th>
+                        <th
+                          key={key}
+                          className={[
+                            key === 'customerEmail' ? 'customer-email' : '',
+                            key === 'price' ? 'price' : '',
+                            key === 'saleDate' ? 'sale-date' : '',
+                            key === 'customerName' ? 'customer-name' : '',
+                            key === 'paymentStatus' ? 'payment-status' : '',
+                            key === 'paymentMethod' ? 'payment-method' : '',
+                          ].filter(Boolean).join(' ')}
+                        >
+                          {toTitleCase(key)}
+                        </th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
                     {soldItems.map(item => (
                       <tr key={item.id} className={styles.itemRow}>
-                        {soldKeys.map(key => (
-                          <td key={key} style={key === 'deliveryAddress' ? {whiteSpace: 'pre-line'} : {}}> {
+                        {soldKeys.map((key, colIdx) => (
+                          <td
+                            key={key}
+                            className={[
+                              key === 'customerEmail' ? 'customer-email' : '',
+                              key === 'price' ? 'price' : '',
+                              key === 'saleDate' ? 'sale-date' : '',
+                              key === 'customerName' ? 'customer-name' : '',
+                              key === 'paymentStatus' ? 'payment-status' : '',
+                              key === 'paymentMethod' ? 'payment-method' : '',
+                            ].filter(Boolean).join(' ')}
+                            style={key === 'deliveryAddress' ? { whiteSpace: 'pre-line' } : {}}
+                          > {
                             key === 'saleDate' && typeof item[key] === 'object' && item[key] !== null && typeof item[key].seconds === 'number'
                               ? formatSaleDate(item[key])
                               : key === 'deliveryAddress' && typeof item[key] === 'object' && item[key] !== null
                                 ? formatDeliveryAddress(item[key])
-                                : typeof item[key] === 'object'
-                                  ? JSON.stringify(item[key])
-                                  : item[key]
+                                : key === 'price' && typeof item[key] !== 'object' && item[key] !== undefined && item[key] !== null
+                                  ? `£${item[key]}`
+                                  : typeof item[key] === 'object'
+                                    ? JSON.stringify(item[key])
+                                    : item[key]
                           } </td>
                         ))}
                       </tr>
