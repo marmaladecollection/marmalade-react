@@ -1,0 +1,14 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Git Commit and Push Rule
+
+When the user asks to commit to git:
+
+1. Add all changed files using `git add .`.
+2. Create a commit with a suitable and short commit message describing the change.
+3. Push the commit to the remote repository (e.g., using `git push`).
+
+This ensures all changes are tracked and synchronized with GitHub as requested by the user.

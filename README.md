@@ -85,5 +85,11 @@ Can't see the webpage - Ask ChatGPT about setting up nginx and DNS A records.  T
 
 sudo tail -f /var/log/nginx/error.log
 
+## Cypress Directory Troubleshooting
+
+If you run `npx cypress open` and do not see a `cypress/` directory created in your project root, try running `npx cypress open` again or check for errors in your terminal. Sometimes, the directory is only created after you create your first test through the Cypress UI or after a successful run. You can also manually create a `cypress/e2e` directory and add your test files there.
+
+npx cypress run --e2e
+
 
 
