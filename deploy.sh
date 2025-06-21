@@ -23,17 +23,51 @@ if [ $INSTALL_EXIT_CODE -ne 0 ]; then
 fi
 echo "✅ Dependencies installed successfully"
 
-# Run tests
-echo "Running tests..."
+# Run unit tests
+echo "Running unit tests..."
 npx jest --watchAll=false --passWithNoTests --ci
 TEST_EXIT_CODE=$?
 
 if [ $TEST_EXIT_CODE -ne 0 ]; then
-    echo "❌ Tests failed. Aborting deployment."
+    echo "❌ Unit tests failed. Aborting deployment."
     echo "Please fix failing tests before deploying."
     exit 1
 fi
-echo "✅ All tests passed"
+echo "✅ All unit tests passed"
+
+# Start local dev server in background for Cypress tests
+echo "Starting local dev server for Cypress tests..."
+npm run dev &
+DEV_SERVER_PID=$!
+
+# Wait for the server to be ready (adjust the URL and timeout as needed)
+echo "Waiting for local dev server to be ready..."
+MAX_TRIES=20
+TRIES=0
+until curl -s http://localhost:3000 > /dev/null; do
+  sleep 1
+  TRIES=$((TRIES+1))
+  if [ $TRIES -ge $MAX_TRIES ]; then
+    echo "❌ Local dev server did not start in time. Aborting deployment."
+    kill $DEV_SERVER_PID
+    exit 1
+  fi
+done
+echo "✅ Local dev server is up. Running Cypress tests..."
+
+# Run Cypress tests
+npx cypress run --config baseUrl=http://localhost:3000
+CYPRESS_EXIT_CODE=$?
+
+# Stop the dev server
+kill $DEV_SERVER_PID
+wait $DEV_SERVER_PID 2>/dev/null
+
+if [ $CYPRESS_EXIT_CODE -ne 0 ]; then
+    echo "❌ Cypress tests failed. Aborting deployment."
+    exit 1
+fi
+echo "✅ All Cypress tests passed"
 
 # Sync files using rsync with sshpass
 echo "Syncing files to server..."
