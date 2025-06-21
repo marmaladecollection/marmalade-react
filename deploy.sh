@@ -105,7 +105,7 @@ if [ $RSYNC_EXIT_CODE -eq 0 ]; then
         
         # Run Cypress tests against deployed production site
         echo "Running Cypress tests against deployed production site..."
-        npx cypress run --config baseUrl=https://www.marmaladecollection.com
+        npx cypress run --config baseUrl=https://www.marmaladecollection.com --spec "cypress/e2e/404.cy.js,cypress/e2e/basket.cy.js,cypress/e2e/checkout.cy.js,cypress/e2e/contact.cy.js,cypress/e2e/homepage.cy.js,cypress/e2e/itempage.cy.js,cypress/e2e/navigation.cy.js,cypress/e2e/sales.cy.js"
         CYPRESS_PROD_EXIT_CODE=$?
         if [ $CYPRESS_PROD_EXIT_CODE -ne 0 ]; then
             echo "❌ Cypress tests failed against production site. Aborting deployment."
