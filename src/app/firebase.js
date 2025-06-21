@@ -235,17 +235,19 @@ export const sellItem = async (item, stripeData, deliveryAddress) => {
   }
 };
 
-export const fetchSoldItems = async () => {
+export const fetchSoldItemDetails = async () => {
   try {
     await ensureAuthenticated();
     // Get all sales
     const salesSnapshot = await getDocs(collection(db, "sale"));
+    const itemsSnapshot = await getDocs(collection(db, "item"));
+    console.log('DEBUG salesSnapshot.docs:', salesSnapshot.docs);
+    console.log('DEBUG itemsSnapshot.docs:', itemsSnapshot.docs);
     const sales = salesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     if (sales.length === 0) return [];
     // Get all item IDs that have a sale
     const soldItemIds = sales.map(sale => sale.itemId);
     // Fetch the corresponding items
-    const itemsSnapshot = await getDocs(collection(db, "item"));
     const items = itemsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     // Create a map for quick lookup
     const itemMap = Object.fromEntries(items.map(item => [item.id, item]));
@@ -253,6 +255,32 @@ export const fetchSoldItems = async () => {
     return sales
       .filter(sale => itemMap[sale.itemId])
       .map(sale => ({ ...sale, ...itemMap[sale.itemId] }));
+  } catch (e) {
+    console.error("Error fetching sold items:", e);
+    throw e;
+  }
+};
+
+export const fetchSoldItems = async () => {
+  try {
+    await ensureAuthenticated();
+    // Get all sales
+    const salesSnapshot = await getDocs(collection(db, "sale"));
+    const itemsSnapshot = await getDocs(collection(db, "item"));
+    console.log('DEBUG salesSnapshot.docs:', salesSnapshot.docs);
+    console.log('DEBUG itemsSnapshot.docs:', itemsSnapshot.docs);
+    const sales = salesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    if (sales.length === 0) return [];
+    // Get all item IDs that have a sale
+    const soldItemIds = sales.map(sale => sale.itemId);
+    // Fetch the corresponding items
+    const items = itemsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    // Create a map for quick lookup
+    const saleMap = Object.fromEntries(sales.map(sale => [sale.itemId, sale]));
+    // Return item fields + saleDate for each sold item
+    return items
+      .filter(item => saleMap[item.id])
+      .map(item => ({ ...item, saleDate: saleMap[item.id].saleDate }));
   } catch (e) {
     console.error("Error fetching sold items:", e);
     throw e;

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { fetchAllItems, fetchSoldItems } from '../firebase';
+import { fetchAllItems, fetchSoldItemDetails } from '../firebase';
 import styles from './page.module.scss';
 
 // Helper to format date as 'Fri, 10th May 25, 15:45'
@@ -98,7 +98,7 @@ export default function AdminPage() {
 
   useEffect(() => {
     fetchAllItems(setItems);
-    fetchSoldItems().then(setSoldItems);
+    fetchSoldItemDetails().then(setSoldItems);
   }, []);
 
   // Dynamically get all unique keys for sold items (excluding id for readability)

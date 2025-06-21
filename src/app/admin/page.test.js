@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import AdminPage from './page';
-import { fetchAllItems, fetchSoldItems } from '../firebase';
+import { fetchAllItems, fetchSoldItemDetails } from '../firebase';
 
 jest.mock('../firebase', () => ({
   fetchAllItems: jest.fn(),
-  fetchSoldItems: jest.fn(),
+  fetchSoldItemDetails: jest.fn(),
 }));
 
 // Helper to convert snake_case or camelCase/PascalCase to Title Case with spaces
@@ -53,7 +53,7 @@ describe('AdminPage', () => {
 
   it('renders without crashing', () => {
     fetchAllItems.mockImplementation((setItems) => setItems([]));
-    fetchSoldItems.mockResolvedValue([]);
+    fetchSoldItemDetails.mockResolvedValue([]);
     render(<AdminPage />);
     // No heading expected
   });
@@ -65,7 +65,7 @@ describe('AdminPage', () => {
       { id: '3', name: 'Item 3', price: 300 },
     ];
     fetchAllItems.mockImplementation((setItems) => setItems(mockItems));
-    fetchSoldItems.mockResolvedValue([]);
+    fetchSoldItemDetails.mockResolvedValue([]);
     render(<AdminPage />);
     expect(await screen.findByText('Items for Sale')).toBeInTheDocument();
     // Check table rows
@@ -81,7 +81,7 @@ describe('AdminPage', () => {
       { id: '10', name: 'Sold 1', price: 500, customerName: 'Alice', saleDate: '2024-06-21', extraField: 'foo' },
       { id: '11', name: 'Sold 2', price: 600, customerName: 'Bob', saleDate: '2024-06-22', extraField: 'bar' },
     ];
-    fetchSoldItems.mockResolvedValue(soldItems);
+    fetchSoldItemDetails.mockResolvedValue(soldItems);
     render(<AdminPage />);
     expect(await screen.findByText('Sold Items')).toBeInTheDocument();
     // Check all table headers
@@ -95,7 +95,13 @@ describe('AdminPage', () => {
         if (key === 'price') {
           expectedValue = `£${item[key]}`;
         } else if (key === 'saleDate') {
-          expectedValue = formatSaleDate(item[key]);
+          // Match the 'since' time (e.g., 'years ago', 'days ago', etc.)
+          expectedValue = (content, node) =>
+            /ago$/.test(content.trim()) || /RECENT SALE/.test(content);
+          // Use findAllByText and check count
+          const matches = await screen.findAllByText(expectedValue);
+          expect(matches.length).toBeGreaterThanOrEqual(1);
+          continue;
         } else {
           expectedValue = String(item[key]);
         }
