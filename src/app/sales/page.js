@@ -1,15 +1,11 @@
-'use client';
-import { useEffect, useState } from 'react';
+export const dynamic = "force-dynamic";
+
 import { fetchSoldItems } from '../firebase';
 import SalesTable from '../components/SalesTable';
 import styles from '../admin/page.module.scss';
 
-export default function SalesPage() {
-  const [soldItems, setSoldItems] = useState([]);
-
-  useEffect(() => {
-    fetchSoldItems().then(setSoldItems);
-  }, []);
+export default async function SalesPage() {
+  const soldItems = await fetchSoldItems();
 
   return (
     <div className={styles.main}>
