@@ -11,14 +11,14 @@ describe('AdminPage', () => {
     jest.clearAllMocks();
   });
 
-  it('renders the admin title and info', () => {
+  it('renders the admin title', () => {
     fetchAllItems.mockImplementation((setItems) => setItems([]));
     render(<AdminPage />);
     expect(screen.getByText('Admin')).toBeInTheDocument();
-    expect(screen.getByText('This is a hidden page for administrators. Add admin tools and information here.')).toBeInTheDocument();
+    // Do not expect table heading if no items
   });
 
-  it('shows the correct number of items for sale', async () => {
+  it('shows the correct items in the table', async () => {
     const mockItems = [
       { id: '1', name: 'Item 1', price: 100 },
       { id: '2', name: 'Item 2', price: 200 },
@@ -26,13 +26,11 @@ describe('AdminPage', () => {
     ];
     fetchAllItems.mockImplementation((setItems) => setItems(mockItems));
     render(<AdminPage />);
-    expect(
-      await screen.findByText(
-        (content, element) =>
-          element.tagName.toLowerCase() === 'p' &&
-          content.includes('Number of items for sale:') &&
-          element.textContent.includes('3')
-      )
-    ).toBeInTheDocument();
+    expect(await screen.findByText('Items for Sale')).toBeInTheDocument();
+    // Check table rows
+    for (const item of mockItems) {
+      expect(await screen.findByText(item.name)).toBeInTheDocument();
+      expect(await screen.findByText(`£${item.price}`)).toBeInTheDocument();
+    }
   });
 }); 

@@ -15,12 +15,27 @@ export default function AdminPage() {
       <div className={styles.content}>
         <div className={styles.textContainer}>
           <h1>Admin</h1>
-          <p className={styles.text}>
-            This is a hidden page for administrators. Add admin tools and information here.
-          </p>
-          <p className={styles.text}>
-            Number of items for sale: <b>{items.length}</b>
-          </p>
+          {items.length > 0 && (
+            <>
+              <div className={styles.itemListHeading}>Items for Sale</div>
+              <table className={styles.itemTable}>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {items.map(item => (
+                    <tr key={item.id} className={styles.itemRow}>
+                      <td>{item.name}</td>
+                      <td>£{item.price}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          )}
         </div>
       </div>
     </div>
