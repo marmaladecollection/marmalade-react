@@ -77,6 +77,21 @@ function timeSince(date) {
   return `${years} years ago`;
 }
 
+function isRecentSale(date) {
+  if (!date) return false;
+  let d;
+  if (typeof date === 'object' && typeof date.seconds === 'number') {
+    d = new Date(date.seconds * 1000);
+  } else if (typeof date === 'string' && !isNaN(Date.parse(date))) {
+    d = new Date(date);
+  } else {
+    return false;
+  }
+  const now = new Date();
+  const diffMs = now - d;
+  return diffMs < 4 * 60 * 60 * 1000; // less than 4 hours
+}
+
 export default function AdminPage() {
   const [items, setItems] = useState([]);
   const [soldItems, setSoldItems] = useState([]);
@@ -196,9 +211,9 @@ export default function AdminPage() {
                             style={key === 'deliveryAddress' ? { whiteSpace: 'pre-line' } : {}}
                           > {
                             key === 'saleDate' && typeof item[key] === 'object' && item[key] !== null && typeof item[key].seconds === 'number'
-                              ? <span>{formatSaleDate(item[key])}<br /><span className={styles.saleDateRelative}>{timeSince(item[key])}</span></span>
+                              ? <span>{formatSaleDate(item[key])}<br /><span className={styles.saleDateRelative}>{timeSince(item[key])}{isRecentSale(item[key]) && <><br /><span className={styles.recentSaleBadge}>RECENT SALE</span></>}</span></span>
                               : key === 'saleDate' && typeof item[key] === 'string'
-                                ? <span>{formatSaleDate(item[key])}<br /><span className={styles.saleDateRelative}>{timeSince(item[key])}</span></span>
+                                ? <span>{formatSaleDate(item[key])}<br /><span className={styles.saleDateRelative}>{timeSince(item[key])}{isRecentSale(item[key]) && <><br /><span className={styles.recentSaleBadge}>RECENT SALE</span></>}</span></span>
                               : key === 'deliveryAddress' && typeof item[key] === 'object' && item[key] !== null
                                 ? formatDeliveryAddress(item[key])
                               : key === 'price' && typeof item[key] !== 'object' && item[key] !== undefined && item[key] !== null
