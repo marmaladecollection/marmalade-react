@@ -15,8 +15,6 @@ export default function TopBar() {
 
   const handleBagClick = (e) => {
     e.stopPropagation(); // Prevent the event from bubbling up
-    console.log('Bag clicked, current basketIds:', basketIds);
-    console.log('Attempting to navigate to /basket');
     try {
       router.push('/basket');
     } catch (error) {
