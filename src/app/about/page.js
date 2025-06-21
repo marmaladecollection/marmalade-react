@@ -6,20 +6,13 @@ export default function AboutPage() {
     <div className={styles.main}>
       
       <div className={styles.content}>
-        <div className={styles.imageContainer}>
-          <Image
-            src="/images/peter.jpg"
-            alt="Peter"
-            width={500}
-            height={500}
-            style={{ objectFit: 'cover' }}
-          />
-        </div>
-
         <div className={styles.textContainer}>
           <h1>About Us</h1>
           <p className={styles.text}>
-            At our workshop, we breathe new life into cherished furniture pieces with a deep respect for their history and craftsmanship. Our team of skilled artisans combines traditional restoration techniques with modern expertise to preserve the unique character of each piece while ensuring it meets contemporary standards of quality and durability. We believe in sustainable restoration practices that honor the original materials and craftsmanship, ensuring that beautiful furniture can be enjoyed for generations to come. Every piece that comes through our doors tells a story, and we're committed to preserving that story while giving it a new chapter of life.
+            At Marmalade, we deal in character, craftsmanship, and quality. Specialising in modern and classic antiques, we source distinctive pieces that stand the test of time—both in design and durability.
+            <br /><br />
+            We value considered buying over throwaway trends. By restoring and rehoming well-made items, we offer an alternative to mass-produced furniture while reducing unnecessary waste. Our focus is on timeless style, practical sustainability, and pieces built to last.
+
           </p>
         </div>
       </div>

@@ -1,0 +1,13 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Automated Testing Rule
+
+After you make any code edit, run all tests using `npm test -- --watchAll=false`.
+
+- If all tests pass, you may proceed with your next task.
+- If there are test failures, fix the failing tests or the code causing the failures, then repeat the process until all tests pass.
+
+This ensures that the codebase remains stable and all changes are verified by the test suite after every edit.

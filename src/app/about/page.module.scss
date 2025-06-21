@@ -2,6 +2,9 @@
 
 .content {
   @extend common, .spaced-across !optional;
+  max-width: 800px;
+  margin: 0 auto;
+  gap: 30px;
 
   @include common.mobile {
     flex-direction: column-reverse;
@@ -28,17 +31,16 @@
 
 .textContainer {
     @extend common, .spaced-down !optional;
-    justify-content: center;
-    width: 60%;
     font-size: 1.2rem;
     line-height: 2;
     margin-bottom: 40px;
-    margin-left: 40px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
     @include common.mobile {
-        width: 100%;
-        margin-left: 0px;
-
         p {
           margin: 20px;
         }
