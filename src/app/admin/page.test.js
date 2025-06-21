@@ -36,18 +36,24 @@ describe('AdminPage', () => {
     }
   });
 
-  it('shows the correct sold items in the sold table', async () => {
+  it('shows all fields in the sold items table', async () => {
     fetchAllItems.mockImplementation((setItems) => setItems([]));
     const soldItems = [
-      { id: '10', name: 'Sold 1', price: 500 },
-      { id: '11', name: 'Sold 2', price: 600 },
+      { id: '10', name: 'Sold 1', price: 500, customerName: 'Alice', saleDate: '2024-06-21', extraField: 'foo' },
+      { id: '11', name: 'Sold 2', price: 600, customerName: 'Bob', saleDate: '2024-06-22', extraField: 'bar' },
     ];
     fetchSoldItems.mockResolvedValue(soldItems);
     render(<AdminPage />);
     expect(await screen.findByText('Sold Items')).toBeInTheDocument();
+    // Check all table headers
+    for (const key of Object.keys(soldItems[0]).filter(k => k !== 'id')) {
+      expect(await screen.findByText(key)).toBeInTheDocument();
+    }
+    // Check all cell values
     for (const item of soldItems) {
-      expect(await screen.findByText(item.name)).toBeInTheDocument();
-      expect(await screen.findByText(`£${item.price}`)).toBeInTheDocument();
+      for (const key of Object.keys(item).filter(k => k !== 'id')) {
+        expect(await screen.findByText(String(item[key]))).toBeInTheDocument();
+      }
     }
   });
 }); 

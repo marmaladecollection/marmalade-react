@@ -283,25 +283,30 @@ describe('fetchSoldItems', () => {
     jest.clearAllMocks();
   });
 
-  it('should return all items that have a sale record (happy path)', async () => {
+  it('should return all sale fields merged with item fields (happy path)', async () => {
     const mockSales = [
-      { id: 'sale1', itemId: 'item1' },
-      { id: 'sale2', itemId: 'item2' },
+      { id: 'sale1', itemId: 'item1', saleDate: '2024-06-21', customerName: 'Alice', extraField: 'foo' },
+      { id: 'sale2', itemId: 'item2', saleDate: '2024-06-22', customerName: 'Bob', extraField: 'bar' },
     ];
     const mockItems = [
-      { id: 'item1', name: 'Item 1', price: 100 },
-      { id: 'item2', name: 'Item 2', price: 200 },
+      { id: 'item1', name: 'Item 1', price: 100, itemField: 'baz' },
+      { id: 'item2', name: 'Item 2', price: 200, itemField: 'qux' },
       { id: 'item3', name: 'Item 3', price: 300 },
     ];
-    // First getDocs call: sales, second: items
     require('firebase/firestore').getDocs
-      .mockResolvedValueOnce({ docs: mockSales.map(sale => ({ id: sale.id, data: () => ({ itemId: sale.itemId }) })) })
-      .mockResolvedValueOnce({ docs: mockItems.map(item => ({ id: item.id, data: () => ({ name: item.name, price: item.price }) })) });
+      .mockResolvedValueOnce({ docs: mockSales.map(sale => ({ id: sale.id, data: () => ({ ...sale }) })) })
+      .mockResolvedValueOnce({ docs: mockItems.map(item => ({ id: item.id, data: () => ({ ...item }) })) });
     const result = await fetchSoldItems();
     expect(result).toEqual([
-      { id: 'item1', name: 'Item 1', price: 100 },
-      { id: 'item2', name: 'Item 2', price: 200 },
+      { ...mockSales[0], ...mockItems[0] },
+      { ...mockSales[1], ...mockItems[1] },
     ]);
+    // Check that sale fields are present
+    expect(result[0].customerName).toBe('Alice');
+    expect(result[0].saleDate).toBe('2024-06-21');
+    expect(result[0].itemField).toBe('baz');
+    expect(result[1].customerName).toBe('Bob');
+    expect(result[1].itemField).toBe('qux');
   });
 
   it('should return an empty array if there are no sales', async () => {
@@ -311,29 +316,29 @@ describe('fetchSoldItems', () => {
     expect(result).toEqual([]);
   });
 
-  it('should return only items that exist in both collections (ignore missing items)', async () => {
+  it('should return only merged objects for sales with matching items', async () => {
     const mockSales = [
-      { id: 'sale1', itemId: 'item1' },
-      { id: 'sale2', itemId: 'itemX' }, // itemX does not exist
+      { id: 'sale1', itemId: 'item1', saleDate: '2024-06-21' },
+      { id: 'sale2', itemId: 'itemX', saleDate: '2024-06-22' }, // itemX does not exist
     ];
     const mockItems = [
       { id: 'item1', name: 'Item 1', price: 100 },
       { id: 'item2', name: 'Item 2', price: 200 },
     ];
     require('firebase/firestore').getDocs
-      .mockResolvedValueOnce({ docs: mockSales.map(sale => ({ id: sale.id, data: () => ({ itemId: sale.itemId }) })) })
-      .mockResolvedValueOnce({ docs: mockItems.map(item => ({ id: item.id, data: () => ({ name: item.name, price: item.price }) })) });
+      .mockResolvedValueOnce({ docs: mockSales.map(sale => ({ id: sale.id, data: () => ({ ...sale }) })) })
+      .mockResolvedValueOnce({ docs: mockItems.map(item => ({ id: item.id, data: () => ({ ...item }) })) });
     const result = await fetchSoldItems();
     expect(result).toEqual([
-      { id: 'item1', name: 'Item 1', price: 100 },
+      { ...mockSales[0], ...mockItems[0] },
     ]);
   });
 
-  it('should return all items if all are sold', async () => {
+  it('should return all merged objects if all are sold', async () => {
     const mockSales = [
-      { id: 'sale1', itemId: 'item1' },
-      { id: 'sale2', itemId: 'item2' },
-      { id: 'sale3', itemId: 'item3' },
+      { id: 'sale1', itemId: 'item1', saleDate: '2024-06-21' },
+      { id: 'sale2', itemId: 'item2', saleDate: '2024-06-22' },
+      { id: 'sale3', itemId: 'item3', saleDate: '2024-06-23' },
     ];
     const mockItems = [
       { id: 'item1', name: 'Item 1', price: 100 },
@@ -341,10 +346,14 @@ describe('fetchSoldItems', () => {
       { id: 'item3', name: 'Item 3', price: 300 },
     ];
     require('firebase/firestore').getDocs
-      .mockResolvedValueOnce({ docs: mockSales.map(sale => ({ id: sale.id, data: () => ({ itemId: sale.itemId }) })) })
-      .mockResolvedValueOnce({ docs: mockItems.map(item => ({ id: item.id, data: () => ({ name: item.name, price: item.price }) })) });
+      .mockResolvedValueOnce({ docs: mockSales.map(sale => ({ id: sale.id, data: () => ({ ...sale }) })) })
+      .mockResolvedValueOnce({ docs: mockItems.map(item => ({ id: item.id, data: () => ({ ...item }) })) });
     const result = await fetchSoldItems();
-    expect(result).toEqual(mockItems);
+    expect(result).toEqual([
+      { ...mockSales[0], ...mockItems[0] },
+      { ...mockSales[1], ...mockItems[1] },
+      { ...mockSales[2], ...mockItems[2] },
+    ]);
   });
 
   it('should throw and log error if Firestore fails', async () => {

@@ -247,8 +247,12 @@ export const fetchSoldItems = async () => {
     // Fetch the corresponding items
     const itemsSnapshot = await getDocs(collection(db, "item"));
     const items = itemsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    // Return only items that are in the soldItemIds list
-    return items.filter(item => soldItemIds.includes(item.id));
+    // Create a map for quick lookup
+    const itemMap = Object.fromEntries(items.map(item => [item.id, item]));
+    // Return merged sale+item objects for each sale
+    return sales
+      .filter(sale => itemMap[sale.itemId])
+      .map(sale => ({ ...sale, ...itemMap[sale.itemId] }));
   } catch (e) {
     console.error("Error fetching sold items:", e);
     throw e;
