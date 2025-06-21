@@ -14,7 +14,6 @@ export default function AdminPage() {
     <div className={styles.main}>
       <div className={styles.content}>
         <div className={styles.textContainer}>
-          <h1>Admin</h1>
           {items.length > 0 && (
             <>
               <div className={styles.itemListHeading}>Items for Sale</div>
