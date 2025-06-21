@@ -17,14 +17,6 @@ describe('Navigation', () => {
       cy.url().should('include', url);
       if (content) {
         cy.contains(content);
-      } else if (url === '/basket') {
-        cy.get('body').then($body => {
-          if ($body.text().includes('Your bag is currently empty')) {
-            cy.contains('Your bag is currently empty').should('exist');
-          } else {
-            cy.contains('Remove').should('exist');
-          }
-        });
       }
     });
   });

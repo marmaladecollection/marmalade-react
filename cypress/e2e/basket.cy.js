@@ -7,4 +7,10 @@ describe('Basket', () => {
     cy.contains('Remove').click();
     cy.contains('Your bag is currently empty');
   });
+
+  it('should show empty basket message when no items are in the basket', () => {
+    cy.visit('/');
+    cy.contains(/basket|bag/i).click();
+    cy.contains('Your bag is currently empty').should('exist');
+  });
 }); 
