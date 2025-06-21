@@ -1,10 +1,10 @@
 describe('Navigation', () => {
   const pages = [
-    { linkText: /about/i, url: '/about', content: /about/i },
-    { linkText: /contact/i, url: '/contact', content: 'team@marmaladecollection.com' },
-    { linkText: /delivery/i, url: '/delivery', content: /delivery/i },
-    { linkText: /returns/i, url: '/returns', content: /returns/i },
-    { linkText: '[data-testid="bag-count"]', url: '/basket', content: null },
+    { linkText: /about/i, url: '/about', content: 'About Us' },
+    { linkText: /contact/i, url: '/contact', content: "We'd love to hear from you!" },
+    { linkText: /delivery/i, url: '/delivery', content: 'We deliver to the following areas:' },
+    { linkText: /returns/i, url: '/returns', content: 'Returns are accepted within 30 days of purchase.' },
+    { linkText: '[data-testid="bag-count"]', url: '/basket', content: 'Your bag is currently empty' },
   ];
   pages.forEach(({ linkText, url, content }) => {
     it(`should navigate to ${url} page`, () => {
@@ -15,9 +15,7 @@ describe('Navigation', () => {
         cy.contains(linkText).click();
       }
       cy.url().should('include', url);
-      if (content) {
-        cy.contains(content);
-      }
+      cy.contains(content);
     });
   });
 }); 
