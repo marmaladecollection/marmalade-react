@@ -51,6 +51,32 @@ function toTitleCase(str) {
     .replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1));
 }
 
+// Helper to display time since sale
+function timeSince(date) {
+  if (!date) return '';
+  let d;
+  if (typeof date === 'object' && typeof date.seconds === 'number') {
+    d = new Date(date.seconds * 1000);
+  } else if (typeof date === 'string' && !isNaN(Date.parse(date))) {
+    d = new Date(date);
+  } else {
+    return '';
+  }
+  const now = new Date();
+  const seconds = Math.floor((now - d) / 1000);
+  if (seconds < 60) return `${seconds} seconds ago`;
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes} minutes ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} hours ago`;
+  const days = Math.floor(hours / 24);
+  if (days < 30) return `${days} days ago`;
+  const months = Math.floor(days / 30);
+  if (months < 12) return `${months} months ago`;
+  const years = Math.floor(months / 12);
+  return `${years} years ago`;
+}
+
 export default function AdminPage() {
   const [items, setItems] = useState([]);
   const [soldItems, setSoldItems] = useState([]);
@@ -122,31 +148,17 @@ export default function AdminPage() {
                 <div className={styles.itemListHeading}>Sold Items</div>
                 <table className={styles.itemTable}>
                   <colgroup>
-                    {soldKeys.map(key => (
-                      key === 'price' ? (
-                        <col key={key} style={{ width: '24px' }} />
-                      ) :
-                      [
-                        'saleDate',
-                        'customerName',
-                      ].includes(key) ? (
-                        <col key={key} style={{ width: '80px' }} />
-                      ) :
-                      [
-                        'name',
-                        'customerEmail',
-                      ].includes(key) ? (
-                        <col key={key} style={{ width: '96px' }} />
-                      ) :
-                      [
-                        'paymentStatus',
-                        'paymentMethod',
-                      ].includes(key) ? (
-                        <col key={key} style={{ width: '40px' }} />
-                      ) : (
-                        <col key={key} />
-                      )
-                    ))}
+                    {soldKeys.map(key => {
+                      if (key === 'saleDate') return <col key={key} style={{ width: '120px' }} />;
+                      if (key === 'name') return <col key={key} style={{ width: '140px' }} />;
+                      if (key === 'price') return <col key={key} style={{ width: '60px' }} />;
+                      if (key === 'customerName') return <col key={key} style={{ width: '120px' }} />;
+                      if (key === 'customerEmail') return <col key={key} style={{ width: '180px' }} />;
+                      if (key === 'paymentStatus') return <col key={key} style={{ width: '80px' }} />;
+                      if (key === 'paymentMethod') return <col key={key} style={{ width: '80px' }} />;
+                      if (key === 'deliveryAddress') return <col key={key} style={{ width: '200px' }} />;
+                      return <col key={key} />;
+                    })}
                   </colgroup>
                   <thead>
                     <tr>
@@ -184,14 +196,16 @@ export default function AdminPage() {
                             style={key === 'deliveryAddress' ? { whiteSpace: 'pre-line' } : {}}
                           > {
                             key === 'saleDate' && typeof item[key] === 'object' && item[key] !== null && typeof item[key].seconds === 'number'
-                              ? formatSaleDate(item[key])
+                              ? <span>{formatSaleDate(item[key])}<br /><span className={styles.saleDateRelative}>{timeSince(item[key])}</span></span>
+                              : key === 'saleDate' && typeof item[key] === 'string'
+                                ? <span>{formatSaleDate(item[key])}<br /><span className={styles.saleDateRelative}>{timeSince(item[key])}</span></span>
                               : key === 'deliveryAddress' && typeof item[key] === 'object' && item[key] !== null
                                 ? formatDeliveryAddress(item[key])
-                                : key === 'price' && typeof item[key] !== 'object' && item[key] !== undefined && item[key] !== null
-                                  ? `£${item[key]}`
-                                  : typeof item[key] === 'object'
-                                    ? JSON.stringify(item[key])
-                                    : item[key]
+                              : key === 'price' && typeof item[key] !== 'object' && item[key] !== undefined && item[key] !== null
+                                ? `£${item[key]}`
+                              : typeof item[key] === 'object'
+                                ? JSON.stringify(item[key])
+                                : item[key]
                           } </td>
                         ))}
                       </tr>

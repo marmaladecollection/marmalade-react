@@ -1,0 +1,26 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# No Inline Styles Rule
+
+Never use inline styles in JS/JSX components. Always add styles to the relevant SCSS or CSS stylesheet instead.
+
+For example, instead of:
+```jsx
+<span style={{fontSize: '0.7em', color: '#888'}}>text</span>
+```
+add a class in the stylesheet (e.g., [src/app/admin/page.module.scss](mdc:src/app/admin/page.module.scss)):
+```scss
+.saleDateRelative {
+  font-size: 0.7em;
+  color: #888;
+}
+```
+and use it in the component:
+```jsx
+<span className={styles.saleDateRelative}>text</span>
+```
+
+This ensures consistent, maintainable, and themeable styling across the project.
