@@ -3,6 +3,6 @@ const { defineConfig } = require('cypress');
 module.exports = defineConfig({
   e2e: {
     specPattern: 'cypress/e2e/**/*.cy.js',
-    baseUrl: 'https://www.marmaladecollection.com', // Now points to deployed app
+    baseUrl: 'http://localhost:3000', // Default to local dev server
   },
 }); 
