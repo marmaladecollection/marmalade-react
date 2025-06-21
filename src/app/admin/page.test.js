@@ -51,11 +51,12 @@ describe('AdminPage', () => {
     jest.clearAllMocks();
   });
 
-  it('renders without crashing', () => {
+  it('renders without crashing', async () => {
     fetchAllItems.mockImplementation((setItems) => setItems([]));
     fetchSoldItemDetails.mockResolvedValue([]);
     render(<AdminPage />);
-    // No heading expected
+    // Wait for effects to flush (e.g., by waiting for a known element)
+    await screen.findByText('Items for Sale');
   });
 
   it('shows the correct items in the table', async () => {
