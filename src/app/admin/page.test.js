@@ -52,7 +52,11 @@ describe('AdminPage', () => {
   });
 
   it('renders without crashing', async () => {
-    fetchAllItems.mockImplementation((setItems) => setItems([]));
+    // Provide at least one item so the heading is rendered
+    const mockItems = [
+      { id: '1', name: 'Item 1', price: 100 }
+    ];
+    fetchAllItems.mockImplementation((setItems) => setItems(mockItems));
     fetchSoldItemDetails.mockResolvedValue([]);
     render(<AdminPage />);
     // Wait for effects to flush (e.g., by waiting for a known element)
