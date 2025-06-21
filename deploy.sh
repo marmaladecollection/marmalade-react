@@ -102,6 +102,16 @@ if [ $RSYNC_EXIT_CODE -eq 0 ]; then
     
     if curl -s --max-time 10 -o /dev/null -w "%{http_code}" https://www.marmaladecollection.com | grep -q "200"; then
         echo "✅ Site is accessible at https://www.marmaladecollection.com"
+        
+        # Run Cypress tests against deployed production site
+        echo "Running Cypress tests against deployed production site..."
+        npx cypress run --config baseUrl=https://www.marmaladecollection.com
+        CYPRESS_PROD_EXIT_CODE=$?
+        if [ $CYPRESS_PROD_EXIT_CODE -ne 0 ]; then
+            echo "❌ Cypress tests failed against production site. Aborting deployment."
+            exit 1
+        fi
+        echo "✅ All Cypress tests passed against production site"
     else
         echo "⚠️ Warning: Site may not be responding correctly at https://www.marmaladecollection.com"
         echo "Checking HTTP status:"
