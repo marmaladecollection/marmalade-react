@@ -1,0 +1,1 @@
+// No contact form test: contact page only provides an email link. 
