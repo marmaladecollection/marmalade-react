@@ -22,18 +22,17 @@ export default function DeliveryPage() {
           </p>
         </div>
 
+        <p>
+          Live outside these areas? Email us at{' '}
+          <a href="mailto:team@marmaladecollection.com" className={styles.email}>
+            team@marmaladecollection.com
+          </a> and we may be able to arrange something for you.
+        </p>
+
         <h2>Delivery Charges</h2>
         <p>
           Standard Delivery: £20<br />
           Free delivery on orders over £150
-        </p>
-
-        <h2>Need Help?</h2>
-        <p>
-          If you have any questions about your delivery, please don't hesitate to contact us at{' '}
-          <a href="mailto:team@marmaladecollection.com" className={styles.email}>
-            team@marmaladecollection.com
-          </a>
         </p>
       </div>
     </main>

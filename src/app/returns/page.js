@@ -6,11 +6,14 @@ export default function ReturnsPage() {
       <div className={styles.content}>
         <h1>Returns & Refunds</h1>
         <p>
-          At Marmalade, we want you to be completely satisfied with your purchase. 
-          We understand that sometimes items may need to be returned or exchanged. 
+          At Marmalade, we want you to be completely happy with your item. 
+          We understand that sometimes items may need to be returned. 
         </p>
         <p>
-        Returns are accepted within 30 days of purchase.
+          We can arrange collection of your item for you.
+        </p>
+        <p>
+          Returns are accepted within 20 days of delivery.
         </p>
 
           <h2>Questions?</h2>
