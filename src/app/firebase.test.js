@@ -425,7 +425,10 @@ describe('fetchSoldItems', () => {
     firestoreMocks.setDoc = jest.fn();
     const { fetchSoldItems } = require('./firebase');
     firestoreMocks.getDocs.mockImplementation(() => { throw new Error('Firestore error'); });
+    const originalError = console.error;
+    console.error = jest.fn();
     await expect(fetchSoldItems()).rejects.toThrow('Firestore error');
+    console.error = originalError;
   });
 });
 
@@ -539,6 +542,9 @@ describe('fetchSoldItemDetails', () => {
     firestoreMocks.setDoc = jest.fn();
     const { fetchSoldItemDetails } = require('./firebase');
     firestoreMocks.getDocs.mockImplementation(() => { throw new Error('Firestore error'); });
+    const originalError = console.error;
+    console.error = jest.fn();
     await expect(fetchSoldItemDetails()).rejects.toThrow('Firestore error');
+    console.error = originalError;
   });
 }); 

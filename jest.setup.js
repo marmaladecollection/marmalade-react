@@ -31,4 +31,9 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
   })),
+});
+
+// Suppress all console.log output during tests
+beforeAll(() => {
+  jest.spyOn(console, 'log').mockImplementation(() => {});
 }); 
