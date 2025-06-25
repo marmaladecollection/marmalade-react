@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
+import SalesTable from '../components/SalesTable';
 import { fetchAllItems, fetchSoldItemDetails } from '../firebase';
 import styles from './page.module.scss';
-import SalesTable from '../components/SalesTable';
 
 export default function AdminPage() {
   const [items, setItems] = useState([]);
@@ -19,7 +19,12 @@ export default function AdminPage() {
         <div className={styles.textContainer}>
           {/* Sold Items table on top */}
           <div className={styles.tableContainer + ' ' + styles['tableContainer--large-gap']}>
-            <SalesTable soldItems={soldItems} heading="Sold Items" styles={styles} />
+            <div className={styles.itemListHeading}>Sold Items</div>
+            {soldItems.length > 0 ? (
+              <SalesTable soldItems={soldItems} styles={styles} />
+            ) : (
+              <div className={styles.noSales}>No sales yet</div>
+            )}
           </div>
           {/* Items for Sale table below */}
           <div className={styles.tableContainer}>
