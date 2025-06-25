@@ -74,7 +74,7 @@ export default function DeliveryAddressForm({ onSubmit }) {
             required
           />
         </div>
-        {addressError && <div className={styles.error}>{addressError}</div>}
+        {addressError && <div id="address-error" className={styles.error}>{addressError}</div>}
         <button type="submit" className={styles.submitButton}>
           Continue to Payment
         </button>

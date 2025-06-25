@@ -19,12 +19,7 @@ export default function AdminPage() {
         <div className={styles.textContainer}>
           {/* Sold Items table on top */}
           <div className={styles.tableContainer + ' ' + styles['tableContainer--large-gap']}>
-            <div className={styles.itemListHeading}>Sold Items</div>
-            {soldItems.length > 0 ? (
-              <SalesTable soldItems={soldItems} styles={styles} />
-            ) : (
-              <div className={styles.noSales}>No sales yet</div>
-            )}
+            <SalesTable soldItems={soldItems} heading="Sold Items" styles={styles} />
           </div>
           {/* Items for Sale table below */}
           <div className={styles.tableContainer}>

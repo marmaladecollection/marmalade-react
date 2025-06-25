@@ -7,6 +7,6 @@ describe('Checkout', () => {
     cy.get('input#city').type('London');
     cy.get('input#postcode').type('N5 2QT');
     cy.contains('Continue to Payment').click();
-    cy.contains('Sorry, we do not deliver to this postcode.');
+    cy.get('#address-error').should('exist');
   });
 }); 

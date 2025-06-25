@@ -147,49 +147,30 @@ export default function SalesTable({ soldItems, heading, styles = {} }) {
     soldKeys.push('paymentMethod');
   }
 
-  if (!soldItems.length) return null;
-
   return (
     <>
       <div className={styles.itemListHeading}>{heading}</div>
-      <table className={styles.itemTable}>
-        <colgroup>
-          {soldKeys.map(key => {
-            if (key === 'saleDate') return <col key={key} style={{ width: '120px' }} />;
-            if (key === 'name') return <col key={key} style={{ width: '140px' }} />;
-            if (key === 'price') return <col key={key} style={{ width: '60px' }} />;
-            if (key === 'customerName') return <col key={key} style={{ width: '120px' }} />;
-            if (key === 'customerEmail') return <col key={key} style={{ width: '180px' }} />;
-            if (key === 'paymentStatus') return <col key={key} style={{ width: '80px' }} />;
-            if (key === 'paymentMethod') return <col key={key} style={{ width: '80px' }} />;
-            if (key === 'deliveryAddress') return <col key={key} style={{ width: '200px' }} />;
-            return <col key={key} />;
-          })}
-        </colgroup>
-        <thead>
-          <tr>
-            {soldKeys.map(key => (
-              <th
-                key={key}
-                className={[
-                  key === 'customerEmail' ? 'customer-email' : '',
-                  key === 'price' ? 'price' : '',
-                  key === 'saleDate' ? 'sale-date' : '',
-                  key === 'customerName' ? 'customer-name' : '',
-                  key === 'paymentStatus' ? 'payment-status' : '',
-                  key === 'paymentMethod' ? 'payment-method' : '',
-                ].filter(Boolean).join(' ')}
-              >
-                {toTitleCase(key)}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {soldItems.map(item => (
-            <tr key={item.id} className={styles.itemRow}>
-              {soldKeys.map((key, colIdx) => (
-                <td
+      {soldItems.length === 0 ? (
+        <div className={styles.noSales}>No sales yet</div>
+      ) : (
+        <table className={styles.itemTable}>
+          <colgroup>
+            {soldKeys.map(key => {
+              if (key === 'saleDate') return <col key={key} style={{ width: '120px' }} />;
+              if (key === 'name') return <col key={key} style={{ width: '140px' }} />;
+              if (key === 'price') return <col key={key} style={{ width: '60px' }} />;
+              if (key === 'customerName') return <col key={key} style={{ width: '120px' }} />;
+              if (key === 'customerEmail') return <col key={key} style={{ width: '180px' }} />;
+              if (key === 'paymentStatus') return <col key={key} style={{ width: '80px' }} />;
+              if (key === 'paymentMethod') return <col key={key} style={{ width: '80px' }} />;
+              if (key === 'deliveryAddress') return <col key={key} style={{ width: '200px' }} />;
+              return <col key={key} />;
+            })}
+          </colgroup>
+          <thead>
+            <tr>
+              {soldKeys.map(key => (
+                <th
                   key={key}
                   className={[
                     key === 'customerEmail' ? 'customer-email' : '',
@@ -199,25 +180,46 @@ export default function SalesTable({ soldItems, heading, styles = {} }) {
                     key === 'paymentStatus' ? 'payment-status' : '',
                     key === 'paymentMethod' ? 'payment-method' : '',
                   ].filter(Boolean).join(' ')}
-                  style={key === 'deliveryAddress' ? { whiteSpace: 'pre-line' } : {}}
-                > {
-                  key === 'saleDate' && typeof item[key] === 'object' && item[key] !== null && typeof item[key].seconds === 'number'
-                    ? <span>{formatSaleDate(item[key])}<br /><span className={styles.saleDateRelative}>{timeSince(item[key])}{isRecentSale(item[key]) && <><br /><span className={styles.recentSaleBadge}>RECENT SALE</span></>}</span></span>
-                    : key === 'saleDate' && typeof item[key] === 'string'
-                      ? <span>{formatSaleDate(item[key])}<br /><span className={styles.saleDateRelative}>{timeSince(item[key])}{isRecentSale(item[key]) && <><br /><span className={styles.recentSaleBadge}>RECENT SALE</span></>}</span></span>
-                    : key === 'deliveryAddress' && typeof item[key] === 'object' && item[key] !== null
-                      ? formatDeliveryAddress(item[key])
-                    : key === 'price' && typeof item[key] !== 'object' && item[key] !== undefined && item[key] !== null
-                      ? `£${item[key]}`
-                    : typeof item[key] === 'object'
-                      ? JSON.stringify(item[key])
-                      : item[key]
-                } </td>
+                >
+                  {toTitleCase(key)}
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {soldItems.map(item => (
+              <tr key={item.id} className={styles.itemRow}>
+                {soldKeys.map((key, colIdx) => (
+                  <td
+                    key={key}
+                    className={[
+                      key === 'customerEmail' ? 'customer-email' : '',
+                      key === 'price' ? 'price' : '',
+                      key === 'saleDate' ? 'sale-date' : '',
+                      key === 'customerName' ? 'customer-name' : '',
+                      key === 'paymentStatus' ? 'payment-status' : '',
+                      key === 'paymentMethod' ? 'payment-method' : '',
+                    ].filter(Boolean).join(' ')}
+                    style={key === 'deliveryAddress' ? { whiteSpace: 'pre-line' } : {}}
+                  > {
+                    key === 'saleDate' && typeof item[key] === 'object' && item[key] !== null && typeof item[key].seconds === 'number'
+                      ? <span>{formatSaleDate(item[key])}<br /><span className={styles.saleDateRelative}>{timeSince(item[key])}{isRecentSale(item[key]) && <><br /><span className={styles.recentSaleBadge}>RECENT SALE</span></>}</span></span>
+                      : key === 'saleDate' && typeof item[key] === 'string'
+                        ? <span>{formatSaleDate(item[key])}<br /><span className={styles.saleDateRelative}>{timeSince(item[key])}{isRecentSale(item[key]) && <><br /><span className={styles.recentSaleBadge}>RECENT SALE</span></>}</span></span>
+                      : key === 'deliveryAddress' && typeof item[key] === 'object' && item[key] !== null
+                        ? formatDeliveryAddress(item[key])
+                      : key === 'price' && typeof item[key] !== 'object' && item[key] !== undefined && item[key] !== null
+                        ? `£${item[key]}`
+                      : typeof item[key] === 'object'
+                        ? JSON.stringify(item[key])
+                        : item[key]
+                  } </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </>
   );
 }
