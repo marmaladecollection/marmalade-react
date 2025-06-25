@@ -4,13 +4,13 @@ describe('Sales Page Integration Test', () => {
   it('should load the sales page and display the sold items table', () => {
     cy.visit('/sales');
     cy.contains('Sold Items', { timeout: 30000 }).should('exist'); // Wait up to 30s
-    // Table may not be present if there are no sold items
-    cy.get('table').should('have.length.lte', 1);
-    // Only check for headers if table exists
-    cy.get('table').then($tables => {
-      if ($tables.length > 0) {
+    // Pass if either the table is present or the 'No sales yet' message is present
+    cy.get('body').then($body => {
+      if ($body.find('table').length > 0) {
         cy.get('th').contains('Name');
         cy.get('th').contains('Price');
+      } else {
+        cy.contains('No sales yet').should('exist');
       }
     });
   });
