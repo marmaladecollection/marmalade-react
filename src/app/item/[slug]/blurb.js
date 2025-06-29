@@ -1,14 +1,14 @@
 "use client";
 
+import React from 'react';
 import styles from './blurb.module.scss';
 
 function parseTextWithTooltips(text) {
   if (!text) return null;
-  
-  const parts = text.split(/(\[[^|]+\|[^\]]+\])/);
-  
+  // Use '=' as the separator for both splitting and matching
+  const parts = text.split(/(\[[^=]+=[^\]]+\])/);
   return parts.map((part, index) => {
-    const match = part.match(/\[([^|]+)\|([^\]]+)\]/);
+    const match = part.match(/\[([^=]+)=([^\]]+)\]/);
     if (match) {
       const [, text, description] = match;
       return (
@@ -18,7 +18,8 @@ function parseTextWithTooltips(text) {
         </span>
       );
     }
-    return part;
+    // Always return a React element for text
+    return <React.Fragment key={index}>{part}</React.Fragment>;
   });
 }
 
