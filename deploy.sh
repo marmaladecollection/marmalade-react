@@ -77,9 +77,19 @@ RSYNC_EXIT_CODE=$?
 if [ $RSYNC_EXIT_CODE -eq 0 ]; then
     echo "File sync completed successfully."
     
-    # Build and restart application
-    echo "Building application..."
-    sshpass -e ssh root@217.154.9.107 "cd /srv/marmalade && npm run build"
+    # Install dependencies and build application
+    echo "Installing dependencies on server..."
+    sshpass -e ssh root@217.154.9.107 "cd /srv/marmalade && npm cache clean --force && rm -f package-lock.json && rm -rf node_modules/@next/swc-darwin-arm64 node_modules/@next/swc-darwin-x64 && npm install --force --no-audit"
+    INSTALL_SERVER_EXIT_CODE=$?
+    
+    if [ $INSTALL_SERVER_EXIT_CODE -eq 0 ]; then
+        echo "✅ Server dependencies installed successfully"
+        echo "Building application..."
+        sshpass -e ssh root@217.154.9.107 "cd /srv/marmalade && npm run build"
+    else
+        echo "❌ Server dependency installation failed. Skipping build."
+        exit 1
+    fi
     BUILD_EXIT_CODE=$?
     
     if [ $BUILD_EXIT_CODE -eq 0 ]; then
