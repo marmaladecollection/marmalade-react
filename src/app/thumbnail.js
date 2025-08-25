@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import styles from './thumbnail.module.scss';
+import { getCacheBustedSrc } from '../utils/imageCacheBuster';
 
 export default function Thumbnail({ item, allowCycling = false, onImageClick }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -25,7 +26,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick }) 
             await new Promise((resolve, reject) => {
               img.onload = resolve;
               img.onerror = reject;
-              img.src = imagePath;
+              img.src = getCacheBustedSrc(imagePath);
             });
             images.push(imagePath);
             index++;
@@ -56,12 +57,12 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick }) 
     >
       <img
         className={styles.backgroundImage}
-        src={`/images/${item.id}.webp`}
+        src={getCacheBustedSrc(`/images/${item.id}.webp`)}
         alt={item.name}
       />
       <img
         className={styles.overlayImage}
-        src={availableImages[currentImageIndex]}
+        src={getCacheBustedSrc(availableImages[currentImageIndex])}
         alt={item.name}
         onClick={onImageClick ? () => onImageClick(availableImages[currentImageIndex], item.name) : undefined}
       />

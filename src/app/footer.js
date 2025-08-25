@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./footer.module.scss";
+import { getCacheBustedSrc } from "../utils/imageCacheBuster";
 
 export default function Footer() {
   return (
@@ -10,7 +11,7 @@ export default function Footer() {
       <div className={styles.topRow}>
         <Link href="/delivery" className={styles.feature}>
           <Image
-            src="/images/footer/van.png"
+            src={getCacheBustedSrc("/images/footer/van.png")}
             alt="Free Delivery"
             width={60}
             height={30}
@@ -26,7 +27,7 @@ export default function Footer() {
         </Link>
         <Link href="/returns" className={styles.feature}>
           <Image
-            src="/images/footer/returns2.png"
+            src={getCacheBustedSrc("/images/footer/returns2.png")}
             alt="Simple Returns"
             width={60}
             height={30}

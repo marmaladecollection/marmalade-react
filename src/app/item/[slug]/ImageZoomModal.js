@@ -1,6 +1,7 @@
 // Simple modal for image zoom
 import { useEffect } from "react";
 import styles from "./ImageZoomModal.module.scss";
+import { getCacheBustedSrc } from "../../../utils/imageCacheBuster";
 
 export default function ImageZoomModal({ src, onClose }) {
   useEffect(() => {
@@ -14,7 +15,7 @@ export default function ImageZoomModal({ src, onClose }) {
   return (
     <div className={styles.modal} onClick={onClose}>
       <img
-        src={src}
+        src={getCacheBustedSrc(src)}
         className={styles.image}
         onClick={e => e.stopPropagation()}
       />

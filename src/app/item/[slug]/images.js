@@ -1,6 +1,6 @@
 "use client";
 
-import Thumbnail from "@/app/thumbnail";
+import Thumbnail from "../../thumbnail";
 import { useState } from "react";
 import ImageZoomModal from "./ImageZoomModal";
 import styles from "./images.module.scss";

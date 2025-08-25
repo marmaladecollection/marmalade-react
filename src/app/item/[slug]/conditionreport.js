@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import styles from "./conditionreport.module.scss";
 import ImageZoomModal from "./ImageZoomModal";
+import { getCacheBustedSrc } from "../../../utils/imageCacheBuster";
 
 export default function ConditionReport({ item }) {
   const [scratchImages, setScratchImages] = useState([]);
@@ -16,7 +17,7 @@ export default function ConditionReport({ item }) {
       while (true) {
         const path = `/images/${item.id}-scratch-${i}.webp`;
         try {
-          const response = await fetch(path);
+          const response = await fetch(getCacheBustedSrc(path));
           if (response.ok) {
             images.push(path);
             i++;
@@ -62,7 +63,7 @@ export default function ConditionReport({ item }) {
           {scratchImages.map((src, index) => (
             <img
               key={index}
-              src={src}
+              src={getCacheBustedSrc(src)}
               className={styles.scratchImage}
               onClick={() => setZoomSrc(src)}
               style={{ cursor: "zoom-in" }}
@@ -71,7 +72,7 @@ export default function ConditionReport({ item }) {
         </div>
       )}
       {zoomSrc && (
-        <ImageZoomModal src={zoomSrc} onClose={() => setZoomSrc(null)} />
+        <ImageZoomModal src={getCacheBustedSrc(zoomSrc)} onClose={() => setZoomSrc(null)} />
       )}
     </div>
   );
