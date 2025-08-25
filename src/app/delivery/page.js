@@ -6,6 +6,9 @@ export default function DeliveryPage() {
       <div className={styles.content}>
         <h1>Delivery Information</h1>
         <p>
+          We aim to deliver your order within 5 working days.
+        </p>
+        <p>
           We deliver to the following areas:
         </p>
         
