@@ -84,8 +84,10 @@ if [ $RSYNC_EXIT_CODE -eq 0 ]; then
     
     if [ $INSTALL_SERVER_EXIT_CODE -eq 0 ]; then
         echo "✅ Server dependencies installed successfully"
-        echo "Building application..."
-        sshpass -e ssh root@217.154.9.107 "cd /srv/marmalade && npm run build"
+        echo "Setting up production environment..."
+        sshpass -e ssh root@217.154.9.107 "cd /srv/marmalade && cp .env.production .env.local"
+        echo "Building application with production environment..."
+        sshpass -e ssh root@217.154.9.107 "cd /srv/marmalade && NODE_ENV=production npm run build"
     else
         echo "❌ Server dependency installation failed. Skipping build."
         exit 1
@@ -94,8 +96,8 @@ if [ $RSYNC_EXIT_CODE -eq 0 ]; then
     
     if [ $BUILD_EXIT_CODE -eq 0 ]; then
         echo "✅ Build completed successfully"
-        echo "Restarting application with PM2..."
-        sshpass -e ssh root@217.154.9.107 "pm2 restart marmalade"
+        echo "Restarting application with PM2 in production mode..."
+        sshpass -e ssh root@217.154.9.107 "cd /srv/marmalade && NODE_ENV=production pm2 restart marmalade --update-env"
         if [ $? -eq 0 ]; then
             echo "✅ Application restarted successfully"
         else
