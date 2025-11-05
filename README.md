@@ -51,10 +51,17 @@ On IONOS skw@g u-i
 `./deploy.sh`
 
 ## SSL Certificate
-Generate from IONOS every April
-Follow ChatGPT guidance to download correct files
-rsync -a marmalade* root@217.154.9.107:/srv/marmalade/ssl/
-on server: pm2 restart marmalade
+The site uses Let's Encrypt SSL certificates which are configured to auto-renew.
+
+The renewal process is handled by a custom systemd timer (certbot-marmalade.timer) which runs at 6am and 6pm daily with a random delay.
+
+If you need to manually renew the certificate:
+```bash
+ssh root@217.154.9.107
+/usr/local/bin/certbot-renew-marmalade.sh
+```
+
+Certificate renewal logs are stored at `/var/log/certbot-renewal.log`
 
 /srv/marmalade/
 (see IONOS console for details and password)

@@ -19,6 +19,14 @@
     margin-top: 30px;
     margin-bottom: 30px;
     line-height: 2;
+
+    p {
+        margin-bottom: 16px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
 }
 
 .details {

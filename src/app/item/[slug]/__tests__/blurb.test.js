@@ -88,4 +88,81 @@ describe('Blurb Component', () => {
     const dimensionsHeading = screen.getByRole('heading', { name: 'Dimensions' });
     expect(dimensionsHeading).toBeInTheDocument();
   });
+
+  it('renders multiple paragraphs when blurb contains double newlines', () => {
+    const mockItem = {
+      blurb: 'First paragraph with some text.\n\nSecond paragraph with more information.\n\nThird paragraph with final details.',
+      dimensions: 'H 100cm x 70cm'
+    };
+    
+    render(<Blurb item={mockItem} />);
+    
+    // Should create three separate paragraphs
+    const paragraphs = screen.getAllByText((content, element) => {
+      return element?.tagName === 'P' && content.length > 0;
+    });
+    
+    expect(paragraphs).toHaveLength(3);
+    expect(paragraphs[0]).toHaveTextContent('First paragraph with some text.');
+    expect(paragraphs[1]).toHaveTextContent('Second paragraph with more information.');
+    expect(paragraphs[2]).toHaveTextContent('Third paragraph with final details.');
+  });
+
+  it('renders multiple paragraphs with tooltips preserved', () => {
+    const mockItem = {
+      blurb: 'First paragraph with [George III=Historical info] reference.\n\nSecond paragraph with [mahogany=Wood description] details.',
+      dimensions: 'H 100cm x 70cm'
+    };
+    
+    render(<Blurb item={mockItem} />);
+    
+    // Should have two paragraphs
+    const paragraphs = screen.getAllByText((content, element) => {
+      return element?.tagName === 'P' && content.length > 0;
+    });
+    expect(paragraphs).toHaveLength(2);
+    
+    // Tooltips should still work in each paragraph
+    const georgeTooltip = screen.getByText('George III');
+    expect(georgeTooltip).toBeInTheDocument();
+    expect(georgeTooltip.querySelector('span')).toHaveTextContent('Historical info');
+    
+    const mahoganyTooltip = screen.getByText('mahogany');
+    expect(mahoganyTooltip).toBeInTheDocument();
+    expect(mahoganyTooltip.querySelector('span')).toHaveTextContent('Wood description');
+  });
+
+  it('handles single newlines as regular text without creating paragraph breaks', () => {
+    const mockItem = {
+      blurb: 'Single line break\nshould not create new paragraph.',
+      dimensions: 'H 100cm x 70cm'
+    };
+    
+    render(<Blurb item={mockItem} />);
+    
+    // Should only have one paragraph since we only use single newline
+    const paragraphs = screen.getAllByText((content, element) => {
+      return element?.tagName === 'P' && content.length > 0;
+    });
+    
+    expect(paragraphs).toHaveLength(1);
+    expect(paragraphs[0]).toHaveTextContent('Single line break should not create new paragraph.');
+  });
+
+  it('trims whitespace from paragraphs', () => {
+    const mockItem = {
+      blurb: '  First paragraph with leading/trailing spaces  \n\n  Second paragraph also with spaces  ',
+      dimensions: 'H 100cm x 70cm'
+    };
+    
+    render(<Blurb item={mockItem} />);
+    
+    const paragraphs = screen.getAllByText((content, element) => {
+      return element?.tagName === 'P' && content.length > 0;
+    });
+    
+    expect(paragraphs).toHaveLength(2);
+    expect(paragraphs[0]).toHaveTextContent('First paragraph with leading/trailing spaces');
+    expect(paragraphs[1]).toHaveTextContent('Second paragraph also with spaces');
+  });
 }); 

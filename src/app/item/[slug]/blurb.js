@@ -23,12 +23,23 @@ function parseTextWithTooltips(text) {
   });
 }
 
+  function parseTextWithParagraphs(text) {
+  if (!text) return null;
+  
+  // Split on double newlines to create paragraphs
+  const paragraphs = text.split(/\n\n+/);
+  
+  return paragraphs.map((paragraph, index) => (
+    <p key={index}>
+      {parseTextWithTooltips(paragraph.trim())}
+    </p>
+  ));
+}
+
 export default function Blurb({ item }) {
   return (
     <div className={styles.productBlurb}>
-      <p>
-        {parseTextWithTooltips(item.blurb)}
-      </p>
+      {parseTextWithParagraphs(item.blurb)}
       <div className={styles.details}>
         <h4>Dimensions</h4>
         {item.dimensions}
