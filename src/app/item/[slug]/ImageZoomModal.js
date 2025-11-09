@@ -1,7 +1,7 @@
 // Simple modal for image zoom
 import { useEffect } from "react";
+import Image from "next/image";
 import styles from "./ImageZoomModal.module.scss";
-import { getCacheBustedSrc } from "../../../utils/imageCacheBuster";
 
 export default function ImageZoomModal({ src, onClose }) {
   useEffect(() => {
@@ -14,11 +14,17 @@ export default function ImageZoomModal({ src, onClose }) {
 
   return (
     <div className={styles.modal} onClick={onClose}>
-      <img
-        src={getCacheBustedSrc(src)}
-        className={styles.image}
-        onClick={e => e.stopPropagation()}
-      />
+      <div className={styles.imageContainer} onClick={e => e.stopPropagation()}>
+        <Image
+          src={src}
+          alt="Zoomed view"
+          className={styles.image}
+          fill
+          sizes="100vw"
+          quality={95}
+          priority
+        />
+      </div>
       <button
         className={styles.close}
         aria-label="Close zoom"

@@ -41,9 +41,9 @@ export default function Gallery({ items }) {
   return (
     <main>
       <div className={styles.gallery}>
-        {items.map((item) => (
+        {items.map((item, index) => (
           <div key={item.name} className={styles.item}>
-            <Item item={item} />
+            <Item item={item} priority={index < 4} />
           </div>
         ))}
       </div>

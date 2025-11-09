@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import styles from "./conditionreport.module.scss";
 import ImageZoomModal from "./ImageZoomModal";
-import { getCacheBustedSrc } from "../../../utils/imageCacheBuster";
 
 export default function ConditionReport({ item }) {
   const [scratchImages, setScratchImages] = useState([]);
@@ -17,7 +17,7 @@ export default function ConditionReport({ item }) {
       while (true) {
         const path = `/images/${item.id}-scratch-${i}.webp`;
         try {
-          const response = await fetch(getCacheBustedSrc(path));
+          const response = await fetch(path);
           if (response.ok) {
             images.push(path);
             i++;
@@ -61,18 +61,22 @@ export default function ConditionReport({ item }) {
       {scratchImages.length > 0 && (
         <div className={styles.scratchGallery}>
           {scratchImages.map((src, index) => (
-            <img
-              key={index}
-              src={getCacheBustedSrc(src)}
-              className={styles.scratchImage}
-              onClick={() => setZoomSrc(src)}
-              style={{ cursor: "zoom-in" }}
-            />
+            <div key={index} className={styles.scratchImageWrapper}>
+              <Image
+                src={src}
+                alt={`Condition detail ${index + 1}`}
+                className={styles.scratchImage}
+                fill
+                sizes="200px"
+                onClick={() => setZoomSrc(src)}
+                style={{ cursor: "zoom-in" }}
+              />
+            </div>
           ))}
         </div>
       )}
       {zoomSrc && (
-        <ImageZoomModal src={getCacheBustedSrc(zoomSrc)} onClose={() => setZoomSrc(null)} />
+        <ImageZoomModal src={zoomSrc} onClose={() => setZoomSrc(null)} />
       )}
     </div>
   );

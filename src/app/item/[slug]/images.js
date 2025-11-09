@@ -22,6 +22,7 @@ export default function Images({ item }) {
         item={item}
         allowCycling={true}
         onImageClick={handleZoom}
+        priority={true}
       />
       {zoomSrc && (
         <ImageZoomModal src={zoomSrc} onClose={handleCloseZoom} />

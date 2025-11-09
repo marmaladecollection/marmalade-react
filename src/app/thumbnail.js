@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import styles from './thumbnail.module.scss';
-import { getCacheBustedSrc } from '../utils/imageCacheBuster';
 
-export default function Thumbnail({ item, allowCycling = false, onImageClick }) {
+export default function Thumbnail({ item, allowCycling = false, onImageClick, priority = false }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [availableImages, setAvailableImages] = useState([]);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
@@ -23,11 +23,11 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick }) 
           const imagePath = `/images/${item.id}-${index}.webp`;
           try {
             // Try to load the image
-            const img = new Image();
+            const img = new window.Image();
             await new Promise((resolve, reject) => {
               img.onload = resolve;
               img.onerror = reject;
-              img.src = getCacheBustedSrc(imagePath);
+              img.src = imagePath;
             });
             images.push(imagePath);
             index++;
@@ -54,23 +54,39 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick }) 
   };
 
   return (
-    <div className={styles.container}
-    >
+    <div className={styles.container}>
       {!isImageLoaded && (
         <div className={styles.skeleton} />
       )}
-      <img
+      <Image
         className={styles.backgroundImage}
-        src={getCacheBustedSrc(`/images/${item.id}.webp`)}
+        src={`/images/${item.id}.webp`}
         alt={item.name}
+        width={350}
+        height={470}
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        quality={90}
+        priority={priority}
         onLoad={() => setIsImageLoaded(true)}
+        style={{ width: '100%', height: 'auto' }}
       />
-      <img
+      <Image
         className={styles.overlayImage}
-        src={getCacheBustedSrc(availableImages[currentImageIndex])}
+        src={availableImages[currentImageIndex] || `/images/${item.id}.webp`}
         alt={item.name}
+        width={350}
+        height={470}
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        quality={90}
+        priority={priority}
         onClick={onImageClick ? () => onImageClick(availableImages[currentImageIndex], item.name) : undefined}
-        style={{ opacity: isImageLoaded ? 1 : 0 }}
+        style={{ 
+          opacity: isImageLoaded ? 1 : 0,
+          width: 'auto',
+          height: 'auto',
+          maxWidth: '100%',
+          maxHeight: '100%'
+        }}
       />
       {allowCycling && availableImages.length > 1 && (
         <>
