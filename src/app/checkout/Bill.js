@@ -1,6 +1,7 @@
 "use client";
 
 import { useMarmaladeContext } from '../context/MarmaladeContext';
+import { formatPrice } from '../../utils/formatPrice';
 import Thumbnail from '../thumbnail';
 import styles from './Bill.module.scss';
 
@@ -14,7 +15,7 @@ export default function Bill() {
           <div key={item.id} className={styles.item}>
             <Thumbnail item={item} />
             <span className={styles.itemName}>{item.name}</span>
-            <span className={styles.itemPrice}>£{item.price}</span>
+            <span className={styles.itemPrice}>{formatPrice(item.price)}</span>
           </div>
         ))}
       </div>
@@ -25,7 +26,7 @@ export default function Bill() {
         </div>
         <div className={styles.totalRow}>
           <h3>Total</h3>
-          <h3>£{basketItems.reduce((sum, item) => sum + Number(item.price), 0)}</h3>
+          <h3>{formatPrice(basketItems.reduce((sum, item) => sum + Number(item.price), 0))}</h3>
         </div>
       </div>
     </div>

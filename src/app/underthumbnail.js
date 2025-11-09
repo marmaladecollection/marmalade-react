@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useMarmaladeContext } from "./context/MarmaladeContext";
+import { formatPrice } from "../utils/formatPrice";
 import styles from "./underthumbnail.module.scss";
 
 export default function UnderThumbnail({ item }) {
@@ -20,7 +21,7 @@ export default function UnderThumbnail({ item }) {
   return (
     <div className={styles.main}>
       <span>{item.name}</span>
-      <span>£{item.price}</span>
+      <span>{formatPrice(item.price)}</span>
       <a 
         className={`${styles.save} ${isInBasket ? styles.disabled : ''}`} 
         onClick={add}

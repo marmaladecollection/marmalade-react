@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import SalesTable from '../components/SalesTable';
 import { fetchAllItems, fetchSoldItemDetails } from '../firebase';
+import { formatPrice } from '../../utils/formatPrice';
 import styles from './page.module.scss';
 
 export default function AdminPage() {
@@ -37,7 +38,7 @@ export default function AdminPage() {
                     {items.map(item => (
                       <tr key={item.id} className={styles.itemRow}>
                         <td>{item.name}</td>
-                        <td>£{item.price}</td>
+                        <td>{formatPrice(item.price)}</td>
                       </tr>
                     ))}
                   </tbody>

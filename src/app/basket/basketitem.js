@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMarmaladeContext } from "../context/MarmaladeContext";
+import { formatPrice } from "../../utils/formatPrice";
 import Thumbnail from "../thumbnail";
 import styles from "./basketitem.module.scss";
 
@@ -19,7 +20,7 @@ export default function BasketItem({ item }) {
           <button className={styles.remove} onClick={() => removeFromBasket(item.id)}>Remove</button>
         </div>
       </div>
-      <div className={styles.price}>£{item.price}</div>        
+      <div className={styles.price}>{formatPrice(item.price)}</div>        
     </div>
   );
 }

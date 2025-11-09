@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { formatPrice } from '../../utils/formatPrice';
 
 // Shared component for rendering sold items tables for both admin and sales pages
 // Accepts soldItems, heading, and styles as props
@@ -209,7 +210,7 @@ export default function SalesTable({ soldItems, heading, styles = {} }) {
                       : key === 'deliveryAddress' && typeof item[key] === 'object' && item[key] !== null
                         ? formatDeliveryAddress(item[key])
                       : key === 'price' && typeof item[key] !== 'object' && item[key] !== undefined && item[key] !== null
-                        ? `£${item[key]}`
+                        ? formatPrice(item[key])
                       : typeof item[key] === 'object'
                         ? JSON.stringify(item[key])
                         : item[key]

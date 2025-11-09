@@ -4,6 +4,7 @@ import { EmbeddedCheckout, EmbeddedCheckoutProvider } from '@stripe/react-stripe
 import { loadStripe } from '@stripe/stripe-js';
 import { useEffect, useState } from 'react';
 import { useMarmaladeContext } from '../context/MarmaladeContext';
+import { formatPrice } from '../../utils/formatPrice';
 import { sellItem } from '../firebase';
 import DeliveryAddressForm from './DeliveryAddressForm';
 import PaymentSuccess from './PaymentSuccess';
@@ -170,7 +171,7 @@ export default function ({ onPaymentSuccess }) {
 
               // FIX: Ensure item.price is treated as a number
               const totalAmount = saleData.items.reduce((sum, item) => sum + Number(item.price), 0);
-              const itemsList = saleData.items.map(item => `- ${item.name} (£${item.price})`).join('\n');
+              const itemsList = saleData.items.map(item => `- ${item.name} (${formatPrice(item.price)})`).join('\n');
             
               try {
                 console.log('[Email Flow] Sending seller notification email');
