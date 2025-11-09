@@ -3,7 +3,7 @@
 .page {
     @include common.spaced-down;
     align-items: center;
-    height: calc(100vh - 250px);
+    padding: 60px 0;
 }
 
 .emptyMessage {
