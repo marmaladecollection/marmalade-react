@@ -1,16 +1,16 @@
-.divider {
+@mixin divider {
   border-bottom: 1px solid #ebebeb;
 }
 
-.top-divider {
+@mixin top-divider {
   border-top: 1px solid #ebebeb;
 }
 
-.left-divider {
+@mixin left-divider {
   border-left: 1px solid #ebebeb;
 }
 
-.right-divider {
+@mixin right-divider {
   border-right: 1px solid #ebebeb;
 }
 
@@ -51,19 +51,19 @@ $breakpoints: (
   }
 }
 
-.spaced-across {
+@mixin spaced-across {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
 
-.spaced-down {
+@mixin spaced-down {
   display: flex;
   flex-direction: column;
 }
 
-.button {
+@mixin button {
   letter-spacing: 2px;
   border-radius: 3px;
   text-transform: uppercase;
@@ -71,7 +71,7 @@ $breakpoints: (
   cursor: pointer;
 }
 
-.underline-button {
+@mixin underline-button {
   text-decoration: underline;
   text-underline-offset: 8px;
   border: none;
@@ -81,7 +81,7 @@ $breakpoints: (
 }
 
 // Common heading styles
-.heading1 {
+@mixin heading1 {
   font-size: 1.7rem;
   margin-bottom: 10px;
 
@@ -91,7 +91,7 @@ $breakpoints: (
   }
 }
 
-.heading2 {
+@mixin heading2 {
   font-size: 1.3rem;
   margin-top: 0px;
   margin-bottom: 0px;
@@ -101,7 +101,7 @@ $breakpoints: (
   }
 }
 
-.paragraph {
+@mixin paragraph {
   font-size: 1.2rem;
   line-height: 2;
 
@@ -111,7 +111,7 @@ $breakpoints: (
   }
 }
 
-.email {
+@mixin email {
   color: #000;
   text-decoration: underline;
   text-underline-offset: 4px;

@@ -1,19 +1,19 @@
 @use '../common.scss' as common;
 
 .main {
-  @extend common, .spaced-down !optional;
+  @include common.spaced-down;
   margin: 0 60px;
   padding: 10px;
 
   h1 {
-    @extend common, .heading1 !optional
+    @include common.heading1;
   }
   h2 {
-    @extend common, .heading2 !optional;
+    @include common.heading2;
     margin-bottom: -5px !important;
   }
   p {
-    @extend common, .paragraph !optional;
+    @include common.paragraph;
     padding-top: 0px;
   }
   
@@ -23,14 +23,14 @@
 }
 
 .content {
-  @extend common, .spaced-down !optional;
+  @include common.spaced-down;
   max-width: 800px;
   margin: 0 auto;
   gap: 30px;
 }
 
 .deliveryAreas {
-  @extend common, .spaced-down !optional;
+  @include common.spaced-down;
   gap: 20px;
 
 
@@ -81,6 +81,25 @@
   &:hover {
     color: #666;
   }
+}
+
+.postcodesSection {
+  margin-top: 30px;
+  
+  h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 14px;
+    text-transform: none;
+  }
+}
+
+.postcodes {
+  font-size: 0.9rem !important;
+  color: #888 !important;
+  line-height: 1.6 !important;
+  margin-top: 5px;
 }
 
 

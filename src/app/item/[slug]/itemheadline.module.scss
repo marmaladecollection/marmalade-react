@@ -1,8 +1,8 @@
 @use '../../common.scss' as common;
 
 .summary {
-    @extend common, .spaced-down !optional;
-    @extend common, .divider !optional;
+    @include common.spaced-down;
+    @include common.divider;
 
     align-items: flex-start;
     padding-bottom: 20px;

@@ -46,7 +46,7 @@
 }
 
 .submitButton {
-  @extend .button;
+  @include common.button;
   border: 1px solid black;
   background-color: black;
   color: white;

@@ -1,7 +1,7 @@
 @use 'common.scss' as common;
 
 #topBar {
-    @extend common, .divider !optional;
+    @include common.divider;
     position: relative;
     padding: 16px;
     margin-bottom: 40px;

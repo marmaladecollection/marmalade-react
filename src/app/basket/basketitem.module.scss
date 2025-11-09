@@ -1,7 +1,7 @@
 @use '../common.scss' as common;
 
 .page {
-    @extend common, .spaced-across !optional;
+    @include common.spaced-across;
     align-items: flex-start;
     padding: 20px 0;
     margin-right: 20px; 
@@ -9,7 +9,7 @@
 }
 
 .leftSection {
-    @extend common, .spaced-across !optional;
+    @include common.spaced-across;
     align-items: flex-start;
     gap: 20px;
 }
@@ -30,7 +30,7 @@
 }
 
 .remove {
-    @extend common, .underline-button !optional;
+    @include common.underline-button;
     font-size: smaller;
     font-family: var(--font-ss);
     margin-top: 20px;
@@ -38,7 +38,7 @@
 }
 
 .details {
-    @extend common, .spaced-down !optional;
+    @include common.spaced-down;
     align-items: flex-start;
 }
 

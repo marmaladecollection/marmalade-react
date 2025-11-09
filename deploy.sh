@@ -12,6 +12,18 @@ fi
 
 echo "Starting deployment..."
 
+# Kill any processes using port 3000
+echo "Checking for processes on port 3000..."
+PORT_3000_PIDS=$(lsof -ti:3000 2>/dev/null)
+if [ ! -z "$PORT_3000_PIDS" ]; then
+    echo "Found processes on port 3000: $PORT_3000_PIDS"
+    echo "Killing processes on port 3000..."
+    kill -9 $PORT_3000_PIDS 2>/dev/null
+    echo "✅ Port 3000 cleared"
+else
+    echo "✅ Port 3000 is already free"
+fi
+
 # Install dependencies
 echo "Installing dependencies..."
 npm install

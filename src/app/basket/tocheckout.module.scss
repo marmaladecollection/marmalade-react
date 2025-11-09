@@ -1,12 +1,12 @@
 @use '../common.scss' as common;
 
 .page {
-    @extend common, .spaced-down !optional;
+    @include common.spaced-down;
     margin-bottom: 40px;
 }
 
 .buttons {
-    @extend common, .spaced-across !optional;
+    @include common.spaced-across;
     margin: 50px 0;
     @include common.mobile {
         margin: 20px 0;
@@ -14,7 +14,7 @@
 }
 
 .checkout {
-    @extend common, .button !optional;
+    @include common.button;
     border: 1px solid black;
     background-color: black;
     color: white;
@@ -26,7 +26,7 @@
 }
 
 .paymentMethods {
-    @extend common, .spaced-down !optional;
+    @include common.spaced-down;
     font-size: smaller;
     font-family: var(--font-s);
     display: flex;
@@ -35,7 +35,7 @@
 }
 
 .paymentSymbols {
-    @extend common, .spaced-across !optional;
+    @include common.spaced-across;
     justify-content: center;
     gap: 10px;
     align-items: center;

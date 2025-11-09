@@ -1,7 +1,7 @@
 @use '../../common.scss' as common;
 
 .conditionReport {
-  @extend common, .top-divider !optional;
+  @include common.top-divider;
 
   padding-top: 50px;
   font-family: var(--font-ss);

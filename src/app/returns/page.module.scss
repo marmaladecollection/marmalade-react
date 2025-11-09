@@ -2,17 +2,17 @@
 
 .main {
   margin: 0 60px;
-  @extend common, .spaced-down !optional;
+  @include common.spaced-down;
   gap: 20px;
 
   h1 {
-    @extend common, .heading1 !optional
+    @include common.heading1;
   }
   h2 {
-    @extend common, .heading2 !optional;
+    @include common.heading2;
   }
   p {
-    @extend common, .paragraph !optional;
+    @include common.paragraph;
   }
 
   @include common.mobile {
@@ -22,7 +22,7 @@
 }
 
 .content {
-  @extend common, .spaced-down !optional;
+  @include common.spaced-down;
   max-width: 800px;
   margin: 0 auto;
   gap: 30px;

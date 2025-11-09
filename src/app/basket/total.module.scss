@@ -1,7 +1,7 @@
 @use '../common.scss' as common;
 
 .page {
-    @extend .spaced-across;
+    @include common.spaced-across;
     font-family: var(--font-s);
 
 }

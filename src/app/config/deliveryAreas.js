@@ -25,52 +25,39 @@ export const DELIVERY_AREAS = {
     description: 'Areas within 20 miles of Brightling, East Sussex',
     postcodes: [
       // East Sussex
-      'TN32', // Robertsbridge
-      'TN33', // Battle
-      'TN34', // Hastings
-      'TN35', // St Leonards
-      'TN36', // Winchelsea
-      'TN37', // St Leonards
-      'TN38', // St Leonards
-      'TN39', // Bexhill
-      'TN40', // Bexhill
-      'TN31', // Rye
-      'TN21', // Heathfield
-      'TN20', // Mayfield
-      'TN19', // Etchingham
-      'TN5',  // Wadhurst
-      'TN6',  // Crowborough
-      'TN7',  // Hartfield
-      'TN8',  // Edenbridge
-      'TN22', // Uckfield
       'BN7',  // Lewes
       'BN8',  // Lewes
-      'BN26', // Hailsham
-      'BN27', // Hailsham
+      'BN9',  // Newhaven
+      'BN10', // Peacehaven
       'BN20', // Eastbourne
       'BN21', // Eastbourne
       'BN22', // Eastbourne
       'BN23', // Eastbourne
       'BN24', // Eastbourne
       'BN25', // Eastbourne
+      'BN26', // Hailsham
+      'BN27', // Hailsham
+      'TN19', // Burwash, Etchingham
+      'TN20', // Mayfield
+      'TN21', // Heathfield
+      'TN31', // Rye area
+      'TN32', // Robertsbridge, Brightling
+      'TN33', // Battle
+      'TN34', // Hastings
+      'TN35', // St Leonards
+      'TN37', // St Leonards
+      'TN38', // St Leonards
+      'TN39', // Bexhill
+      'TN40', // Bexhill
       // Kent
-      'TN23', // Ashford
-      'TN24', // Ashford
-      'TN25', // Ashford
-      'TN26', // Ashford
-      'TN27', // Ashford
-      'TN28', // New Romney
-      'TN29', // Dymchurch
-      'TN30', // Tenterden
-      'TN17', // Cranbrook
-      'TN18', // Hawkhurst
-      'TN12', // Tonbridge
-      'TN11', // Tonbridge
-      'TN10', // Tonbridge
-      'TN9',  // Tonbridge
+      'TN1',  // Tunbridge Wells
       'TN2',  // Tunbridge Wells
       'TN3',  // Tunbridge Wells
       'TN4',  // Tunbridge Wells
+      'TN5',  // Wadhurst, Ticehurst
+      'TN6',  // Crowborough
+      'TN17', // Cranbrook
+      'TN18', // Hawkhurst
     ]
   }
 };

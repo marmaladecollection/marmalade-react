@@ -1,7 +1,7 @@
 @use '../../common.scss' as common;
 
 .mainBit {
-    @extend common, .spaced-across !optional;
+    @include common.spaced-across;
     align-items: flex-start;
     margin-bottom: 60px;
 
@@ -20,7 +20,7 @@
 }
 
 .actions {
-    @extend common, .spaced-down !optional;
+    @include common.spaced-down;
     margin-left: 20px !important;
     margin-right: 20px;
 

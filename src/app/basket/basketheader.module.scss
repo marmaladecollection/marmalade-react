@@ -1,8 +1,8 @@
 @use '../common.scss' as common;
 
 .header {
-  @extend common, .spaced-across !optional;
-  @extend common, .divider !optional;
+  @include common.spaced-across;
+  @include common.divider;
   text-transform: uppercase;
   font-size: small; 
 
