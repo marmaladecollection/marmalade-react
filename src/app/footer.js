@@ -12,7 +12,7 @@ export default function Footer() {
         <Link href="/delivery" className={styles.feature}>
           <Image
             src={getCacheBustedSrc("/images/footer/van.png")}
-            alt="Free Delivery"
+            alt="Free Local Delivery"
             width={60}
             height={30}
             style={{
@@ -20,10 +20,8 @@ export default function Footer() {
               height: "auto",
             }}
           />
-          <div className={styles.featureTitle}>Free Delivery</div>
-          <div className={styles.featureDesc}>
-            Free local delivery on all orders over £150.
-          </div>
+          <div className={styles.featureTitle}>Free Local Delivery</div>
+
         </Link>
         <Link href="/returns" className={styles.feature}>
           <Image
@@ -37,9 +35,7 @@ export default function Footer() {
             }}
           />
           <div className={styles.featureTitle}>Simple Returns</div>
-          <div className={styles.featureDesc}>
-            Not happy? Our team is always on hand!
-          </div>
+
         </Link>
       </div>
     </footer>

@@ -6,7 +6,7 @@ describe('Footer', () => {
     render(<Footer />);
     
     // Check for the Free Delivery feature section
-    const freeDeliveryLink = screen.getByRole('link', { name: /Free Delivery/i });
+    const freeDeliveryLink = screen.getByRole('link', { name: /Free Local Delivery/i });
     expect(freeDeliveryLink).toHaveAttribute('href', '/delivery');
     
     // Check for the Returns feature section

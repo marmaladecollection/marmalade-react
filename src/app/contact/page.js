@@ -6,8 +6,7 @@ export default function ContactPage() {
       <div className={styles.content}>
         <h1>Contact Us</h1>
         <p>
-          We'd love to hear from you! Whether you have questions about our restoration services, 
-          want to discuss a specific piece, or just want to learn more about our work, 
+          We'd love to hear from you! Whether you want to discuss a specific piece, or just learn more about our collection, 
           we're here to help.
         </p>
         <p>
