@@ -7,6 +7,7 @@ import { getCacheBustedSrc } from '../utils/imageCacheBuster';
 export default function Thumbnail({ item, allowCycling = false, onImageClick }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [availableImages, setAvailableImages] = useState([]);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   useEffect(() => {
     const loadImages = async () => {
@@ -55,16 +56,21 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick }) 
   return (
     <div className={styles.container}
     >
+      {!isImageLoaded && (
+        <div className={styles.skeleton} />
+      )}
       <img
         className={styles.backgroundImage}
         src={getCacheBustedSrc(`/images/${item.id}.webp`)}
         alt={item.name}
+        onLoad={() => setIsImageLoaded(true)}
       />
       <img
         className={styles.overlayImage}
         src={getCacheBustedSrc(availableImages[currentImageIndex])}
         alt={item.name}
         onClick={onImageClick ? () => onImageClick(availableImages[currentImageIndex], item.name) : undefined}
+        style={{ opacity: isImageLoaded ? 1 : 0 }}
       />
       {allowCycling && availableImages.length > 1 && (
         <>

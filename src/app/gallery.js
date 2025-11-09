@@ -8,6 +8,11 @@ function SkeletonItem() {
   return (
     <div className={styles.item}>
       <div className={styles.skeleton} />
+      <div className={styles.skeletonInfo}>
+        <div className={styles.skeletonTitle} />
+        <div className={styles.skeletonPrice} />
+        <div className={styles.skeletonButton} />
+      </div>
     </div>
   );
 }
