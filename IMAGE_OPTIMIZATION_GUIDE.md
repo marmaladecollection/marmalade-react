@@ -11,17 +11,17 @@ Your page loading performance has been significantly improved through comprehens
    - **After**: Full optimization enabled with AVIF and WebP format support
    - **Impact**: Automatic image sizing, format conversion, and quality optimization
 
-### 2. **Replaced Raw `<img>` Tags with Next.js `<Image>` Component**
-   - **Files Updated**:
+### 2. **Hybrid Image Strategy - Optimized Where It Matters**
+   - **Next.js `<Image>` Component (Optimized)**:
      - `src/app/thumbnail.js` - Main product thumbnails
+     - `src/app/footer.js` - Footer icons
+   - **Regular `<img>` Tags (Direct Serving)**:
      - `src/app/item/[slug]/ImageZoomModal.js` - Zoom modal images
      - `src/app/item/[slug]/conditionreport.js` - Condition report images
-     - `src/app/footer.js` - Footer icons
    - **Impact**: 
-     - Automatic lazy loading for below-fold images
-     - Responsive image sizing based on viewport
-     - Automatic format selection (WebP/AVIF)
-     - Built-in image optimization
+     - Gallery thumbnails benefit from lazy loading and responsive sizing
+     - Zoom/detail images load instantly without optimization overhead
+     - Best of both worlds - fast initial load AND fast zoom interaction
 
 ### 3. **Implemented Smart Caching**
    - **Before**: `no-cache, no-store, must-revalidate` (forced re-download every time)
@@ -56,6 +56,20 @@ Your page loading performance has been significantly improved through comprehens
 - **Load Time**: Near-instant image display (cached)
 - **Bandwidth**: ~95% reduction for returning visitors
 - **Server Load**: Reduced requests to origin server
+
+## 🎯 Hybrid Optimization Strategy
+
+We use a **hybrid approach** for best performance:
+
+**Optimized (Next.js Image):**
+- Gallery thumbnails - benefit from responsive sizing and format optimization
+- Footer icons - small, can be optimized efficiently
+
+**Direct Serving (Regular `<img>`):**
+- Zoom modal - users expect instant full-resolution display
+- Condition report detail images - already visible context, need fast zoom
+
+This avoids the 2-4 second delay from on-demand image optimization for zoom interactions while maintaining all performance benefits for the main gallery.
 
 ## 🔧 Configuration Details
 

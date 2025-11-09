@@ -2,11 +2,10 @@
 
 .images {
     margin-left: 20px;
+    overflow: hidden;
+    position: relative;
 
     @include common.mobile {
         margin-right: 40px;
     }
-
-    overflow: hidden;
-    position: relative;
 }

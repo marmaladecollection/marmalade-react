@@ -9,12 +9,12 @@
     @include common.heading1;
   }
   h2 {
-    @include common.heading2;
     margin-bottom: -5px !important;
+    @include common.heading2;
   }
   p {
-    @include common.paragraph;
     padding-top: 0px;
+    @include common.paragraph;
   }
   
   @include common.mobile {

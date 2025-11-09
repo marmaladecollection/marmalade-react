@@ -1,6 +1,5 @@
 // Simple modal for image zoom
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import styles from "./ImageZoomModal.module.scss";
 
 export default function ImageZoomModal({ src, onClose }) {
@@ -21,14 +20,10 @@ export default function ImageZoomModal({ src, onClose }) {
           <div className={styles.spinner}></div>
         </div>
       )}
-      <Image
+      <img
         src={src}
         alt="Zoomed view"
         className={styles.image}
-        width={2048}
-        height={2048}
-        quality={95}
-        priority
         onLoad={() => setImageLoaded(true)}
         onClick={e => e.stopPropagation()}
         style={{

@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Set workspace root for file tracing
+  outputFileTracingRoot: '/srv',
+  
   // Enable image optimization for better performance
   images: {
     dangerouslyAllowSVG: true,

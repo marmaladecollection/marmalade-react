@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import styles from "./conditionreport.module.scss";
 import ImageZoomModal from "./ImageZoomModal";
 
@@ -61,17 +60,14 @@ export default function ConditionReport({ item }) {
       {scratchImages.length > 0 && (
         <div className={styles.scratchGallery}>
           {scratchImages.map((src, index) => (
-            <div key={index} className={styles.scratchImageWrapper}>
-              <Image
-                src={src}
-                alt={`Condition detail ${index + 1}`}
-                className={styles.scratchImage}
-                fill
-                sizes="200px"
-                onClick={() => setZoomSrc(src)}
-                style={{ cursor: "zoom-in" }}
-              />
-            </div>
+            <img
+              key={index}
+              src={src}
+              alt={`Condition detail ${index + 1}`}
+              className={styles.scratchImage}
+              onClick={() => setZoomSrc(src)}
+              style={{ cursor: "zoom-in" }}
+            />
           ))}
         </div>
       )}
