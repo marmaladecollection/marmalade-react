@@ -1,4 +1,9 @@
 Starting deployment...
+Checking for processes on port 3000...
+Found processes on port 3000: 34895
+64606
+Killing processes on port 3000...
+✅ Port 3000 cleared
 Installing dependencies...
 
 up to date, audited 1006 packages in 2s
@@ -17,30 +22,24 @@ To address all issues (including breaking changes), run:
 Run `npm audit` for details.
 ✅ Dependencies installed successfully
 Running unit tests...
-watchman warning:  Recrawled this watch 1 time, most recently because:
-MustScanSubDirs UserDroppedTo resolve, please review the information on
-https://facebook.github.io/watchman/docs/troubleshooting.html#recrawl
-To clear this warning, run:
-`watchman watch-del '/Users/spencerward/code/madeleine/marmalade-reactjs' ; watchman watch-project '/Users/spencerward/code/madeleine/marmalade-reactjs'`
-
+PASS src/app/footer.test.js
 PASS src/app/admin/page.test.js
 PASS src/app/basket/page.test.js
-PASS src/app/footer.test.js
 PASS src/app/item/[slug]/__tests__/blurb.test.js
-PASS src/app/header.test.js
 PASS src/app/firebase.test.js
+PASS src/app/header.test.js
 PASS src/app/context/MarmaladeContext.test.js
-PASS src/app/basket/tocheckout.test.js
 PASS src/app/item/[slug]/page.test.js
 PASS src/app/topbar.test.js
-PASS src/app/underthumbnail.test.js
 PASS src/app/item/[slug]/itemactions.test.js
+PASS src/app/basket/tocheckout.test.js
+PASS src/app/underthumbnail.test.js
 PASS src/app/sales/page.test.js
 
 Test Suites: 13 passed, 13 total
 Tests:       60 passed, 60 total
 Snapshots:   0 total
-Time:        1.104 s
+Time:        1.421 s
 Ran all test suites.
 ✅ All unit tests passed
 Starting local dev server for Cypress tests...
@@ -51,19 +50,19 @@ Waiting for local dev server to be ready...
 
    ▲ Next.js 15.3.4
    - Local:        http://localhost:3000
-   - Network:      http://172.20.10.2:3000
+   - Network:      http://192.168.1.104:3000
    - Environments: .env.local
 
  ✓ Starting...
- ✓ Ready in 1526ms
+ ✓ Ready in 1316ms
  ○ Compiling / ...
- ✓ Compiled / in 917ms (980 modules)
+ ✓ Compiled / in 995ms (980 modules)
 Signed out
- GET / 200 in 1239ms
+ GET / 200 in 1318ms
 ✅ Local dev server is up. Running Cypress tests...
-[40562:1105/113813.270717:ERROR:node_bindings.cc(379)] Most NODE_OPTIONs are not supported in packaged apps. See documentation for more details.
+[52026:1109/120916.304270:ERROR:node_bindings.cc(379)] Most NODE_OPTIONs are not supported in packaged apps. See documentation for more details.
 
-DevTools listening on ws://127.0.0.1:55259/devtools/browser/b9f3d7a6-1b59-44f2-9348-89f8390dc7af
+DevTools listening on ws://127.0.0.1:58556/devtools/browser/ef097bd0-a272-4497-b135-975e6490eeaf
 Missing baseUrl in compilerOptions. tsconfig-paths will be skipped
 
 Opening `/dev/tty` failed (6): Device not configured
@@ -87,10 +86,10 @@ Opening `/dev/tty` failed (6): Device not configured
 
 
   404 Page
- ✓ Compiled /_not-found in 266ms (984 modules)
+ ✓ Compiled /_not-found in 244ms (984 modules)
 Signed out
- GET /not-a-page 404 in 508ms
-    ✓ should show 404 for unknown route (1062ms)
+ GET /not-a-page 404 in 434ms
+    ✓ should show 404 for unknown route (980ms)
 
 
   1 passing (1s)
@@ -117,10 +116,123 @@ Signed out
 
 
   Admin Page Integration Test
- ✓ Compiled /admin in 203ms (1012 modules)
+ ○ Compiling /admin ...
+ ✓ Compiled /admin in 814ms (1022 modules)
 Signed out
- GET /admin 200 in 411ms
-    ✓ should load the admin page and display both items and sold tables (5112ms)
+ GET /admin 200 in 1015ms
+    ✓ should load the admin page and display both items and sold tables (3957ms)
+
+
+  1 passing (4s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        1                                                                                │
+  │ Passing:      1                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     3 seconds                                                                        │
+  │ Spec Ran:     admin.cy.js                                                                      │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  basket.cy.js                                                                    (3 of 9)
+
+
+  Basket
+ GET / 200 in 31ms
+ ⚠ ./src/app/basket/page.module.scss
+Deprecation Warning on line 59, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:59:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+59 |     cursor: pointer;
+
+src/app/basket/page.module.scss 60:5  root stylesheet
+
+Import trace for requested module:
+./src/app/basket/page.module.scss
+./src/app/basket/page.js
+ GET /basket 200 in 407ms
+ ○ Compiling /basket ...
+    ✓ should add and remove an item (3405ms)
+Signed out
+ GET / 200 in 167ms
+ GET /basket 200 in 10ms
+    ✓ should show empty basket message when no items are in the basket (1139ms)
+
+
+  2 passing (5s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      2                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     4 seconds                                                                        │
+  │ Spec Ran:     basket.cy.js                                                                     │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  checkout.cy.js                                                                  (4 of 9)
+
+
+  Checkout
+ GET / 200 in 25ms
+ GET /basket 200 in 14ms
+ ⚠ ./src/app/basket/page.module.scss
+Deprecation Warning on line 59, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:59:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+59 |     cursor: pointer;
+
+src/app/basket/page.module.scss 60:5  root stylesheet
+
+Import trace for requested module:
+./src/app/basket/page.module.scss
+./src/app/basket/page.js
+ ⚠ ./src/app/basket/page.module.scss
+Deprecation Warning on line 59, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:59:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+59 |     cursor: pointer;
+
+src/app/basket/page.module.scss 60:5  root stylesheet
+
+Import trace for requested module:
+./src/app/basket/page.module.scss
+./src/app/basket/page.js
+ GET /checkout 200 in 339ms
+    ✓ should show error for undeliverable postcode (4735ms)
 
 
   1 passing (5s)
@@ -136,161 +248,7 @@ Signed out
   │ Skipped:      0                                                                                │
   │ Screenshots:  0                                                                                │
   │ Video:        false                                                                            │
-  │ Duration:     5 seconds                                                                        │
-  │ Spec Ran:     admin.cy.js                                                                      │
-  └────────────────────────────────────────────────────────────────────────────────────────────────┘
-
-
-────────────────────────────────────────────────────────────────────────────────────────────────────
-                                                                                                    
-  Running:  basket.cy.js                                                                    (3 of 9)
-
-
-  Basket
- GET / 200 in 29ms
- ⚠ ./src/app/basket/page.module.scss
-Deprecation Warning on line 0, column 8 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:0:8:
-Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
-
-More info and automated migrator: https://sass-lang.com/d/import
-
-0 | @import '../common.scss';
-
-src/app/basket/page.module.scss 1:9  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
-
-./src/app/basket/page.module.scss
-Deprecation Warning on line 58, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:58:4:
-Sass's behavior for declarations that appear after nested
-rules will be changing to match the behavior specified by CSS in an upcoming
-version. To keep the existing behavior, move the declaration above the nested
-rule. To opt into the new behavior, wrap the declaration in `& {}`.
-
-More info: https://sass-lang.com/d/mixed-decls
-
-58 |     cursor: pointer;
-
-src/app/basket/page.module.scss 59:5  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
- GET /basket 200 in 364ms
- ○ Compiling /basket ...
-    ✓ should add and remove an item (5487ms)
-Signed out
- GET / 200 in 258ms
- GET /basket 200 in 9ms
-    ✓ should show empty basket message when no items are in the basket (1162ms)
-
-
-  2 passing (7s)
-
-
-  (Results)
-
-  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
-  │ Tests:        2                                                                                │
-  │ Passing:      2                                                                                │
-  │ Failing:      0                                                                                │
-  │ Pending:      0                                                                                │
-  │ Skipped:      0                                                                                │
-  │ Screenshots:  0                                                                                │
-  │ Video:        false                                                                            │
-  │ Duration:     6 seconds                                                                        │
-  │ Spec Ran:     basket.cy.js                                                                     │
-  └────────────────────────────────────────────────────────────────────────────────────────────────┘
-
-
-────────────────────────────────────────────────────────────────────────────────────────────────────
-                                                                                                    
-  Running:  checkout.cy.js                                                                  (4 of 9)
-
-
-  Checkout
- GET / 200 in 22ms
- GET /basket 200 in 26ms
- ⚠ ./src/app/basket/page.module.scss
-Deprecation Warning on line 0, column 8 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:0:8:
-Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
-
-More info and automated migrator: https://sass-lang.com/d/import
-
-0 | @import '../common.scss';
-
-src/app/basket/page.module.scss 1:9  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
-
-./src/app/basket/page.module.scss
-Deprecation Warning on line 58, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:58:4:
-Sass's behavior for declarations that appear after nested
-rules will be changing to match the behavior specified by CSS in an upcoming
-version. To keep the existing behavior, move the declaration above the nested
-rule. To opt into the new behavior, wrap the declaration in `& {}`.
-
-More info: https://sass-lang.com/d/mixed-decls
-
-58 |     cursor: pointer;
-
-src/app/basket/page.module.scss 59:5  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
- ⚠ ./src/app/basket/page.module.scss
-Deprecation Warning on line 0, column 8 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:0:8:
-Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
-
-More info and automated migrator: https://sass-lang.com/d/import
-
-0 | @import '../common.scss';
-
-src/app/basket/page.module.scss 1:9  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
-
-./src/app/basket/page.module.scss
-Deprecation Warning on line 58, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:58:4:
-Sass's behavior for declarations that appear after nested
-rules will be changing to match the behavior specified by CSS in an upcoming
-version. To keep the existing behavior, move the declaration above the nested
-rule. To opt into the new behavior, wrap the declaration in `& {}`.
-
-More info: https://sass-lang.com/d/mixed-decls
-
-58 |     cursor: pointer;
-
-src/app/basket/page.module.scss 59:5  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
- GET /checkout 200 in 321ms
-    ✓ should show error for undeliverable postcode (6582ms)
-
-
-  1 passing (7s)
-
-
-  (Results)
-
-  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
-  │ Tests:        1                                                                                │
-  │ Passing:      1                                                                                │
-  │ Failing:      0                                                                                │
-  │ Pending:      0                                                                                │
-  │ Skipped:      0                                                                                │
-  │ Screenshots:  0                                                                                │
-  │ Video:        false                                                                            │
-  │ Duration:     6 seconds                                                                        │
+  │ Duration:     4 seconds                                                                        │
   │ Spec Ran:     checkout.cy.js                                                                   │
   └────────────────────────────────────────────────────────────────────────────────────────────────┘
 
@@ -325,11 +283,11 @@ Import trace for requested module:
 
   Homepage Smoke Test
 Signed out
- GET / 200 in 159ms
-    ✓ should load the home page (719ms)
+ GET / 200 in 164ms
+    ✓ should load the home page (735ms)
 
 
-  1 passing (772ms)
+  1 passing (788ms)
 
 
   (Results)
@@ -353,23 +311,9 @@ Signed out
 
 
   Item Page
- GET / 200 in 35ms
+ GET / 200 in 28ms
  ⚠ ./src/app/basket/page.module.scss
-Deprecation Warning on line 0, column 8 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:0:8:
-Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
-
-More info and automated migrator: https://sass-lang.com/d/import
-
-0 | @import '../common.scss';
-
-src/app/basket/page.module.scss 1:9  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
-
-./src/app/basket/page.module.scss
-Deprecation Warning on line 58, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:58:4:
+Deprecation Warning on line 59, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:59:4:
 Sass's behavior for declarations that appear after nested
 rules will be changing to match the behavior specified by CSS in an upcoming
 version. To keep the existing behavior, move the declaration above the nested
@@ -377,29 +321,15 @@ rule. To opt into the new behavior, wrap the declaration in `& {}`.
 
 More info: https://sass-lang.com/d/mixed-decls
 
-58 |     cursor: pointer;
+59 |     cursor: pointer;
 
-src/app/basket/page.module.scss 59:5  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
- ⚠ ./src/app/basket/page.module.scss
-Deprecation Warning on line 0, column 8 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:0:8:
-Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
-
-More info and automated migrator: https://sass-lang.com/d/import
-
-0 | @import '../common.scss';
-
-src/app/basket/page.module.scss 1:9  root stylesheet
+src/app/basket/page.module.scss 60:5  root stylesheet
 
 Import trace for requested module:
 ./src/app/basket/page.module.scss
 ./src/app/basket/page.js
-
-./src/app/basket/page.module.scss
-Deprecation Warning on line 58, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:58:4:
+ ⚠ ./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 13, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:13:4:
 Sass's behavior for declarations that appear after nested
 rules will be changing to match the behavior specified by CSS in an upcoming
 version. To keep the existing behavior, move the declaration above the nested
@@ -407,9 +337,159 @@ rule. To opt into the new behavior, wrap the declaration in `& {}`.
 
 More info: https://sass-lang.com/d/mixed-decls
 
-58 |     cursor: pointer;
+13 |     font-family: var(--font-s);
 
-src/app/basket/page.module.scss 59:5  root stylesheet
+src/app/item/[slug]/blurb.module.scss 14:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 13, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:13:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+13 |     font-family: var(--font-s);
+
+src/app/item/[slug]/blurb.module.scss 14:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 14, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:14:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+14 |     font-size: medium;
+
+src/app/item/[slug]/blurb.module.scss 15:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 14, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:14:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+14 |     font-size: medium;
+
+src/app/item/[slug]/blurb.module.scss 15:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 15, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:15:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+15 |     font-weight: 100;
+
+src/app/item/[slug]/blurb.module.scss 16:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+13 repetitive deprecation warnings omitted.
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/images.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/images.module.scss
+Deprecation Warning on line 9, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/images.module.scss:9:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+9 |     overflow: hidden;
+
+src/app/item/[slug]/images.module.scss 10:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/images.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/images.module.scss
+./src/app/item/[slug]/images.module.scss
+./src/app/item/[slug]/images.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/images.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/images.module.scss
+Deprecation Warning on line 10, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/images.module.scss:10:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+10 |     position: relative;
+
+src/app/item/[slug]/images.module.scss 11:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/images.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/images.module.scss
+./src/app/item/[slug]/images.module.scss
+./src/app/item/[slug]/images.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/basket/page.module.scss
+Deprecation Warning on line 59, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:59:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+59 |     cursor: pointer;
+
+src/app/basket/page.module.scss 60:5  root stylesheet
 
 Import trace for requested module:
 ./src/app/basket/page.module.scss
@@ -556,11 +636,11 @@ Import trace for requested module:
 ./src/app/item/[slug]/images.js
 ./src/app/item/[slug]/itemprimary.js
 ./src/app/item/[slug]/page.js
- GET /item/camel-sofa 200 in 669ms
-    ✓ should display item details and actions (5961ms)
+ GET /item/camel-sofa 200 in 957ms
+    ✓ should display item details and actions (4215ms)
 
 
-  1 passing (6s)
+  1 passing (4s)
 
 
   (Results)
@@ -573,7 +653,7 @@ Import trace for requested module:
   │ Skipped:      0                                                                                │
   │ Screenshots:  0                                                                                │
   │ Video:        false                                                                            │
-  │ Duration:     5 seconds                                                                        │
+  │ Duration:     4 seconds                                                                        │
   │ Spec Ran:     itempage.cy.js                                                                   │
   └────────────────────────────────────────────────────────────────────────────────────────────────┘
 
@@ -582,27 +662,13 @@ Import trace for requested module:
                                                                                                     
   Running:  navigation.cy.js                                                                (8 of 9)
 Signed out
- GET /images/camel-sofa-scratch-1.webp?t=1762339127815 404 in 161ms
+ GET /images/camel-sofa-scratch-1.webp 404 in 157ms
 
 
   Navigation
  GET / 200 in 27ms
- ⚠ ./src/app/basket/page.module.scss
-Deprecation Warning on line 0, column 8 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:0:8:
-Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
-
-More info and automated migrator: https://sass-lang.com/d/import
-
-0 | @import '../common.scss';
-
-src/app/basket/page.module.scss 1:9  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
-
-./src/app/basket/page.module.scss
-Deprecation Warning on line 58, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:58:4:
+ ⚠ ./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 13, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:13:4:
 Sass's behavior for declarations that appear after nested
 rules will be changing to match the behavior specified by CSS in an upcoming
 version. To keep the existing behavior, move the declaration above the nested
@@ -610,9 +676,159 @@ rule. To opt into the new behavior, wrap the declaration in `& {}`.
 
 More info: https://sass-lang.com/d/mixed-decls
 
-58 |     cursor: pointer;
+13 |     font-family: var(--font-s);
 
-src/app/basket/page.module.scss 59:5  root stylesheet
+src/app/item/[slug]/blurb.module.scss 14:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 13, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:13:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+13 |     font-family: var(--font-s);
+
+src/app/item/[slug]/blurb.module.scss 14:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 14, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:14:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+14 |     font-size: medium;
+
+src/app/item/[slug]/blurb.module.scss 15:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 14, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:14:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+14 |     font-size: medium;
+
+src/app/item/[slug]/blurb.module.scss 15:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 15, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:15:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+15 |     font-weight: 100;
+
+src/app/item/[slug]/blurb.module.scss 16:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+13 repetitive deprecation warnings omitted.
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/images.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/images.module.scss
+Deprecation Warning on line 9, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/images.module.scss:9:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+9 |     overflow: hidden;
+
+src/app/item/[slug]/images.module.scss 10:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/images.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/images.module.scss
+./src/app/item/[slug]/images.module.scss
+./src/app/item/[slug]/images.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/images.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/images.module.scss
+Deprecation Warning on line 10, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/images.module.scss:10:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+10 |     position: relative;
+
+src/app/item/[slug]/images.module.scss 11:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/images.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/item/[slug]/images.module.scss
+./src/app/item/[slug]/images.module.scss
+./src/app/item/[slug]/images.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/basket/page.module.scss
+Deprecation Warning on line 59, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:59:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+59 |     cursor: pointer;
+
+src/app/basket/page.module.scss 60:5  root stylesheet
 
 Import trace for requested module:
 ./src/app/basket/page.module.scss
@@ -760,21 +976,7 @@ Import trace for requested module:
 ./src/app/item/[slug]/itemprimary.js
 ./src/app/item/[slug]/page.js
  ⚠ ./src/app/basket/page.module.scss
-Deprecation Warning on line 0, column 8 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:0:8:
-Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
-
-More info and automated migrator: https://sass-lang.com/d/import
-
-0 | @import '../common.scss';
-
-src/app/basket/page.module.scss 1:9  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
-
-./src/app/basket/page.module.scss
-Deprecation Warning on line 58, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:58:4:
+Deprecation Warning on line 59, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:59:4:
 Sass's behavior for declarations that appear after nested
 rules will be changing to match the behavior specified by CSS in an upcoming
 version. To keep the existing behavior, move the declaration above the nested
@@ -782,9 +984,9 @@ rule. To opt into the new behavior, wrap the declaration in `& {}`.
 
 More info: https://sass-lang.com/d/mixed-decls
 
-58 |     cursor: pointer;
+59 |     cursor: pointer;
 
-src/app/basket/page.module.scss 59:5  root stylesheet
+src/app/basket/page.module.scss 60:5  root stylesheet
 
 Import trace for requested module:
 ./src/app/basket/page.module.scss
@@ -931,26 +1133,12 @@ Import trace for requested module:
 ./src/app/item/[slug]/images.js
 ./src/app/item/[slug]/itemprimary.js
 ./src/app/item/[slug]/page.js
- GET /about 200 in 475ms
-    ✓ should navigate to /about page (1144ms)
+ GET /about 200 in 362ms
+    ✓ should navigate to /about page (1063ms)
 Signed out
- GET / 200 in 177ms
+ GET / 200 in 176ms
  ⚠ ./src/app/basket/page.module.scss
-Deprecation Warning on line 0, column 8 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:0:8:
-Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
-
-More info and automated migrator: https://sass-lang.com/d/import
-
-0 | @import '../common.scss';
-
-src/app/basket/page.module.scss 1:9  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
-
-./src/app/basket/page.module.scss
-Deprecation Warning on line 58, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:58:4:
+Deprecation Warning on line 59, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:59:4:
 Sass's behavior for declarations that appear after nested
 rules will be changing to match the behavior specified by CSS in an upcoming
 version. To keep the existing behavior, move the declaration above the nested
@@ -958,9 +1146,9 @@ rule. To opt into the new behavior, wrap the declaration in `& {}`.
 
 More info: https://sass-lang.com/d/mixed-decls
 
-58 |     cursor: pointer;
+59 |     cursor: pointer;
 
-src/app/basket/page.module.scss 59:5  root stylesheet
+src/app/basket/page.module.scss 60:5  root stylesheet
 
 Import trace for requested module:
 ./src/app/basket/page.module.scss
@@ -1108,21 +1296,7 @@ Import trace for requested module:
 ./src/app/item/[slug]/itemprimary.js
 ./src/app/item/[slug]/page.js
  ⚠ ./src/app/basket/page.module.scss
-Deprecation Warning on line 0, column 8 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:0:8:
-Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
-
-More info and automated migrator: https://sass-lang.com/d/import
-
-0 | @import '../common.scss';
-
-src/app/basket/page.module.scss 1:9  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
-
-./src/app/basket/page.module.scss
-Deprecation Warning on line 58, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:58:4:
+Deprecation Warning on line 59, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:59:4:
 Sass's behavior for declarations that appear after nested
 rules will be changing to match the behavior specified by CSS in an upcoming
 version. To keep the existing behavior, move the declaration above the nested
@@ -1130,9 +1304,9 @@ rule. To opt into the new behavior, wrap the declaration in `& {}`.
 
 More info: https://sass-lang.com/d/mixed-decls
 
-58 |     cursor: pointer;
+59 |     cursor: pointer;
 
-src/app/basket/page.module.scss 59:5  root stylesheet
+src/app/basket/page.module.scss 60:5  root stylesheet
 
 Import trace for requested module:
 ./src/app/basket/page.module.scss
@@ -1279,26 +1453,12 @@ Import trace for requested module:
 ./src/app/item/[slug]/images.js
 ./src/app/item/[slug]/itemprimary.js
 ./src/app/item/[slug]/page.js
- GET /contact 200 in 270ms
-    ✓ should navigate to /contact page (1089ms)
+ GET /contact 200 in 283ms
+    ✓ should navigate to /contact page (1068ms)
 Signed out
- GET / 200 in 172ms
+ GET / 200 in 176ms
  ⚠ ./src/app/basket/page.module.scss
-Deprecation Warning on line 0, column 8 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:0:8:
-Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
-
-More info and automated migrator: https://sass-lang.com/d/import
-
-0 | @import '../common.scss';
-
-src/app/basket/page.module.scss 1:9  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
-
-./src/app/basket/page.module.scss
-Deprecation Warning on line 58, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:58:4:
+Deprecation Warning on line 59, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:59:4:
 Sass's behavior for declarations that appear after nested
 rules will be changing to match the behavior specified by CSS in an upcoming
 version. To keep the existing behavior, move the declaration above the nested
@@ -1306,9 +1466,9 @@ rule. To opt into the new behavior, wrap the declaration in `& {}`.
 
 More info: https://sass-lang.com/d/mixed-decls
 
-58 |     cursor: pointer;
+59 |     cursor: pointer;
 
-src/app/basket/page.module.scss 59:5  root stylesheet
+src/app/basket/page.module.scss 60:5  root stylesheet
 
 Import trace for requested module:
 ./src/app/basket/page.module.scss
@@ -1455,22 +1615,8 @@ Import trace for requested module:
 ./src/app/item/[slug]/images.js
 ./src/app/item/[slug]/itemprimary.js
 ./src/app/item/[slug]/page.js
- ⚠ ./src/app/basket/page.module.scss
-Deprecation Warning on line 0, column 8 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:0:8:
-Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
-
-More info and automated migrator: https://sass-lang.com/d/import
-
-0 | @import '../common.scss';
-
-src/app/basket/page.module.scss 1:9  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
-
-./src/app/basket/page.module.scss
-Deprecation Warning on line 58, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:58:4:
+ ⚠ ./src/app/delivery/page.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/delivery/page.module.scss
+Deprecation Warning on line 12, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/delivery/page.module.scss:12:4:
 Sass's behavior for declarations that appear after nested
 rules will be changing to match the behavior specified by CSS in an upcoming
 version. To keep the existing behavior, move the declaration above the nested
@@ -1478,13 +1624,81 @@ rule. To opt into the new behavior, wrap the declaration in `& {}`.
 
 More info: https://sass-lang.com/d/mixed-decls
 
-58 |     cursor: pointer;
+12 |     margin-bottom: -5px !important;
 
-src/app/basket/page.module.scss 59:5  root stylesheet
+src/app/delivery/page.module.scss 13:5  root stylesheet
+
+Import trace for requested module:
+./src/app/delivery/page.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/delivery/page.module.scss
+./src/app/delivery/page.module.scss
+
+./src/app/delivery/page.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/delivery/page.module.scss
+Deprecation Warning on line 16, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/delivery/page.module.scss:16:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+16 |     padding-top: 0px;
+
+src/app/delivery/page.module.scss 17:5  root stylesheet
+
+Import trace for requested module:
+./src/app/delivery/page.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/delivery/page.module.scss
+./src/app/delivery/page.module.scss
+
+./src/app/basket/page.module.scss
+Deprecation Warning on line 59, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:59:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+59 |     cursor: pointer;
+
+src/app/basket/page.module.scss 60:5  root stylesheet
 
 Import trace for requested module:
 ./src/app/basket/page.module.scss
 ./src/app/basket/page.js
+
+./src/app/delivery/page.module.scss
+Deprecation Warning on line 12, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/delivery/page.module.scss:12:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+12 |     margin-bottom: -5px !important;
+
+src/app/delivery/page.module.scss 13:5  root stylesheet
+
+Import trace for requested module:
+./src/app/delivery/page.module.scss
+./src/app/delivery/page.js
+
+./src/app/delivery/page.module.scss
+Deprecation Warning on line 16, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/delivery/page.module.scss:16:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+16 |     padding-top: 0px;
+
+src/app/delivery/page.module.scss 17:5  root stylesheet
+
+Import trace for requested module:
+./src/app/delivery/page.module.scss
+./src/app/delivery/page.js
 
 ./src/app/item/[slug]/blurb.module.scss
 Deprecation Warning on line 13, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:13:4:
@@ -1627,360 +1841,434 @@ Import trace for requested module:
 ./src/app/item/[slug]/images.js
 ./src/app/item/[slug]/itemprimary.js
 ./src/app/item/[slug]/page.js
- GET /delivery 200 in 369ms
-    ✓ should navigate to /delivery page (1149ms)
+ GET /delivery 200 in 303ms
+    ✓ should navigate to /delivery page (1111ms)
+Signed out
+ GET / 200 in 157ms
+ ⚠ ./src/app/delivery/page.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/delivery/page.module.scss
+Deprecation Warning on line 12, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/delivery/page.module.scss:12:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+12 |     margin-bottom: -5px !important;
+
+src/app/delivery/page.module.scss 13:5  root stylesheet
+
+Import trace for requested module:
+./src/app/delivery/page.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/delivery/page.module.scss
+./src/app/delivery/page.module.scss
+
+./src/app/delivery/page.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/delivery/page.module.scss
+Deprecation Warning on line 16, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/delivery/page.module.scss:16:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+16 |     padding-top: 0px;
+
+src/app/delivery/page.module.scss 17:5  root stylesheet
+
+Import trace for requested module:
+./src/app/delivery/page.module.scss.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[7].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[7].use[5]!./src/app/delivery/page.module.scss
+./src/app/delivery/page.module.scss
+
+./src/app/basket/page.module.scss
+Deprecation Warning on line 59, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:59:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+59 |     cursor: pointer;
+
+src/app/basket/page.module.scss 60:5  root stylesheet
+
+Import trace for requested module:
+./src/app/basket/page.module.scss
+./src/app/basket/page.js
+
+./src/app/delivery/page.module.scss
+Deprecation Warning on line 12, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/delivery/page.module.scss:12:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+12 |     margin-bottom: -5px !important;
+
+src/app/delivery/page.module.scss 13:5  root stylesheet
+
+Import trace for requested module:
+./src/app/delivery/page.module.scss
+./src/app/delivery/page.js
+
+./src/app/delivery/page.module.scss
+Deprecation Warning on line 16, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/delivery/page.module.scss:16:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+16 |     padding-top: 0px;
+
+src/app/delivery/page.module.scss 17:5  root stylesheet
+
+Import trace for requested module:
+./src/app/delivery/page.module.scss
+./src/app/delivery/page.js
+
+./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 13, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:13:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+13 |     font-family: var(--font-s);
+
+src/app/item/[slug]/blurb.module.scss 14:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 13, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:13:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+13 |     font-family: var(--font-s);
+
+src/app/item/[slug]/blurb.module.scss 14:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 14, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:14:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+14 |     font-size: medium;
+
+src/app/item/[slug]/blurb.module.scss 15:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 14, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:14:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+14 |     font-size: medium;
+
+src/app/item/[slug]/blurb.module.scss 15:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 15, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:15:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+15 |     font-weight: 100;
+
+src/app/item/[slug]/blurb.module.scss 16:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss
+13 repetitive deprecation warnings omitted.
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/images.module.scss
+Deprecation Warning on line 9, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/images.module.scss:9:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+9 |     overflow: hidden;
+
+src/app/item/[slug]/images.module.scss 10:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/images.module.scss
+./src/app/item/[slug]/images.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/images.module.scss
+Deprecation Warning on line 10, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/images.module.scss:10:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+10 |     position: relative;
+
+src/app/item/[slug]/images.module.scss 11:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/images.module.scss
+./src/app/item/[slug]/images.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+ ⚠ ./src/app/basket/page.module.scss
+Deprecation Warning on line 59, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:59:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+59 |     cursor: pointer;
+
+src/app/basket/page.module.scss 60:5  root stylesheet
+
+Import trace for requested module:
+./src/app/basket/page.module.scss
+./src/app/basket/page.js
+
+./src/app/delivery/page.module.scss
+Deprecation Warning on line 12, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/delivery/page.module.scss:12:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+12 |     margin-bottom: -5px !important;
+
+src/app/delivery/page.module.scss 13:5  root stylesheet
+
+Import trace for requested module:
+./src/app/delivery/page.module.scss
+./src/app/delivery/page.js
+
+./src/app/delivery/page.module.scss
+Deprecation Warning on line 16, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/delivery/page.module.scss:16:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+16 |     padding-top: 0px;
+
+src/app/delivery/page.module.scss 17:5  root stylesheet
+
+Import trace for requested module:
+./src/app/delivery/page.module.scss
+./src/app/delivery/page.js
+
+./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 13, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:13:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+13 |     font-family: var(--font-s);
+
+src/app/item/[slug]/blurb.module.scss 14:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 13, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:13:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+13 |     font-family: var(--font-s);
+
+src/app/item/[slug]/blurb.module.scss 14:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 14, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:14:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+14 |     font-size: medium;
+
+src/app/item/[slug]/blurb.module.scss 15:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 14, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:14:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+14 |     font-size: medium;
+
+src/app/item/[slug]/blurb.module.scss 15:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss
+Deprecation Warning on line 15, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:15:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+15 |     font-weight: 100;
+
+src/app/item/[slug]/blurb.module.scss 16:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/blurb.module.scss
+13 repetitive deprecation warnings omitted.
+
+Import trace for requested module:
+./src/app/item/[slug]/blurb.module.scss
+./src/app/item/[slug]/blurb.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/images.module.scss
+Deprecation Warning on line 9, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/images.module.scss:9:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+9 |     overflow: hidden;
+
+src/app/item/[slug]/images.module.scss 10:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/images.module.scss
+./src/app/item/[slug]/images.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+
+./src/app/item/[slug]/images.module.scss
+Deprecation Warning on line 10, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/images.module.scss:10:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+10 |     position: relative;
+
+src/app/item/[slug]/images.module.scss 11:5  root stylesheet
+
+Import trace for requested module:
+./src/app/item/[slug]/images.module.scss
+./src/app/item/[slug]/images.js
+./src/app/item/[slug]/itemprimary.js
+./src/app/item/[slug]/page.js
+ GET /returns 200 in 242ms
+    ✓ should navigate to /returns page (1009ms)
 Signed out
  GET / 200 in 161ms
- ⚠ ./src/app/basket/page.module.scss
-Deprecation Warning on line 0, column 8 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:0:8:
-Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
-
-More info and automated migrator: https://sass-lang.com/d/import
-
-0 | @import '../common.scss';
-
-src/app/basket/page.module.scss 1:9  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
-
-./src/app/basket/page.module.scss
-Deprecation Warning on line 58, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:58:4:
-Sass's behavior for declarations that appear after nested
-rules will be changing to match the behavior specified by CSS in an upcoming
-version. To keep the existing behavior, move the declaration above the nested
-rule. To opt into the new behavior, wrap the declaration in `& {}`.
-
-More info: https://sass-lang.com/d/mixed-decls
-
-58 |     cursor: pointer;
-
-src/app/basket/page.module.scss 59:5  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
-
-./src/app/item/[slug]/blurb.module.scss
-Deprecation Warning on line 13, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:13:4:
-Sass's behavior for declarations that appear after nested
-rules will be changing to match the behavior specified by CSS in an upcoming
-version. To keep the existing behavior, move the declaration above the nested
-rule. To opt into the new behavior, wrap the declaration in `& {}`.
-
-More info: https://sass-lang.com/d/mixed-decls
-
-13 |     font-family: var(--font-s);
-
-src/app/item/[slug]/blurb.module.scss 14:5  root stylesheet
-
-Import trace for requested module:
-./src/app/item/[slug]/blurb.module.scss
-./src/app/item/[slug]/blurb.js
-./src/app/item/[slug]/itemprimary.js
-./src/app/item/[slug]/page.js
-
-./src/app/item/[slug]/blurb.module.scss
-Deprecation Warning on line 13, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:13:4:
-Sass's behavior for declarations that appear after nested
-rules will be changing to match the behavior specified by CSS in an upcoming
-version. To keep the existing behavior, move the declaration above the nested
-rule. To opt into the new behavior, wrap the declaration in `& {}`.
-
-More info: https://sass-lang.com/d/mixed-decls
-
-13 |     font-family: var(--font-s);
-
-src/app/item/[slug]/blurb.module.scss 14:5  root stylesheet
-
-Import trace for requested module:
-./src/app/item/[slug]/blurb.module.scss
-./src/app/item/[slug]/blurb.js
-./src/app/item/[slug]/itemprimary.js
-./src/app/item/[slug]/page.js
-
-./src/app/item/[slug]/blurb.module.scss
-Deprecation Warning on line 14, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:14:4:
-Sass's behavior for declarations that appear after nested
-rules will be changing to match the behavior specified by CSS in an upcoming
-version. To keep the existing behavior, move the declaration above the nested
-rule. To opt into the new behavior, wrap the declaration in `& {}`.
-
-More info: https://sass-lang.com/d/mixed-decls
-
-14 |     font-size: medium;
-
-src/app/item/[slug]/blurb.module.scss 15:5  root stylesheet
-
-Import trace for requested module:
-./src/app/item/[slug]/blurb.module.scss
-./src/app/item/[slug]/blurb.js
-./src/app/item/[slug]/itemprimary.js
-./src/app/item/[slug]/page.js
-
-./src/app/item/[slug]/blurb.module.scss
-Deprecation Warning on line 14, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:14:4:
-Sass's behavior for declarations that appear after nested
-rules will be changing to match the behavior specified by CSS in an upcoming
-version. To keep the existing behavior, move the declaration above the nested
-rule. To opt into the new behavior, wrap the declaration in `& {}`.
-
-More info: https://sass-lang.com/d/mixed-decls
-
-14 |     font-size: medium;
-
-src/app/item/[slug]/blurb.module.scss 15:5  root stylesheet
-
-Import trace for requested module:
-./src/app/item/[slug]/blurb.module.scss
-./src/app/item/[slug]/blurb.js
-./src/app/item/[slug]/itemprimary.js
-./src/app/item/[slug]/page.js
-
-./src/app/item/[slug]/blurb.module.scss
-Deprecation Warning on line 15, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:15:4:
-Sass's behavior for declarations that appear after nested
-rules will be changing to match the behavior specified by CSS in an upcoming
-version. To keep the existing behavior, move the declaration above the nested
-rule. To opt into the new behavior, wrap the declaration in `& {}`.
-
-More info: https://sass-lang.com/d/mixed-decls
-
-15 |     font-weight: 100;
-
-src/app/item/[slug]/blurb.module.scss 16:5  root stylesheet
-
-Import trace for requested module:
-./src/app/item/[slug]/blurb.module.scss
-./src/app/item/[slug]/blurb.js
-./src/app/item/[slug]/itemprimary.js
-./src/app/item/[slug]/page.js
-
-./src/app/item/[slug]/blurb.module.scss
-13 repetitive deprecation warnings omitted.
-
-Import trace for requested module:
-./src/app/item/[slug]/blurb.module.scss
-./src/app/item/[slug]/blurb.js
-./src/app/item/[slug]/itemprimary.js
-./src/app/item/[slug]/page.js
-
-./src/app/item/[slug]/images.module.scss
-Deprecation Warning on line 9, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/images.module.scss:9:4:
-Sass's behavior for declarations that appear after nested
-rules will be changing to match the behavior specified by CSS in an upcoming
-version. To keep the existing behavior, move the declaration above the nested
-rule. To opt into the new behavior, wrap the declaration in `& {}`.
-
-More info: https://sass-lang.com/d/mixed-decls
-
-9 |     overflow: hidden;
-
-src/app/item/[slug]/images.module.scss 10:5  root stylesheet
-
-Import trace for requested module:
-./src/app/item/[slug]/images.module.scss
-./src/app/item/[slug]/images.js
-./src/app/item/[slug]/itemprimary.js
-./src/app/item/[slug]/page.js
-
-./src/app/item/[slug]/images.module.scss
-Deprecation Warning on line 10, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/images.module.scss:10:4:
-Sass's behavior for declarations that appear after nested
-rules will be changing to match the behavior specified by CSS in an upcoming
-version. To keep the existing behavior, move the declaration above the nested
-rule. To opt into the new behavior, wrap the declaration in `& {}`.
-
-More info: https://sass-lang.com/d/mixed-decls
-
-10 |     position: relative;
-
-src/app/item/[slug]/images.module.scss 11:5  root stylesheet
-
-Import trace for requested module:
-./src/app/item/[slug]/images.module.scss
-./src/app/item/[slug]/images.js
-./src/app/item/[slug]/itemprimary.js
-./src/app/item/[slug]/page.js
- ⚠ ./src/app/basket/page.module.scss
-Deprecation Warning on line 0, column 8 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:0:8:
-Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
-
-More info and automated migrator: https://sass-lang.com/d/import
-
-0 | @import '../common.scss';
-
-src/app/basket/page.module.scss 1:9  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
-
-./src/app/basket/page.module.scss
-Deprecation Warning on line 58, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:58:4:
-Sass's behavior for declarations that appear after nested
-rules will be changing to match the behavior specified by CSS in an upcoming
-version. To keep the existing behavior, move the declaration above the nested
-rule. To opt into the new behavior, wrap the declaration in `& {}`.
-
-More info: https://sass-lang.com/d/mixed-decls
-
-58 |     cursor: pointer;
-
-src/app/basket/page.module.scss 59:5  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
-
-./src/app/item/[slug]/blurb.module.scss
-Deprecation Warning on line 13, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:13:4:
-Sass's behavior for declarations that appear after nested
-rules will be changing to match the behavior specified by CSS in an upcoming
-version. To keep the existing behavior, move the declaration above the nested
-rule. To opt into the new behavior, wrap the declaration in `& {}`.
-
-More info: https://sass-lang.com/d/mixed-decls
-
-13 |     font-family: var(--font-s);
-
-src/app/item/[slug]/blurb.module.scss 14:5  root stylesheet
-
-Import trace for requested module:
-./src/app/item/[slug]/blurb.module.scss
-./src/app/item/[slug]/blurb.js
-./src/app/item/[slug]/itemprimary.js
-./src/app/item/[slug]/page.js
-
-./src/app/item/[slug]/blurb.module.scss
-Deprecation Warning on line 13, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:13:4:
-Sass's behavior for declarations that appear after nested
-rules will be changing to match the behavior specified by CSS in an upcoming
-version. To keep the existing behavior, move the declaration above the nested
-rule. To opt into the new behavior, wrap the declaration in `& {}`.
-
-More info: https://sass-lang.com/d/mixed-decls
-
-13 |     font-family: var(--font-s);
-
-src/app/item/[slug]/blurb.module.scss 14:5  root stylesheet
-
-Import trace for requested module:
-./src/app/item/[slug]/blurb.module.scss
-./src/app/item/[slug]/blurb.js
-./src/app/item/[slug]/itemprimary.js
-./src/app/item/[slug]/page.js
-
-./src/app/item/[slug]/blurb.module.scss
-Deprecation Warning on line 14, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:14:4:
-Sass's behavior for declarations that appear after nested
-rules will be changing to match the behavior specified by CSS in an upcoming
-version. To keep the existing behavior, move the declaration above the nested
-rule. To opt into the new behavior, wrap the declaration in `& {}`.
-
-More info: https://sass-lang.com/d/mixed-decls
-
-14 |     font-size: medium;
-
-src/app/item/[slug]/blurb.module.scss 15:5  root stylesheet
-
-Import trace for requested module:
-./src/app/item/[slug]/blurb.module.scss
-./src/app/item/[slug]/blurb.js
-./src/app/item/[slug]/itemprimary.js
-./src/app/item/[slug]/page.js
-
-./src/app/item/[slug]/blurb.module.scss
-Deprecation Warning on line 14, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:14:4:
-Sass's behavior for declarations that appear after nested
-rules will be changing to match the behavior specified by CSS in an upcoming
-version. To keep the existing behavior, move the declaration above the nested
-rule. To opt into the new behavior, wrap the declaration in `& {}`.
-
-More info: https://sass-lang.com/d/mixed-decls
-
-14 |     font-size: medium;
-
-src/app/item/[slug]/blurb.module.scss 15:5  root stylesheet
-
-Import trace for requested module:
-./src/app/item/[slug]/blurb.module.scss
-./src/app/item/[slug]/blurb.js
-./src/app/item/[slug]/itemprimary.js
-./src/app/item/[slug]/page.js
-
-./src/app/item/[slug]/blurb.module.scss
-Deprecation Warning on line 15, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:15:4:
-Sass's behavior for declarations that appear after nested
-rules will be changing to match the behavior specified by CSS in an upcoming
-version. To keep the existing behavior, move the declaration above the nested
-rule. To opt into the new behavior, wrap the declaration in `& {}`.
-
-More info: https://sass-lang.com/d/mixed-decls
-
-15 |     font-weight: 100;
-
-src/app/item/[slug]/blurb.module.scss 16:5  root stylesheet
-
-Import trace for requested module:
-./src/app/item/[slug]/blurb.module.scss
-./src/app/item/[slug]/blurb.js
-./src/app/item/[slug]/itemprimary.js
-./src/app/item/[slug]/page.js
-
-./src/app/item/[slug]/blurb.module.scss
-13 repetitive deprecation warnings omitted.
-
-Import trace for requested module:
-./src/app/item/[slug]/blurb.module.scss
-./src/app/item/[slug]/blurb.js
-./src/app/item/[slug]/itemprimary.js
-./src/app/item/[slug]/page.js
-
-./src/app/item/[slug]/images.module.scss
-Deprecation Warning on line 9, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/images.module.scss:9:4:
-Sass's behavior for declarations that appear after nested
-rules will be changing to match the behavior specified by CSS in an upcoming
-version. To keep the existing behavior, move the declaration above the nested
-rule. To opt into the new behavior, wrap the declaration in `& {}`.
-
-More info: https://sass-lang.com/d/mixed-decls
-
-9 |     overflow: hidden;
-
-src/app/item/[slug]/images.module.scss 10:5  root stylesheet
-
-Import trace for requested module:
-./src/app/item/[slug]/images.module.scss
-./src/app/item/[slug]/images.js
-./src/app/item/[slug]/itemprimary.js
-./src/app/item/[slug]/page.js
-
-./src/app/item/[slug]/images.module.scss
-Deprecation Warning on line 10, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/images.module.scss:10:4:
-Sass's behavior for declarations that appear after nested
-rules will be changing to match the behavior specified by CSS in an upcoming
-version. To keep the existing behavior, move the declaration above the nested
-rule. To opt into the new behavior, wrap the declaration in `& {}`.
-
-More info: https://sass-lang.com/d/mixed-decls
-
-10 |     position: relative;
-
-src/app/item/[slug]/images.module.scss 11:5  root stylesheet
-
-Import trace for requested module:
-./src/app/item/[slug]/images.module.scss
-./src/app/item/[slug]/images.js
-./src/app/item/[slug]/itemprimary.js
-./src/app/item/[slug]/page.js
- GET /returns 200 in 231ms
-    ✓ should navigate to /returns page (1038ms)
-Signed out
- GET / 200 in 163ms
- GET /basket 200 in 47ms
-    ✓ should navigate to /basket page (1105ms)
+ GET /basket 200 in 50ms
+    ✓ should navigate to /basket page (1278ms)
 
 
   5 passing (6s)
@@ -2008,21 +2296,7 @@ Signed out
 
   Sales Page Integration Test
  ⚠ ./src/app/basket/page.module.scss
-Deprecation Warning on line 0, column 8 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:0:8:
-Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
-
-More info and automated migrator: https://sass-lang.com/d/import
-
-0 | @import '../common.scss';
-
-src/app/basket/page.module.scss 1:9  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
-
-./src/app/basket/page.module.scss
-Deprecation Warning on line 58, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:58:4:
+Deprecation Warning on line 59, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:59:4:
 Sass's behavior for declarations that appear after nested
 rules will be changing to match the behavior specified by CSS in an upcoming
 version. To keep the existing behavior, move the declaration above the nested
@@ -2030,13 +2304,47 @@ rule. To opt into the new behavior, wrap the declaration in `& {}`.
 
 More info: https://sass-lang.com/d/mixed-decls
 
-58 |     cursor: pointer;
+59 |     cursor: pointer;
 
-src/app/basket/page.module.scss 59:5  root stylesheet
+src/app/basket/page.module.scss 60:5  root stylesheet
 
 Import trace for requested module:
 ./src/app/basket/page.module.scss
 ./src/app/basket/page.js
+
+./src/app/delivery/page.module.scss
+Deprecation Warning on line 12, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/delivery/page.module.scss:12:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+12 |     margin-bottom: -5px !important;
+
+src/app/delivery/page.module.scss 13:5  root stylesheet
+
+Import trace for requested module:
+./src/app/delivery/page.module.scss
+./src/app/delivery/page.js
+
+./src/app/delivery/page.module.scss
+Deprecation Warning on line 16, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/delivery/page.module.scss:16:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+16 |     padding-top: 0px;
+
+src/app/delivery/page.module.scss 17:5  root stylesheet
+
+Import trace for requested module:
+./src/app/delivery/page.module.scss
+./src/app/delivery/page.js
 
 ./src/app/item/[slug]/blurb.module.scss
 Deprecation Warning on line 13, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:13:4:
@@ -2180,21 +2488,7 @@ Import trace for requested module:
 ./src/app/item/[slug]/itemprimary.js
 ./src/app/item/[slug]/page.js
  ⚠ ./src/app/basket/page.module.scss
-Deprecation Warning on line 0, column 8 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:0:8:
-Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
-
-More info and automated migrator: https://sass-lang.com/d/import
-
-0 | @import '../common.scss';
-
-src/app/basket/page.module.scss 1:9  root stylesheet
-
-Import trace for requested module:
-./src/app/basket/page.module.scss
-./src/app/basket/page.js
-
-./src/app/basket/page.module.scss
-Deprecation Warning on line 58, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:58:4:
+Deprecation Warning on line 59, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/basket/page.module.scss:59:4:
 Sass's behavior for declarations that appear after nested
 rules will be changing to match the behavior specified by CSS in an upcoming
 version. To keep the existing behavior, move the declaration above the nested
@@ -2202,13 +2496,47 @@ rule. To opt into the new behavior, wrap the declaration in `& {}`.
 
 More info: https://sass-lang.com/d/mixed-decls
 
-58 |     cursor: pointer;
+59 |     cursor: pointer;
 
-src/app/basket/page.module.scss 59:5  root stylesheet
+src/app/basket/page.module.scss 60:5  root stylesheet
 
 Import trace for requested module:
 ./src/app/basket/page.module.scss
 ./src/app/basket/page.js
+
+./src/app/delivery/page.module.scss
+Deprecation Warning on line 12, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/delivery/page.module.scss:12:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+12 |     margin-bottom: -5px !important;
+
+src/app/delivery/page.module.scss 13:5  root stylesheet
+
+Import trace for requested module:
+./src/app/delivery/page.module.scss
+./src/app/delivery/page.js
+
+./src/app/delivery/page.module.scss
+Deprecation Warning on line 16, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/delivery/page.module.scss:16:4:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+16 |     padding-top: 0px;
+
+src/app/delivery/page.module.scss 17:5  root stylesheet
+
+Import trace for requested module:
+./src/app/delivery/page.module.scss
+./src/app/delivery/page.js
 
 ./src/app/item/[slug]/blurb.module.scss
 Deprecation Warning on line 13, column 4 of file:///Users/spencerward/code/madeleine/marmalade-reactjs/src/app/item/%5Bslug%5D/blurb.module.scss:13:4:
@@ -2353,7 +2681,7 @@ Import trace for requested module:
 ./src/app/item/[slug]/page.js
 Signed out
 Signed out
-Signed in as CQCcv3aYF8YJ6LJIrglG6NgKBXq1
+Signed in as vyPABPB7uBgkNriFizSnWLqay3g2
 DEBUG salesSnapshot.docs: []
 DEBUG itemsSnapshot.docs: [
   QueryDocumentSnapshot {
@@ -2701,8 +3029,8 @@ DEBUG itemsSnapshot.docs: [
     metadata: SnapshotMetadata { hasPendingWrites: false, fromCache: false }
   }
 ]
- GET /sales 200 in 2470ms
-    ✓ should load the sales page and display the sold items table (2968ms)
+ GET /sales 200 in 2101ms
+    ✓ should load the sales page and display the sold items table (2598ms)
 
 
   1 passing (3s)
@@ -2718,7 +3046,7 @@ DEBUG itemsSnapshot.docs: [
   │ Skipped:      0                                                                                │
   │ Screenshots:  0                                                                                │
   │ Video:        false                                                                            │
-  │ Duration:     3 seconds                                                                        │
+  │ Duration:     2 seconds                                                                        │
   │ Spec Ran:     sales.cy.js                                                                      │
   └────────────────────────────────────────────────────────────────────────────────────────────────┘
 
@@ -2733,476 +3061,33 @@ Opening `/dev/tty` failed (6): Device not configured
   ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
   │ ✔  404.cy.js                                00:01        1        1        -        -        - │
   ├────────────────────────────────────────────────────────────────────────────────────────────────┤
-  │ ✔  admin.cy.js                              00:05        1        1        -        -        - │
+  │ ✔  admin.cy.js                              00:03        1        1        -        -        - │
   ├────────────────────────────────────────────────────────────────────────────────────────────────┤
-  │ ✔  basket.cy.js                             00:06        2        2        -        -        - │
+  │ ✔  basket.cy.js                             00:04        2        2        -        -        - │
   ├────────────────────────────────────────────────────────────────────────────────────────────────┤
-  │ ✔  checkout.cy.js                           00:06        1        1        -        -        - │
+  │ ✔  checkout.cy.js                           00:04        1        1        -        -        - │
   ├────────────────────────────────────────────────────────────────────────────────────────────────┤
   │ ✔  contact.cy.js                              0ms        -        -        -        -        - │
   ├────────────────────────────────────────────────────────────────────────────────────────────────┤
-  │ ✔  homepage.cy.js                           774ms        1        1        -        -        - │
+  │ ✔  homepage.cy.js                           789ms        1        1        -        -        - │
   ├────────────────────────────────────────────────────────────────────────────────────────────────┤
-  │ ✔  itempage.cy.js                           00:05        1        1        -        -        - │
+  │ ✔  itempage.cy.js                           00:04        1        1        -        -        - │
   ├────────────────────────────────────────────────────────────────────────────────────────────────┤
   │ ✔  navigation.cy.js                         00:05        5        5        -        -        - │
   ├────────────────────────────────────────────────────────────────────────────────────────────────┤
-  │ ✔  sales.cy.js                              00:03        1        1        -        -        - │
+  │ ✔  sales.cy.js                              00:02        1        1        -        -        - │
   └────────────────────────────────────────────────────────────────────────────────────────────────┘
-    ✔  All specs passed!                        00:34       13       13        -        -        -  
+    ✔  All specs passed!                        00:27       13       13        -        -        -  
 
 ✅ All Cypress tests passed
 Syncing files to server...
 [?25h
-bash: warning: setlocale: LC_ALL: cannot change locale (en_GB.UTF-8)
-Transfer starting: 269 files
-./
-.DS_Store
-          10244 100%    2.12MB/s   00:00:00 (xfer#1, to-check=1/269)
-.env.local
-            473 100%  497.66KB/s   00:00:00 (xfer#2, to-check=2/269)
-.env.production
-            487 100%  482.87KB/s   00:00:00 (xfer#3, to-check=3/269)
-.gitignore
-            489 100%  879.26KB/s   00:00:00 (xfer#4, to-check=4/269)
-.swcrc
-            654 100%    1.17MB/s   00:00:00 (xfer#5, to-check=5/269)
-README.md
-           3313 100%    4.19MB/s   00:00:00 (xfer#6, to-check=6/269)
-cypress.config.js
-            301 100%  595.03KB/s   00:00:00 (xfer#7, to-check=7/269)
-deploy.log
-         122272 100%   49.94MB/s   00:00:00 (xfer#8, to-check=8/269)
-deploy.sh
-           5045 100%    5.03MB/s   00:00:00 (xfer#9, to-check=9/269)
-jest.config.js
-            722 100%    1.39MB/s   00:00:00 (xfer#10, to-check=10/269)
-jest.setup.js
-            869 100%    1.57MB/s   00:00:00 (xfer#11, to-check=11/269)
-jsconfig.json
-             77 100%  188.41KB/s   00:00:00 (xfer#12, to-check=12/269)
-next-env.d.ts
-            277 100%  683.08KB/s   00:00:00 (xfer#13, to-check=13/269)
-next.config.mjs
-            765 100%    1.89MB/s   00:00:00 (xfer#14, to-check=14/269)
-package-lock.json
-         519072 100%    5.48MB/s   00:00:00 (xfer#15, to-check=15/269)
-package.json
-           1149 100%    6.09MB/s   00:00:00 (xfer#16, to-check=16/269)
-tsconfig.json
-            635 100%    5.36MB/s   00:00:00 (xfer#17, to-check=17/269)
-.cursor/rules/always-run-tests.mdc
-            430 100%    3.90MB/s   00:00:00 (xfer#18, to-check=20/269)
-.cursor/rules/git-commit-and-push.mdc
-            403 100%    3.96MB/s   00:00:00 (xfer#19, to-check=21/269)
-.cursor/rules/no-inline-styles.mdc
-            635 100%    5.93MB/s   00:00:00 (xfer#20, to-check=22/269)
-.cursor/rules/run-tests-after-edit.mdc
-            460 100%    4.87MB/s   00:00:00 (xfer#21, to-check=23/269)
-.vscode/settings.json
-             65 100%  616.30KB/s   00:00:00 (xfer#22, to-check=29/269)
-cypress/e2e/404.cy.js
-            188 100%    1.85MB/s   00:00:00 (xfer#23, to-check=33/269)
-cypress/e2e/admin.cy.js
-            598 100%    6.06MB/s   00:00:00 (xfer#24, to-check=34/269)
-cypress/e2e/basket.cy.js
-            505 100%    5.47MB/s   00:00:00 (xfer#25, to-check=35/269)
-cypress/e2e/checkout.cy.js
-            451 100%    4.84MB/s   00:00:00 (xfer#26, to-check=36/269)
-cypress/e2e/contact.cy.js
-             67 100%  770.88KB/s   00:00:00 (xfer#27, to-check=37/269)
-cypress/e2e/homepage.cy.js
-            236 100%    2.59MB/s   00:00:00 (xfer#28, to-check=38/269)
-cypress/e2e/itempage.cy.js
-            247 100%    1.72MB/s   00:00:00 (xfer#29, to-check=39/269)
-cypress/e2e/navigation.cy.js
-            863 100%    7.16MB/s   00:00:00 (xfer#30, to-check=40/269)
-cypress/e2e/sales.cy.js
-            659 100%    7.57MB/s   00:00:00 (xfer#31, to-check=41/269)
-cypress/screenshots/
-cypress/support/e2e.js
-             41 100%  435.07KB/s   00:00:00 (xfer#32, to-check=44/269)
-public/.DS_Store
-          10244 100%    8.08MB/s   00:00:00 (xfer#33, to-check=46/269)
-public/delivery-van.svg
-            741 100%    1.45MB/s   00:00:00 (xfer#34, to-check=47/269)
-public/file.svg
-            391 100%    1.38MB/s   00:00:00 (xfer#35, to-check=48/269)
-public/globe.svg
-           1035 100%    4.05MB/s   00:00:00 (xfer#36, to-check=49/269)
-public/next.svg
-           1375 100%    2.93MB/s   00:00:00 (xfer#37, to-check=50/269)
-public/vercel.svg
-            128 100%  546.13KB/s   00:00:00 (xfer#38, to-check=51/269)
-public/window.svg
-            385 100%    2.03MB/s   00:00:00 (xfer#39, to-check=52/269)
-public/.well-known/apple-developer-merchantid-domain-association
-            149 100%    1.05MB/s   00:00:00 (xfer#40, to-check=54/269)
-public/images/
-public/images/.DS_Store
-          10244 100%   14.52MB/s   00:00:00 (xfer#41, to-check=56/269)
-public/images/camel-sofa-1.webp
-        1048788 100%    5.15MB/s   00:00:00 (xfer#42, to-check=57/269)
-public/images/camel-sofa.webp
-         446124 100%   20.36MB/s   00:00:00 (xfer#43, to-check=58/269)
-public/images/card-table-1.webp
-        1763714 100%   31.57MB/s   00:00:00 (xfer#44, to-check=59/269)
-public/images/card-table-2.webp
-        1901188 100%   66.42MB/s   00:00:00 (xfer#45, to-check=60/269)
-public/images/card-table-3.webp
-        2480372 100%   88.59MB/s   00:00:00 (xfer#46, to-check=61/269)
-public/images/card-table.webp
-        1755370 100%   92.62MB/s   00:00:00 (xfer#47, to-check=62/269)
-public/images/desk-manor-1.webp
-        1333772 100%   85.45MB/s   00:00:00 (xfer#48, to-check=63/269)
-public/images/desk-manor-2.webp
-        1927794 100%   91.11MB/s   00:00:00 (xfer#49, to-check=64/269)
-public/images/desk-manor-3.webp
-        1942126 100%   91.79MB/s   00:00:00 (xfer#50, to-check=65/269)
-public/images/desk-manor.webp
-        1279854 100%   83.24MB/s   00:00:00 (xfer#51, to-check=66/269)
-public/images/email.svg
-            503 100%  959.17KB/s   00:00:00 (xfer#52, to-check=67/269)
-public/images/gilt-sofa-1.webp
-        2960362 100%   97.39MB/s   00:00:00 (xfer#53, to-check=68/269)
-public/images/gilt-sofa-2.webp
-        1874018 100%   90.82MB/s   00:00:00 (xfer#54, to-check=69/269)
-public/images/gilt-sofa-3.webp
-        2800766 100%   97.40MB/s   00:00:00 (xfer#55, to-check=70/269)
-public/images/gilt-sofa.webp
-        1644290 100%   97.51MB/s   00:00:00 (xfer#56, to-check=71/269)
-public/images/grandfather-clock-1.webp
-        2261052 100%   91.72MB/s   00:00:00 (xfer#57, to-check=72/269)
-public/images/grandfather-clock-2.webp
-        1927968 100%   92.11MB/s   00:00:00 (xfer#58, to-check=73/269)
-public/images/grandfather-clock-3.webp
-        1789714 100%   89.96MB/s   00:00:00 (xfer#59, to-check=74/269)
-public/images/grandfather-clock.webp
-          51828 100%   44.29MB/s   00:00:00 (xfer#60, to-check=75/269)
-public/images/lion-sofa-1.webp
-        1811652 100%   89.48MB/s   00:00:00 (xfer#61, to-check=76/269)
-public/images/lion-sofa-2.webp
-        1971110 100%   89.38MB/s   00:00:00 (xfer#62, to-check=77/269)
-public/images/lion-sofa-3.webp
-          31576 100%   38.08MB/s   00:00:00 (xfer#63, to-check=78/269)
-public/images/lion-sofa-4.webp
-        1409942 100%   88.40MB/s   00:00:00 (xfer#64, to-check=79/269)
-public/images/lion-sofa-scratch-1.webp
-        2603736 100%   94.53MB/s   00:00:00 (xfer#65, to-check=80/269)
-public/images/lion-sofa.webp
-        1072552 100%   92.06MB/s   00:00:00 (xfer#66, to-check=81/269)
-public/images/phone.svg
-            907 100%    1.61MB/s   00:00:00 (xfer#67, to-check=82/269)
-public/images/sofa-manor-1.webp
-        1834870 100%   91.14MB/s   00:00:00 (xfer#68, to-check=83/269)
-public/images/sofa-manor-2.webp
-        1586140 100%   90.62MB/s   00:00:00 (xfer#69, to-check=84/269)
-public/images/sofa-manor-3.webp
-        3043258 100%   99.31MB/s   00:00:00 (xfer#70, to-check=85/269)
-public/images/sofa-manor.webp
-        1897066 100%  105.84MB/s   00:00:00 (xfer#71, to-check=86/269)
-public/images/spider-table-1.webp
-          45052 100%   41.47MB/s   00:00:00 (xfer#72, to-check=87/269)
-public/images/spider-table-2.webp
-          49224 100%   34.70MB/s   00:00:00 (xfer#73, to-check=88/269)
-public/images/spider-table-3.webp
-          44764 100%   54.52MB/s   00:00:00 (xfer#74, to-check=89/269)
-public/images/spider-table.webp
-          77388 100%   51.11MB/s   00:00:00 (xfer#75, to-check=90/269)
-public/images/star.svg
-            325 100%    1.09MB/s   00:00:00 (xfer#76, to-check=91/269)
-public/images/table-manor-1.webp
-        2814604 100%   98.77MB/s   00:00:00 (xfer#77, to-check=92/269)
-public/images/table-manor-2.webp
-        3029532 100%   99.53MB/s   00:00:00 (xfer#78, to-check=93/269)
-public/images/table-manor.webp
-        1576332 100%   92.55MB/s   00:00:00 (xfer#79, to-check=94/269)
-public/images/work-table-1.webp
-        1066006 100%   81.39MB/s   00:00:00 (xfer#80, to-check=95/269)
-public/images/work-table-2.webp
-        2323118 100%   94.26MB/s   00:00:00 (xfer#81, to-check=96/269)
-public/images/work-table.webp
-        2323118 106%    2.41MB/s   596523:14:07        2184120 100%    2.19MB/s   00:00:00 (xfer#82, to-check=97/269)
-public/images/footer/environment.png
-           3856 100%    3.24MB/s   00:00:00 (xfer#83, to-check=99/269)
-public/images/footer/returns2.png
-           1469 100%   10.38MB/s   00:00:00 (xfer#84, to-check=100/269)
-public/images/footer/van.png
-           1520 100%   14.51MB/s   00:00:00 (xfer#85, to-check=101/269)
-public/images/payment/applepay.svg
-           2074 100%    5.42MB/s   00:00:00 (xfer#86, to-check=103/269)
-public/images/payment/link.svg
-           1344 100%   10.34MB/s   00:00:00 (xfer#87, to-check=104/269)
-public/images/payment/mastercard.svg
-          11226 100%   34.10MB/s   00:00:00 (xfer#88, to-check=105/269)
-public/images/payment/paypal.svg
-           8521 100%   16.97MB/s   00:00:00 (xfer#89, to-check=106/269)
-public/images/payment/visa.svg
-           1096 100%    5.78MB/s   00:00:00 (xfer#90, to-check=107/269)
-public/images_backup/.DS_Store
-           6148 100%   14.55MB/s   00:00:00 (xfer#91, to-check=109/269)
-public/images_backup/camel-sofa.webp
-           5206 100%   26.13MB/s   00:00:00 (xfer#92, to-check=110/269)
-public/images_backup/card-table-1.webp
-          74042 100%   36.57MB/s   00:00:00 (xfer#93, to-check=111/269)
-public/images_backup/card-table-2.webp
-          37454 100%   32.09MB/s   00:00:00 (xfer#94, to-check=112/269)
-public/images_backup/card-table-3.webp
-          58108 100%   38.54MB/s   00:00:00 (xfer#95, to-check=113/269)
-public/images_backup/card-table.webp
-          50308 100%   48.47MB/s   00:00:00 (xfer#96, to-check=114/269)
-public/images_backup/desk-manor-1.webp
-          60848 100%   39.31MB/s   00:00:00 (xfer#97, to-check=115/269)
-public/images_backup/desk-manor-2.webp
-          32004 100%   45.75MB/s   00:00:00 (xfer#98, to-check=116/269)
-public/images_backup/desk-manor-3.webp
-          68484 100%   43.05MB/s   00:00:00 (xfer#99, to-check=117/269)
-public/images_backup/desk-manor.webp
-          34818 100%   39.07MB/s   00:00:00 (xfer#100, to-check=118/269)
-public/images_backup/environment.png
-           3856 100%   25.75MB/s   00:00:00 (xfer#101, to-check=119/269)
-public/images_backup/gilt-sofa-1.webp
-          73588 100%   43.45MB/s   00:00:00 (xfer#102, to-check=120/269)
-public/images_backup/gilt-sofa-2.webp
-          62464 100%   45.23MB/s   00:00:00 (xfer#103, to-check=121/269)
-public/images_backup/gilt-sofa-3.webp
-          74826 100%   45.74MB/s   00:00:00 (xfer#104, to-check=122/269)
-public/images_backup/gilt-sofa.webp
-          42794 100%   38.11MB/s   00:00:00 (xfer#105, to-check=123/269)
-public/images_backup/returns2.png
-           1469 100%   11.87MB/s   00:00:00 (xfer#106, to-check=124/269)
-public/images_backup/sofa-manor-1.webp
-          55740 100%   45.24MB/s   00:00:00 (xfer#107, to-check=125/269)
-public/images_backup/sofa-manor-2.webp
-          81412 100%   49.60MB/s   00:00:00 (xfer#108, to-check=126/269)
-public/images_backup/sofa-manor-3.webp
-          44744 100%   44.87MB/s   00:00:00 (xfer#109, to-check=127/269)
-public/images_backup/sofa-manor.webp
-          54646 100%   43.36MB/s   00:00:00 (xfer#110, to-check=128/269)
-public/images_backup/van.png
-           1520 100%   15.59MB/s   00:00:00 (xfer#111, to-check=129/269)
-public/images_backup/work-table.webp
-           5206 100%   33.81MB/s   00:00:00 (xfer#112, to-check=130/269)
-public/images_backup/footer/environment.png
-           3856 100%   29.66MB/s   00:00:00 (xfer#113, to-check=132/269)
-public/images_backup/footer/returns2.png
-           1469 100%   15.22MB/s   00:00:00 (xfer#114, to-check=133/269)
-public/images_backup/footer/van.png
-           1520 100%   16.30MB/s   00:00:00 (xfer#115, to-check=134/269)
-src/.DS_Store
-           6148 100%   17.70MB/s   00:00:00 (xfer#116, to-check=137/269)
-src/mailer.js
-              2 100%   20.53KB/s   00:00:00 (xfer#117, to-check=138/269)
-src/setupTests.js
-             36 100%  444.14KB/s   00:00:00 (xfer#118, to-check=139/269)
-src/app/.DS_Store
-           6148 100%   28.73MB/s   00:00:00 (xfer#119, to-check=141/269)
-src/app/common.scss
-           1908 100%   15.29MB/s   00:00:00 (xfer#120, to-check=142/269)
-src/app/favicon.ico
-          25931 100%   56.99MB/s   00:00:00 (xfer#121, to-check=143/269)
-src/app/firebase.js
-           8801 100%   42.83MB/s   00:00:00 (xfer#122, to-check=144/269)
-src/app/firebase.test.js
-          20730 100%   56.29MB/s   00:00:00 (xfer#123, to-check=145/269)
-src/app/footer.js
-           1401 100%   11.41MB/s   00:00:00 (xfer#124, to-check=146/269)
-src/app/footer.module.scss
-           1571 100%   11.26MB/s   00:00:00 (xfer#125, to-check=147/269)
-src/app/footer.test.js
-            610 100%    5.19MB/s   00:00:00 (xfer#126, to-check=148/269)
-src/app/gallery.js
-            954 100%    9.20MB/s   00:00:00 (xfer#127, to-check=149/269)
-src/app/gallery.module.scss
-            583 100%    7.22MB/s   00:00:00 (xfer#128, to-check=150/269)
-src/app/globals.css
-            721 100%    7.32MB/s   00:00:00 (xfer#129, to-check=151/269)
-src/app/header.js
-            439 100%    4.99MB/s   00:00:00 (xfer#130, to-check=152/269)
-src/app/header.module.scss
-           1517 100%   13.40MB/s   00:00:00 (xfer#131, to-check=153/269)
-src/app/header.test.js
-            746 100%    8.09MB/s   00:00:00 (xfer#132, to-check=154/269)
-src/app/headers.ts
-            841 100%   10.16MB/s   00:00:00 (xfer#133, to-check=155/269)
-src/app/item.js
-            473 100%    5.50MB/s   00:00:00 (xfer#134, to-check=156/269)
-src/app/item.module.scss
-            178 100%    2.14MB/s   00:00:00 (xfer#135, to-check=157/269)
-src/app/layout.js
-            918 100%   10.17MB/s   00:00:00 (xfer#136, to-check=158/269)
-src/app/mailer.js
-            367 100%    4.27MB/s   00:00:00 (xfer#137, to-check=159/269)
-src/app/page.js
-            375 100%    4.97MB/s   00:00:00 (xfer#138, to-check=160/269)
-src/app/test-utils.js
-            468 100%    6.10MB/s   00:00:00 (xfer#139, to-check=161/269)
-src/app/thumbnail.js
-           3081 100%   23.12MB/s   00:00:00 (xfer#140, to-check=162/269)
-src/app/thumbnail.module.scss
-           1175 100%   11.44MB/s   00:00:00 (xfer#141, to-check=163/269)
-src/app/topbar.js
-           1227 100%   12.30MB/s   00:00:00 (xfer#142, to-check=164/269)
-src/app/topbar.module.scss
-            549 100%    6.38MB/s   00:00:00 (xfer#143, to-check=165/269)
-src/app/topbar.test.js
-           3140 100%   23.56MB/s   00:00:00 (xfer#144, to-check=166/269)
-src/app/underthumbnail.js
-            753 100%    7.72MB/s   00:00:00 (xfer#145, to-check=167/269)
-src/app/underthumbnail.module.scss
-            671 100%    7.71MB/s   00:00:00 (xfer#146, to-check=168/269)
-src/app/underthumbnail.test.js
-           2055 100%   17.99MB/s   00:00:00 (xfer#147, to-check=169/269)
-src/app/about/page.js
-           1548 100%   16.78MB/s   00:00:00 (xfer#148, to-check=171/269)
-src/app/about/page.module.scss
-           1434 100%   13.66MB/s   00:00:00 (xfer#149, to-check=172/269)
-src/app/admin/page.js
-           1709 100%   16.47MB/s   00:00:00 (xfer#150, to-check=174/269)
-src/app/admin/page.module.scss
-           5279 100%   32.29MB/s   00:00:00 (xfer#151, to-check=175/269)
-src/app/admin/page.test.js
-           4532 100%   32.49MB/s   00:00:00 (xfer#152, to-check=176/269)
-src/app/api/checkout-status/route.js
-            655 100%    7.34MB/s   00:00:00 (xfer#153, to-check=179/269)
-src/app/api/create-checkout-session/route.js
-           1602 100%   14.27MB/s   00:00:00 (xfer#154, to-check=181/269)
-src/app/api/send-sale-email/route.js
-           3434 100%   24.97MB/s   00:00:00 (xfer#155, to-check=184/269)
-src/app/basket/basketheader.js
-            271 100%    3.49MB/s   00:00:00 (xfer#156, to-check=187/269)
-src/app/basket/basketheader.module.scss
-            301 100%    4.17MB/s   00:00:00 (xfer#157, to-check=188/269)
-src/app/basket/basketitem.js
-            837 100%   10.24MB/s   00:00:00 (xfer#158, to-check=189/269)
-src/app/basket/basketitem.module.scss
-            825 100%    9.48MB/s   00:00:00 (xfer#159, to-check=190/269)
-src/app/basket/basketitems.js
-            499 100%    6.34MB/s   00:00:00 (xfer#160, to-check=191/269)
-src/app/basket/basketitems.module.scss
-             88 100%    1.18MB/s   00:00:00 (xfer#161, to-check=192/269)
-src/app/basket/emptybasket.js
-            454 100%    5.69MB/s   00:00:00 (xfer#162, to-check=193/269)
-src/app/basket/emptybasket.module.scss
-            439 100%    6.25MB/s   00:00:00 (xfer#163, to-check=194/269)
-src/app/basket/page.js
-           1299 100%   15.33MB/s   00:00:00 (xfer#164, to-check=195/269)
-src/app/basket/page.module.scss
-           1044 100%   11.60MB/s   00:00:00 (xfer#165, to-check=196/269)
-src/app/basket/page.test.js
-           2684 100%   23.09MB/s   00:00:00 (xfer#166, to-check=197/269)
-src/app/basket/tocheckout.js
-           1123 100%   12.48MB/s   00:00:00 (xfer#167, to-check=198/269)
-src/app/basket/tocheckout.module.scss
-            932 100%   11.40MB/s   00:00:00 (xfer#168, to-check=199/269)
-src/app/basket/tocheckout.test.js
-           1140 100%   13.57MB/s   00:00:00 (xfer#169, to-check=200/269)
-src/app/basket/total.js
-            533 100%    6.79MB/s   00:00:00 (xfer#170, to-check=201/269)
-src/app/basket/total.module.scss
-            234 100%    3.06MB/s   00:00:00 (xfer#171, to-check=202/269)
-src/app/checkout/Bill.js
-           1012 100%   11.09MB/s   00:00:00 (xfer#172, to-check=204/269)
-src/app/checkout/Bill.module.scss
-           1000 100%   11.76MB/s   00:00:00 (xfer#173, to-check=205/269)
-src/app/checkout/DeliveryAddressForm.js
-           2673 100%   27.42MB/s   00:00:00 (xfer#174, to-check=206/269)
-src/app/checkout/DeliveryAddressForm.module.scss
-           1079 100%   12.88MB/s   00:00:00 (xfer#175, to-check=207/269)
-src/app/checkout/LoadingSpinner.js
-            333 100%    2.94MB/s   00:00:00 (xfer#176, to-check=208/269)
-src/app/checkout/LoadingSpinner.module.scss
-            778 100%  747.70KB/s   00:00:00 (xfer#177, to-check=209/269)
-src/app/checkout/PaymentSuccess.js
-            768 100%    5.05MB/s   00:00:00 (xfer#178, to-check=210/269)
-src/app/checkout/PaymentSuccess.module.scss
-           1160 100%   13.33MB/s   00:00:00 (xfer#179, to-check=211/269)
-src/app/checkout/StripeCheckout.js
-          11407 100%   27.89MB/s   00:00:00 (xfer#180, to-check=212/269)
-src/app/checkout/StripeCheckout.module.scss
-           2211 100%    4.22MB/s   00:00:00 (xfer#181, to-check=213/269)
-src/app/checkout/page.js
-            832 100%    5.19MB/s   00:00:00 (xfer#182, to-check=214/269)
-src/app/checkout/page.module.scss
-            825 100%    4.71MB/s   00:00:00 (xfer#183, to-check=215/269)
-src/app/components/SalesTable.js
-           9266 100%   22.55MB/s   00:00:00 (xfer#184, to-check=217/269)
-src/app/config/deliveryAreas.js
-           2386 100%   10.53MB/s   00:00:00 (xfer#185, to-check=219/269)
-src/app/contact/page.js
-            675 100%    4.84MB/s   00:00:00 (xfer#186, to-check=221/269)
-src/app/contact/page.module.scss
-            410 100%    2.50MB/s   00:00:00 (xfer#187, to-check=222/269)
-src/app/context/MarmaladeContext.js
-           3594 100%   15.36MB/s   00:00:00 (xfer#188, to-check=224/269)
-src/app/context/MarmaladeContext.test.js
-           4503 100%    1.34MB/s   00:00:00 (xfer#189, to-check=225/269)
-src/app/delivery/page.js
-           1249 100%    2.90MB/s   00:00:00 (xfer#190, to-check=227/269)
-src/app/delivery/page.module.scss
-           1160 100%    8.39MB/s   00:00:00 (xfer#191, to-check=228/269)
-src/app/help/page.js
-             87 100%    1.20MB/s   00:00:00 (xfer#192, to-check=230/269)
-src/app/item/.DS_Store
-           6148 100%    9.70MB/s   00:00:00 (xfer#193, to-check=232/269)
-src/app/item/[slug]/ImageZoomModal.js
-            804 100%    8.33MB/s   00:00:00 (xfer#194, to-check=234/269)
-src/app/item/[slug]/ImageZoomModal.module.scss
-            529 100%    7.20MB/s   00:00:00 (xfer#195, to-check=235/269)
-src/app/item/[slug]/blurb.js
-           1285 100%  909.99KB/s   00:00:00 (xfer#196, to-check=236/269)
-src/app/item/[slug]/blurb.module.scss
-           1403 100%    5.13MB/s   00:00:00 (xfer#197, to-check=237/269)
-src/app/item/[slug]/conditionreport.js
-           2167 100%    7.70MB/s   00:00:00 (xfer#198, to-check=238/269)
-src/app/item/[slug]/conditionreport.module.scss
-            910 100%    4.99MB/s   00:00:00 (xfer#199, to-check=239/269)
-src/app/item/[slug]/images.js
-            717 100%    2.33MB/s   00:00:00 (xfer#200, to-check=240/269)
-src/app/item/[slug]/images.module.scss
-            183 100%  863.56KB/s   00:00:00 (xfer#201, to-check=241/269)
-src/app/item/[slug]/itemactions.js
-            798 100%    5.28MB/s   00:00:00 (xfer#202, to-check=242/269)
-src/app/item/[slug]/itemactions.module.scss
-            645 100%    7.79MB/s   00:00:00 (xfer#203, to-check=243/269)
-src/app/item/[slug]/itemactions.test.js
-           3007 100%   29.27MB/s   00:00:00 (xfer#204, to-check=244/269)
-src/app/item/[slug]/itemheadline.js
-            295 100%  559.15KB/s   00:00:00 (xfer#205, to-check=245/269)
-src/app/item/[slug]/itemheadline.module.scss
-            325 100%    4.02MB/s   00:00:00 (xfer#206, to-check=246/269)
-src/app/item/[slug]/itemprimary.js
-            566 100%    3.37MB/s   00:00:00 (xfer#207, to-check=247/269)
-src/app/item/[slug]/itemprimary.module.scss
-            575 100%    6.37MB/s   00:00:00 (xfer#208, to-check=248/269)
-src/app/item/[slug]/page.js
-           1098 100%   14.94MB/s   00:00:00 (xfer#209, to-check=249/269)
-src/app/item/[slug]/page.module.scss
-            633 100%    9.14MB/s   00:00:00 (xfer#210, to-check=250/269)
-src/app/item/[slug]/page.test.js
-           3106 100%   31.22MB/s   00:00:00 (xfer#211, to-check=251/269)
-src/app/item/[slug]/__tests__/blurb.test.js
-           7474 100%   35.46MB/s   00:00:00 (xfer#212, to-check=253/269)
-src/app/returns/page.js
-            856 100%   12.19MB/s   00:00:00 (xfer#213, to-check=255/269)
-src/app/returns/page.module.scss
-            450 100%    1.11MB/s   00:00:00 (xfer#214, to-check=256/269)
-src/app/sales/page.js
-            650 100%    9.85MB/s   00:00:00 (xfer#215, to-check=258/269)
-src/app/sales/page.test.js
-            828 100%   10.82MB/s   00:00:00 (xfer#216, to-check=259/269)
-src/app/success/page.js
-           2206 100%   24.44MB/s   00:00:00 (xfer#217, to-check=262/269)
-src/app/success/page.module.scss
-            649 100%    9.65MB/s   00:00:00 (xfer#218, to-check=263/269)
-src/utils/imageCacheBuster.js
-           1449 100%   17.72MB/s   00:00:00 (xfer#219, to-check=268/269)
-Read from remote host 217.154.9.107: Connection reset by peer
-client_loop: send disconnect: Broken pipe
-rsync(45251): error: unexpected end of file
-rsync(45251): error: io_read_nonblocking
-rsync(45251): error: io_read_blocking
-rsync(45251): error: io_read_flush
-rsync(45251): error: rsync_sender
-rsync(45251): warning: child 45252 exited with status 255
+Permission denied, please try again.
+Permission denied, please try again.
+root@217.154.9.107: Permission denied (publickey,password).
+rsync(56738): error: unexpected end of file
+rsync(56738): error: io_read_nonblocking
+rsync(56738): error: io_read_buf
+rsync(56738): error: io_read_int
+rsync(56738): warning: child 56739 exited with status 255
 File sync failed. Aborting deployment.

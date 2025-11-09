@@ -1,9 +1,11 @@
 // Simple modal for image zoom
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "./ImageZoomModal.module.scss";
 
 export default function ImageZoomModal({ src, onClose }) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   useEffect(() => {
     function onKey(e) {
       if (e.key === "Escape") onClose();
@@ -14,17 +16,31 @@ export default function ImageZoomModal({ src, onClose }) {
 
   return (
     <div className={styles.modal} onClick={onClose}>
-      <div className={styles.imageContainer} onClick={e => e.stopPropagation()}>
-        <Image
-          src={src}
-          alt="Zoomed view"
-          className={styles.image}
-          fill
-          sizes="100vw"
-          quality={95}
-          priority
-        />
-      </div>
+      {!imageLoaded && (
+        <div className={styles.loading}>
+          <div className={styles.spinner}></div>
+        </div>
+      )}
+      <Image
+        src={src}
+        alt="Zoomed view"
+        className={styles.image}
+        width={2048}
+        height={2048}
+        quality={95}
+        priority
+        onLoad={() => setImageLoaded(true)}
+        onClick={e => e.stopPropagation()}
+        style={{
+          maxWidth: '90vw',
+          maxHeight: '90vh',
+          width: 'auto',
+          height: 'auto',
+          objectFit: 'contain',
+          opacity: imageLoaded ? 1 : 0,
+          transition: 'opacity 0.2s ease-in-out'
+        }}
+      />
       <button
         className={styles.close}
         aria-label="Close zoom"
