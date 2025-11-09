@@ -9,9 +9,7 @@ export default function Total() {
 
   return (
     <div className={styles.page}>
-      <h3>Subtotal
-        <span className={styles.excludingDelivery}>excluding delivery</span>
-      </h3>
+      <h3>Subtotal</h3>
       <span className={styles.totalPrice}>£{totalPrice}</span>
     </div>
   );
