@@ -1,14 +1,7 @@
 #!/bin/bash
 
-# Set your SSH password as an environment variable for security
-# You can set this by running: export SSHPASS="your_password_here"
-# Or create a .env file (make sure it's in .gitignore)
-
-if [ -z "$SSHPASS" ]; then
-    echo "Error: SSHPASS environment variable is not set."
-    echo "Please set it by running: export SSHPASS=\"your_password_here\""
-    exit 1
-fi
+# This script uses SSH key authentication
+# Make sure your SSH key is added to the server's authorized_keys
 
 echo "Starting deployment..."
 
@@ -81,25 +74,31 @@ if [ $CYPRESS_EXIT_CODE -ne 0 ]; then
 fi
 echo "✅ All Cypress tests passed"
 
-# Sync files using rsync with sshpass
+# Sync files using rsync
 echo "Syncing files to server..."
-sshpass -e rsync -avz --progress --ignore-times --exclude '.git' --exclude '.next' --exclude 'node_modules' . root@217.154.9.107:/srv/marmalade/
+rsync -avz --progress --ignore-times --exclude '.git' --exclude '.next' --exclude 'node_modules' . root@217.154.9.107:/srv/marmalade/
 RSYNC_EXIT_CODE=$?
 
 if [ $RSYNC_EXIT_CODE -eq 0 ]; then
     echo "File sync completed successfully."
     
     # Install dependencies and build application
-    echo "Installing dependencies on server..."
-    sshpass -e ssh root@217.154.9.107 "cd /srv/marmalade && npm cache clean --force && rm -f package-lock.json && rm -rf node_modules/@next/swc-darwin-arm64 node_modules/@next/swc-darwin-x64 && npm install --force --no-audit"
+    echo "Cleaning npm cache on server..."
+    ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=10 root@217.154.9.107 "cd /srv/marmalade && npm cache clean --force"
+    
+    echo "Removing old lock files and Darwin-specific modules..."
+    ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=10 root@217.154.9.107 "cd /srv/marmalade && rm -f package-lock.json && rm -rf node_modules/@next/swc-darwin-arm64 node_modules/@next/swc-darwin-x64"
+    
+    echo "Installing dependencies on server (this may take a few minutes)..."
+    ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=10 root@217.154.9.107 "cd /srv/marmalade && npm install --force --no-audit"
     INSTALL_SERVER_EXIT_CODE=$?
     
     if [ $INSTALL_SERVER_EXIT_CODE -eq 0 ]; then
         echo "✅ Server dependencies installed successfully"
         echo "Setting up production environment..."
-        sshpass -e ssh root@217.154.9.107 "cd /srv/marmalade && cp .env.production .env.local"
+        ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=10 root@217.154.9.107 "cd /srv/marmalade && cp .env.production .env.local"
         echo "Building application with production environment..."
-        sshpass -e ssh root@217.154.9.107 "cd /srv/marmalade && NODE_ENV=production npm run build"
+        ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=10 root@217.154.9.107 "cd /srv/marmalade && NODE_ENV=production npm run build"
     else
         echo "❌ Server dependency installation failed. Skipping build."
         exit 1
@@ -109,7 +108,7 @@ if [ $RSYNC_EXIT_CODE -eq 0 ]; then
     if [ $BUILD_EXIT_CODE -eq 0 ]; then
         echo "✅ Build completed successfully"
         echo "Restarting application with PM2 in production mode..."
-        sshpass -e ssh root@217.154.9.107 "cd /srv/marmalade && NODE_ENV=production pm2 restart marmalade --update-env"
+        ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=10 root@217.154.9.107 "cd /srv/marmalade && NODE_ENV=production pm2 restart marmalade --update-env"
         if [ $? -eq 0 ]; then
             echo "✅ Application restarted successfully"
         else
