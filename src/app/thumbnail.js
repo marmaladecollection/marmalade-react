@@ -11,9 +11,12 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
 
   useEffect(() => {
     const loadAvailableImages = async () => {
+      // Force cache busting with version parameter (increment when images are updated)
+      const cacheVersion = 'v1'; // Change this number when you update images to force cache clearing
+
       if (allowCycling) {
         // Start with the base image
-        const images = [`/images/${item.id}.webp`];
+        const images = [`/images/${item.id}.webp?${cacheVersion}`];
 
         // Then try to find numbered variants by checking if they exist
         let index = 1;
@@ -21,7 +24,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
         const maxFailures = 3; // Stop after 3 consecutive missing images
 
         while (consecutiveFailures < maxFailures && index <= 20) {
-          const imagePath = `/images/${item.id}-${index}.webp`;
+          const imagePath = `/images/${item.id}-${index}.webp?${cacheVersion}`;
 
           try {
             // Use fetch with HEAD to check if image exists (faster than Image loading)
@@ -42,7 +45,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
         setAvailableImages(images);
       } else {
         // Single image mode
-        setAvailableImages([`/images/${item.id}.webp`]);
+        setAvailableImages([`/images/${item.id}.webp?${cacheVersion}`]);
       }
     };
 
