@@ -37,7 +37,7 @@ if (!isTestEnvironment) {
 // Export auth functions
 export const signIn = async () => {
   if (isTestEnvironment) return true;
-  
+
   try {
     await signInAnonymously(auth);
     return true;
@@ -50,7 +50,7 @@ export const signIn = async () => {
 // Helper to ensure we're authenticated before operations
 const ensureAuthenticated = async () => {
   if (isTestEnvironment) return;
-  
+
   if (!currentUser) {
     const success = await signIn();
     if (!success) {

@@ -18,11 +18,13 @@ function SkeletonItem() {
 }
 
 export default function Gallery({ items }) {
-  const [isLoading, setIsLoading] = useState(true);
-  
+  const [isLoading, setIsLoading] = useState(!(items && items.length > 0));
+
   useEffect(() => {
     if (items && items.length > 0) {
       setIsLoading(false);
+    } else {
+      setIsLoading(true);
     }
   }, [items]);
 
