@@ -10,39 +10,20 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   useEffect(() => {
-    const loadImages = async () => {
-      if (allowCycling) {
-        // Start with the base image
-        const images = [`/images/${item.id}.webp`];
+    if (allowCycling) {
+      // Start with the base image
+      const images = [`/images/${item.id}.webp`];
 
-        // Then look for numbered variants
-        let index = 1;
-        let hasMoreImages = true;
-
-        while (hasMoreImages) {
-          const imagePath = `/images/${item.id}-${index}.webp`;
-          try {
-            // Try to load the image
-            const img = new window.Image();
-            await new Promise((resolve, reject) => {
-              img.onload = resolve;
-              img.onerror = reject;
-              img.src = imagePath;
-            });
-            images.push(imagePath);
-            index++;
-          } catch (error) {
-            hasMoreImages = false;
-          }
-        }
-        setAvailableImages(images);
-      } else {
-        // Single image mode
-        setAvailableImages([`/images/${item.id}.webp`]);
+      // Then look for numbered variants (up to a reasonable limit)
+      for (let index = 1; index <= 10; index++) {
+        const imagePath = `/images/${item.id}-${index}.webp`;
+        images.push(imagePath);
       }
-    };
-
-    loadImages();
+      setAvailableImages(images);
+    } else {
+      // Single image mode
+      setAvailableImages([`/images/${item.id}.webp`]);
+    }
   }, [item.id, allowCycling]);
 
   const handlePrevious = () => {
