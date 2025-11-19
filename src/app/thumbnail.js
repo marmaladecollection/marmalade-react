@@ -14,8 +14,8 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
       // Start with the base image
       const images = [`/images/${item.id}.webp`];
 
-      // Then look for numbered variants (up to a reasonable limit)
-      for (let index = 1; index <= 10; index++) {
+      // Then look for numbered variants (up to 6 to cover most items)
+      for (let index = 1; index <= 6; index++) {
         const imagePath = `/images/${item.id}-${index}.webp`;
         images.push(imagePath);
       }
