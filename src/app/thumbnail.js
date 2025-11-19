@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import styles from './thumbnail.module.scss';
-import { getRandomCacheBustedSrc } from '../utils/imageCacheBuster';
 
 export default function Thumbnail({ item, allowCycling = false, onImageClick, priority = false }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -14,7 +13,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
     const loadImages = async () => {
       if (allowCycling) {
         // Start with the base image
-        const images = [getRandomCacheBustedSrc(`/images/${item.id}.webp`)];
+        const images = [`/images/${item.id}.webp`];
 
         // Then look for numbered variants
         let index = 1;
@@ -28,9 +27,9 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
             await new Promise((resolve, reject) => {
               img.onload = resolve;
               img.onerror = reject;
-              img.src = getRandomCacheBustedSrc(imagePath);
+              img.src = imagePath;
             });
-            images.push(getRandomCacheBustedSrc(imagePath));
+            images.push(imagePath);
             index++;
           } catch (error) {
             hasMoreImages = false;
@@ -39,7 +38,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
         setAvailableImages(images);
       } else {
         // Single image mode
-        setAvailableImages([getRandomCacheBustedSrc(`/images/${item.id}.webp`)]);
+        setAvailableImages([`/images/${item.id}.webp`]);
       }
     };
 
@@ -61,7 +60,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
       )}
       <Image
         className={styles.backgroundImage}
-        src={availableImages[0] || getRandomCacheBustedSrc(`/images/${item.id}.webp`)}
+        src={availableImages[0] || `/images/${item.id}.webp`}
         alt={item.name}
         width={350}
         height={470}
@@ -73,18 +72,14 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
       />
       <Image
         className={styles.overlayImage}
-        src={availableImages[currentImageIndex] || getRandomCacheBustedSrc(`/images/${item.id}.webp`)}
+        src={availableImages[currentImageIndex] || `/images/${item.id}.webp`}
         alt={item.name}
         width={350}
         height={470}
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         quality={90}
         priority={priority}
-        onClick={onImageClick ? () => {
-          // Extract original path from cache-busted URL for callback
-          const originalPath = availableImages[currentImageIndex].split('?')[0];
-          onImageClick(originalPath, item.name);
-        } : undefined}
+        onClick={onImageClick ? () => onImageClick(availableImages[currentImageIndex], item.name) : undefined}
         style={{
           opacity: isImageLoaded ? 1 : 0,
           width: 'auto',
