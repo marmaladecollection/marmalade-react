@@ -10,20 +10,43 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   useEffect(() => {
-    if (allowCycling) {
-      // Start with the base image
-      const images = [`/images/${item.id}.webp`];
+    const loadAvailableImages = async () => {
+      if (allowCycling) {
+        // Start with the base image
+        const images = [`/images/${item.id}.webp`];
 
-      // Then look for numbered variants (up to 6 to cover most items)
-      for (let index = 1; index <= 6; index++) {
-        const imagePath = `/images/${item.id}-${index}.webp`;
-        images.push(imagePath);
+        // Then try to find numbered variants by checking if they exist
+        let index = 1;
+        let consecutiveFailures = 0;
+        const maxFailures = 3; // Stop after 3 consecutive missing images
+
+        while (consecutiveFailures < maxFailures && index <= 20) {
+          const imagePath = `/images/${item.id}-${index}.webp`;
+
+          try {
+            // Use fetch with HEAD to check if image exists (faster than Image loading)
+            const response = await fetch(imagePath, { method: 'HEAD' });
+            if (response.ok) {
+              images.push(imagePath);
+              consecutiveFailures = 0; // Reset failure count
+            } else {
+              consecutiveFailures++;
+            }
+          } catch (error) {
+            consecutiveFailures++;
+          }
+
+          index++;
+        }
+
+        setAvailableImages(images);
+      } else {
+        // Single image mode
+        setAvailableImages([`/images/${item.id}.webp`]);
       }
-      setAvailableImages(images);
-    } else {
-      // Single image mode
-      setAvailableImages([`/images/${item.id}.webp`]);
-    }
+    };
+
+    loadAvailableImages();
   }, [item.id, allowCycling]);
 
   const handlePrevious = () => {
