@@ -17,7 +17,6 @@ Your page loading performance has been significantly improved through comprehens
      - `src/app/footer.js` - Footer icons
    - **Regular `<img>` Tags (Direct Serving)**:
      - `src/app/item/[slug]/ImageZoomModal.js` - Zoom modal images
-     - `src/app/item/[slug]/conditionreport.js` - Condition report images
    - **Impact**: 
      - Gallery thumbnails benefit from lazy loading and responsive sizing
      - Zoom/detail images load instantly without optimization overhead

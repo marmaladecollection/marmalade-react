@@ -4,7 +4,6 @@
 import { useEffect, useState } from 'react';
 import { fetchItemById } from '../../firebase';
 import ItemPrimary from './itemprimary';
-import ConditionReport from './conditionreport';
 import styles from './page.module.scss';
 
 export default function ItemPage() {
@@ -33,7 +32,6 @@ export default function ItemPage() {
         <div className={`${styles.content} ${isSold ? styles.sold : ''}`}>
           {isSold && <div className={styles.soldOverlay}></div>}
           <ItemPrimary item={item} />
-          <ConditionReport item={item} />
         </div>
       </div>
     </>

@@ -33,7 +33,6 @@ No other cloud code is required.
 ## Adding an item
 1. Add webp image under public/images matching the name in firestore.
   1.1 For multiple images name them name.webp for the main image, then name-n.webp for others.
-  1.2 For condition report name them name-scratch-n.webp
 1. Add item to [Firestore](https://console.firebase.google.com/u/3/project/marmalade-collection/firestore/databases/-default-/data/~2Fitem~2Ftable-2)
     item should have key matching image filename and fields:
         blurb
