@@ -19,12 +19,11 @@ const auth = getAuth();
 // Track authentication state
 let currentUser = null;
 
-// Check if we're in a test environment or development
+// Check if we're in a test environment
 const isTestEnvironment = process.env.NODE_ENV === 'test';
-const isDevelopment = process.env.NODE_ENV === 'development';
 
-// Initialize auth state listener (skip in test and development environments)
-if (!isTestEnvironment && !isDevelopment) {
+// Initialize auth state listener (skip in test environment)
+if (!isTestEnvironment) {
   onAuthStateChanged(auth, (user) => {
     currentUser = user;
     if (user) {
@@ -37,7 +36,7 @@ if (!isTestEnvironment && !isDevelopment) {
 
 // Export auth functions
 export const signIn = async () => {
-  if (isTestEnvironment || isDevelopment) return true;
+  if (isTestEnvironment) return true;
 
   try {
     await signInAnonymously(auth);
@@ -50,7 +49,7 @@ export const signIn = async () => {
 
 // Helper to ensure we're authenticated before operations
 const ensureAuthenticated = async () => {
-  if (isTestEnvironment || isDevelopment) return;
+  if (isTestEnvironment) return;
 
   if (!currentUser) {
     const success = await signIn();
