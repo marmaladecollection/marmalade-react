@@ -74,6 +74,18 @@
   }
 }
 
+.deliveryOption {
+  margin-bottom: 5px;
+
+  h2 {
+    margin-bottom: 10px !important;
+  }
+
+  p:last-child {
+    margin-top: 20px;
+  }
+}
+
 .email {
   color: #000;
   text-decoration: underline;

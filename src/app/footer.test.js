@@ -5,9 +5,9 @@ describe('Footer', () => {
   it('renders all footer links with correct attributes', () => {
     render(<Footer />);
     
-    // Check for the Free Delivery feature section
-    const freeDeliveryLink = screen.getByRole('link', { name: /Free Local Delivery/i });
-    expect(freeDeliveryLink).toHaveAttribute('href', '/delivery');
+    // Check for the Delivery feature section
+    const deliveryLink = screen.getByRole('link', { name: /Fast Delivery/i });
+    expect(deliveryLink).toHaveAttribute('href', '/delivery');
     
     // Check for the Returns feature section
     const returnsLink = screen.getByRole('link', { name: /Simple Returns/i });

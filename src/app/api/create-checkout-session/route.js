@@ -22,16 +22,28 @@ export async function POST(request) {
     // Create a Checkout Session
     const session = await stripe.checkout.sessions.create({
       ui_mode: 'embedded',
-      line_items: items.map(item => ({
-        price_data: {
-          currency: 'gbp',
-          product_data: {
-            name: item.name,
+      line_items: [
+        ...items.map(item => ({
+          price_data: {
+            currency: 'gbp',
+            product_data: {
+              name: item.name,
+            },
+            unit_amount: Math.round(item.price * 100), // Convert to cents
           },
-          unit_amount: Math.round(item.price * 100), // Convert to cents
-        },
-        quantity: 1,
-      })),
+          quantity: 1,
+        })),
+        {
+          price_data: {
+            currency: 'gbp',
+            product_data: {
+              name: 'Delivery',
+            },
+            unit_amount: 8000, // £80 in pence
+          },
+          quantity: 1,
+        }
+      ],
       mode: 'payment',
       payment_method_types: ['card'],
       allow_promotion_codes: false,

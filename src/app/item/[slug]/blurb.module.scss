@@ -56,6 +56,10 @@
     width: 600px;
     font-family: var(--font-ss);
     font-weight: 400;
+    white-space: normal;
+    word-wrap: break-word;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    margin-top: 8px;
 
     @include common.mobile {
         position: fixed;
@@ -65,11 +69,6 @@
         left: 10px;
         line-height: 1.5;
     }
-
-    white-space: normal;
-    word-wrap: break-word;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    margin-top: 8px;
 }
 
 .highlightedText:hover .tooltip {

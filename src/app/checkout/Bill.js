@@ -22,11 +22,11 @@ export default function Bill() {
       <div className={styles.total}>
         <div className={styles.totalRow}>
           <span className={styles.delivery}>Delivery</span>
-          <span>FREE</span>
+          <span>{formatPrice(80)}</span>
         </div>
         <div className={styles.totalRow}>
           <h3>Total</h3>
-          <h3>{formatPrice(basketItems.reduce((sum, item) => sum + Number(item.price), 0))}</h3>
+          <h3>{formatPrice(basketItems.reduce((sum, item) => sum + Number(item.price), 0) + 80)}</h3>
         </div>
       </div>
     </div>

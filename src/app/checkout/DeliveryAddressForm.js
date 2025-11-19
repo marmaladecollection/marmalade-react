@@ -24,7 +24,7 @@ export default function DeliveryAddressForm({ onSubmit }) {
     }
 
     if (!isValidDeliveryPostcode(deliveryAddress.postcode)) {
-      setAddressError("Oh no, it looks like you're outside our normal delivery area.  Please drop us an email, team@marmaladecollection.com, and we may be able to sort something out.");
+      setAddressError("Oh no, it looks like you're outside our £80 delivery area. Please drop us an email, team@marmaladecollection.com, and we will let you know the cost of delivery to your address.");
       return;
     }
 

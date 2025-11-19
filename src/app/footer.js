@@ -11,7 +11,7 @@ export default function Footer() {
         <Link href="/delivery" className={styles.feature}>
           <Image
             src="/images/footer/van.png"
-            alt="Free Local Delivery"
+            alt="Fast Delivery"
             width={60}
             height={30}
             style={{
@@ -19,7 +19,7 @@ export default function Footer() {
               height: "auto",
             }}
           />
-          <div className={styles.featureTitle}>Free Local Delivery</div>
+          <div className={styles.featureTitle}>Fast Delivery</div>
 
         </Link>
         <Link href="/returns" className={styles.feature}>

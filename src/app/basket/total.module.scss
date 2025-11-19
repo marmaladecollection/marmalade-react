@@ -1,15 +1,25 @@
 @use '../common.scss' as common;
 
 .page {
-    @include common.spaced-across;
+    @include common.spaced-down;
     font-family: var(--font-s);
-
+    gap: 10px;
 }
 
-.excludingDelivery {
-    font-size: small;
+.row {
+    @include common.spaced-across;
+    font-size: 0.95rem;
+}
+
+.totalRow {
+    @include common.spaced-across;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.price {
     font-weight: 400;
-    margin-left: 10px;
 }
 
 .totalPrice {
