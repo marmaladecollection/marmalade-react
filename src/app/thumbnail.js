@@ -56,6 +56,22 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
     loadAvailableImages();
   }, [item.id, allowCycling, cacheVersion]);
 
+  // Get current image src
+  const currentImageSrc = availableImages[currentImageIndex] || `/images/${item.id}.webp?${cacheVersion}`;
+
+  // Reset loading state when the displayed image changes
+  useEffect(() => {
+    setIsImageLoaded(false);
+    
+    // Fallback for cached images: if onLoad doesn't fire (cached images load instantly),
+    // show the image after a brief delay
+    const timeout = setTimeout(() => {
+      setIsImageLoaded(true);
+    }, 200);
+
+    return () => clearTimeout(timeout);
+  }, [currentImageSrc]);
+
   const handlePrevious = () => {
     setCurrentImageIndex((prev) => (prev === 0 ? availableImages.length - 1 : prev - 1));
   };
@@ -79,6 +95,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
         quality={90}
         priority={priority}
         onLoad={() => setIsImageLoaded(true)}
+        onError={() => setIsImageLoaded(true)} // Show image even if there's an error
         style={{ width: '100%', height: 'auto' }}
       />
       <Image
@@ -90,6 +107,8 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         quality={90}
         priority={priority}
+        onLoad={() => setIsImageLoaded(true)}
+        onError={() => setIsImageLoaded(true)} // Show image even if there's an error
         onClick={onImageClick ? () => onImageClick(availableImages[currentImageIndex], item.name) : undefined}
         style={{
           opacity: isImageLoaded ? 1 : 0,
