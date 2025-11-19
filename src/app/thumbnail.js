@@ -5,15 +5,19 @@ import Image from 'next/image';
 import styles from './thumbnail.module.scss';
 
 export default function Thumbnail({ item, allowCycling = false, onImageClick, priority = false }) {
+  // Force cache busting with version parameter (increment when images are updated)
+  const cacheVersion = 'v1'; // Change this number when you update images to force cache clearing
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [availableImages, setAvailableImages] = useState([]);
+  // Initialize immediately with main image to prevent flash of wrong image
+  const [availableImages, setAvailableImages] = useState([`/images/${item.id}.webp?${cacheVersion}`]);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   useEffect(() => {
-    const loadAvailableImages = async () => {
-      // Force cache busting with version parameter (increment when images are updated)
-      const cacheVersion = 'v1'; // Change this number when you update images to force cache clearing
+    // Reset image loaded state when item changes
+    setIsImageLoaded(false);
 
+    const loadAvailableImages = async () => {
       if (allowCycling) {
         // Start with the base image
         const images = [`/images/${item.id}.webp?${cacheVersion}`];
@@ -50,7 +54,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
     };
 
     loadAvailableImages();
-  }, [item.id, allowCycling]);
+  }, [item.id, allowCycling, cacheVersion]);
 
   const handlePrevious = () => {
     setCurrentImageIndex((prev) => (prev === 0 ? availableImages.length - 1 : prev - 1));
@@ -67,7 +71,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
       )}
       <Image
         className={styles.backgroundImage}
-        src={availableImages[0] || `/images/${item.id}.webp`}
+        src={availableImages[0] || `/images/${item.id}.webp?${cacheVersion}`}
         alt={item.name}
         width={350}
         height={470}
@@ -79,7 +83,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
       />
       <Image
         className={styles.overlayImage}
-        src={availableImages[currentImageIndex] || `/images/${item.id}.webp`}
+        src={availableImages[currentImageIndex] || `/images/${item.id}.webp?${cacheVersion}`}
         alt={item.name}
         width={350}
         height={470}
