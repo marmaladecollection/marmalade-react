@@ -19,8 +19,10 @@ const auth = getAuth();
 // Track authentication state
 let currentUser = null;
 
-// Check if we're in a test environment
-const isTestEnvironment = process.env.NODE_ENV === 'test';
+// Check if we're in a test environment (Jest) or Cypress test environment
+const isTestEnvironment = 
+  process.env.NODE_ENV === 'test' || 
+  (typeof window !== 'undefined' && window.Cypress);
 
 // Initialize auth state listener (skip in test environment)
 if (!isTestEnvironment) {
@@ -36,10 +38,10 @@ if (!isTestEnvironment) {
 
 // Export auth functions
 export const signIn = async () => {
-  if (isTestEnvironment) return true;
-
+  // Always authenticate, even in test mode, to allow Firestore queries
   try {
-    await signInAnonymously(auth);
+    const userCredential = await signInAnonymously(auth);
+    currentUser = userCredential.user; // Update currentUser immediately
     return true;
   } catch (error) {
     console.error("Error signing in:", error);
@@ -49,8 +51,8 @@ export const signIn = async () => {
 
 // Helper to ensure we're authenticated before operations
 const ensureAuthenticated = async () => {
-  if (isTestEnvironment) return;
-
+  // In test environment, still authenticate anonymously to allow Firestore queries
+  // but skip the auth state listener setup
   if (!currentUser) {
     const success = await signIn();
     if (!success) {
