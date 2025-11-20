@@ -12,6 +12,11 @@ fi
 echo "🚀 Starting QUICK deployment (skipping tests)..."
 echo "⚠️  WARNING: This skips all test validation!"
 
+# Delete existing images on server before syncing
+echo "🗑️  Deleting existing images on server..."
+sshpass -e ssh root@217.154.9.107 "rm -rf /srv/marmalade/public/images/*"
+echo "✅ Existing images deleted"
+
 # Sync files using rsync with sshpass
 echo "📦 Syncing files to server..."
 sshpass -e rsync -avz --progress --ignore-times --exclude '.git' --exclude '.next' --exclude 'node_modules' . root@217.154.9.107:/srv/marmalade/

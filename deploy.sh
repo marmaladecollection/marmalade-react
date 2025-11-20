@@ -74,6 +74,11 @@ if [ $CYPRESS_EXIT_CODE -ne 0 ]; then
 fi
 echo "✅ All Cypress tests passed"
 
+# Delete existing images on server before syncing
+echo "Deleting existing images on server..."
+ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=10 root@217.154.9.107 "rm -rf /srv/marmalade/public/images/*"
+echo "✅ Existing images deleted"
+
 # Sync files using rsync
 echo "Syncing files to server..."
 rsync -avz --progress --ignore-times --exclude '.git' --exclude '.next' --exclude 'node_modules' . root@217.154.9.107:/srv/marmalade/
