@@ -74,18 +74,17 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
     isLoadingImages
   });
 
-  // Reset loading state when the displayed image changes
+  // Only reset loading state on initial mount, not when cycling through images
+  // Cycling should be instant since images are already loaded
   useEffect(() => {
-    setIsImageLoaded(false);
-    
-    // Fallback for cached images: if onLoad doesn't fire (cached images load instantly),
-    // show the image after a brief delay
-    const timeout = setTimeout(() => {
-      setIsImageLoaded(true);
-    }, 200);
-
-    return () => clearTimeout(timeout);
-  }, [currentImageSrc]);
+    // Only set to false on initial load
+    if (currentImageIndex === 0 && !isImageLoaded) {
+      const timeout = setTimeout(() => {
+        setIsImageLoaded(true);
+      }, 200);
+      return () => clearTimeout(timeout);
+    }
+  }, []);
 
   const handlePrevious = () => {
     console.log('[Thumbnail] Previous clicked', {
