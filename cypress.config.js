@@ -1,5 +1,6 @@
 const { defineConfig } = require('cypress');
 const path = require('path');
+const { pathToFileURL } = require('url');
 
 module.exports = defineConfig({
   e2e: {
@@ -13,7 +14,8 @@ module.exports = defineConfig({
           try {
             // Use dynamic import for ES modules
             const scriptPath = path.join(__dirname, 'scripts', 'fetch-items.js');
-            const { default: fetchItems } = await import(scriptPath);
+            const moduleURL = pathToFileURL(scriptPath).href;
+            const { default: fetchItems } = await import(moduleURL);
             return await fetchItems();
           } catch (error) {
             // Fallback: import Firebase modules directly

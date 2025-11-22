@@ -12,10 +12,12 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
   // Initialize immediately with main image to prevent flash of wrong image
   const [availableImages, setAvailableImages] = useState([`/images/${item.id}.webp?${cacheVersion}`]);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [isLoadingImages, setIsLoadingImages] = useState(false);
 
   useEffect(() => {
     // Reset image loaded state when item changes
     setIsImageLoaded(false);
+    setIsLoadingImages(true);
 
     const loadAvailableImages = async () => {
       if (allowCycling) {
@@ -51,12 +53,14 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
         // Single image mode
         setAvailableImages([`/images/${item.id}.webp?${cacheVersion}`]);
       }
+
+      setIsLoadingImages(false);
     };
 
     loadAvailableImages();
   }, [item.id, allowCycling, cacheVersion]);
 
-  // Get current image src
+  // Get current image src - if the requested image doesn't exist yet, show the main image
   const currentImageSrc = availableImages[currentImageIndex] || `/images/${item.id}.webp?${cacheVersion}`;
 
   // Reset loading state when the displayed image changes
@@ -73,11 +77,23 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
   }, [currentImageSrc]);
 
   const handlePrevious = () => {
-    setCurrentImageIndex((prev) => (prev === 0 ? availableImages.length - 1 : prev - 1));
+    // Don't allow navigation if only one image is available
+    if (availableImages.length <= 1) return;
+
+    setCurrentImageIndex((prev) => {
+      const newIndex = prev === 0 ? availableImages.length - 1 : prev - 1;
+      return newIndex;
+    });
   };
 
   const handleNext = () => {
-    setCurrentImageIndex((prev) => (prev === availableImages.length - 1 ? 0 : prev + 1));
+    // Don't allow navigation if only one image is available
+    if (availableImages.length <= 1) return;
+
+    setCurrentImageIndex((prev) => {
+      const newIndex = prev === availableImages.length - 1 ? 0 : prev + 1;
+      return newIndex;
+    });
   };
 
   return (
@@ -132,6 +148,11 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
               <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
+          {isLoadingImages && (
+            <div className={styles.loadingIndicator}>
+              <div className={styles.loadingDot}></div>
+            </div>
+          )}
         </>
       )}
     </div>
