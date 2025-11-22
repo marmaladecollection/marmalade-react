@@ -76,7 +76,7 @@ echo "✅ All Cypress tests passed"
 
 # Sync files using rsync
 echo "Syncing files to server..."
-rsync -avz --progress --ignore-times --exclude '.git' --exclude '.next' --exclude 'node_modules' . root@217.154.9.107:/srv/marmalade/
+rsync -avz --progress --ignore-times --delete --exclude '.git' --exclude '.next' --exclude 'node_modules' . root@217.154.9.107:/srv/marmalade/
 RSYNC_EXIT_CODE=$?
 
 if [ $RSYNC_EXIT_CODE -eq 0 ]; then
