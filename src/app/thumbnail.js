@@ -6,7 +6,7 @@ import styles from './thumbnail.module.scss';
 
 export default function Thumbnail({ item, allowCycling = false, onImageClick, priority = false }) {
   // Force cache busting with version parameter (increment when images are updated)
-  const cacheVersion = 'v1'; // Change this number when you update images to force cache clearing
+  const cacheVersion = 'v2'; // Change this number when you update images to force cache clearing
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   // Initialize immediately with main image to prevent flash of wrong image
