@@ -19,14 +19,11 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
     setIsImageLoaded(false);
     setIsLoadingImages(true);
     setCurrentImageIndex(0); // Reset to first image
-    
-    console.log('[Thumbnail] Starting image discovery for item:', item.id);
 
     const loadAvailableImages = async () => {
       if (allowCycling) {
         // Start with the base image
         const images = [`/images/${item.id}.webp?${cacheVersion}`];
-        console.log('[Thumbnail] Base image added:', images[0]);
 
         // Check images sequentially using Image.decode() for better reliability
         for (let i = 1; i <= 10; i++) {
@@ -42,15 +39,12 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
             });
             // Image loaded successfully, add it
             images.push(imagePath);
-            console.log('[Thumbnail] Image', i, 'loaded successfully:', imagePath);
           } catch {
             // Image doesn't exist or failed to load, skip it
-            console.log('[Thumbnail] Image', i, 'failed to load, skipping:', imagePath);
             continue;
           }
         }
 
-        console.log('[Thumbnail] Final available images:', images.length, images);
         setAvailableImages(images);
       } else {
         // Single image mode
@@ -58,7 +52,6 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
       }
 
       setIsLoadingImages(false);
-      console.log('[Thumbnail] Image loading complete');
     };
 
     loadAvailableImages();
@@ -66,13 +59,6 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
 
   // Get current image src - if the requested image doesn't exist yet, show the main image
   const currentImageSrc = availableImages[currentImageIndex] || `/images/${item.id}.webp?${cacheVersion}`;
-  
-  console.log('[Thumbnail] Render state:', {
-    currentImageIndex,
-    availableImagesLength: availableImages.length,
-    currentImageSrc,
-    isLoadingImages
-  });
 
   // Only reset loading state on initial mount, not when cycling through images
   // Cycling should be instant since images are already loaded
@@ -87,41 +73,21 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
   }, []);
 
   const handlePrevious = () => {
-    console.log('[Thumbnail] Previous clicked', {
-      availableImagesCount: availableImages.length,
-      currentIndex: currentImageIndex,
-      availableImages: availableImages
-    });
-    
     // Don't allow navigation if only one image is available
-    if (availableImages.length <= 1) {
-      console.log('[Thumbnail] Navigation blocked - only one image available');
-      return;
-    }
+    if (availableImages.length <= 1) return;
 
     setCurrentImageIndex((prev) => {
       const newIndex = prev === 0 ? availableImages.length - 1 : prev - 1;
-      console.log('[Thumbnail] Previous: changing index from', prev, 'to', newIndex);
       return newIndex;
     });
   };
 
   const handleNext = () => {
-    console.log('[Thumbnail] Next clicked', {
-      availableImagesCount: availableImages.length,
-      currentIndex: currentImageIndex,
-      availableImages: availableImages
-    });
-    
     // Don't allow navigation if only one image is available
-    if (availableImages.length <= 1) {
-      console.log('[Thumbnail] Navigation blocked - only one image available');
-      return;
-    }
+    if (availableImages.length <= 1) return;
 
     setCurrentImageIndex((prev) => {
       const newIndex = prev === availableImages.length - 1 ? 0 : prev + 1;
-      console.log('[Thumbnail] Next: changing index from', prev, 'to', newIndex);
       return newIndex;
     });
   };
