@@ -13,30 +13,44 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
   const [availableImages, setAvailableImages] = useState([`/images/${item.id}.webp?${cacheVersion}`]);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isLoadingImages, setIsLoadingImages] = useState(false);
-  const [failedImages, setFailedImages] = useState(new Set());
 
   useEffect(() => {
     // Reset image loaded state when item changes
     setIsImageLoaded(false);
     setIsLoadingImages(true);
+    setCurrentImageIndex(0); // Reset to first image
+    
+    console.log('[Thumbnail] Starting image discovery for item:', item.id);
 
     const loadAvailableImages = async () => {
       if (allowCycling) {
         // Start with the base image
         const images = [`/images/${item.id}.webp?${cacheVersion}`];
+        console.log('[Thumbnail] Base image added:', images[0]);
 
-        // Then try to find numbered variants by checking if they exist
-        let index = 1;
-        let consecutiveFailures = 0;
-        const maxFailures = 3; // Stop after 3 consecutive missing images
-
-        // Try to find numbered variants by checking if they exist
-        // Use a more reliable method that works in both local and deployed environments
+        // Check images sequentially using Image.decode() for better reliability
         for (let i = 1; i <= 10; i++) {
           const imagePath = `/images/${item.id}-${i}.webp?${cacheVersion}`;
-          images.push(imagePath);
+          
+          try {
+            // Create an actual Image object to test if it loads
+            const img = new window.Image();
+            await new Promise((resolve, reject) => {
+              img.onload = resolve;
+              img.onerror = reject;
+              img.src = imagePath;
+            });
+            // Image loaded successfully, add it
+            images.push(imagePath);
+            console.log('[Thumbnail] Image', i, 'loaded successfully:', imagePath);
+          } catch {
+            // Image doesn't exist or failed to load, skip it
+            console.log('[Thumbnail] Image', i, 'failed to load, skipping:', imagePath);
+            continue;
+          }
         }
 
+        console.log('[Thumbnail] Final available images:', images.length, images);
         setAvailableImages(images);
       } else {
         // Single image mode
@@ -44,16 +58,21 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
       }
 
       setIsLoadingImages(false);
+      console.log('[Thumbnail] Image loading complete');
     };
 
     loadAvailableImages();
   }, [item.id, allowCycling, cacheVersion]);
 
-  // Get valid images (excluding failed ones)
-  const validImages = getValidImages();
-
   // Get current image src - if the requested image doesn't exist yet, show the main image
-  const currentImageSrc = validImages[currentImageIndex] || `/images/${item.id}.webp?${cacheVersion}`;
+  const currentImageSrc = availableImages[currentImageIndex] || `/images/${item.id}.webp?${cacheVersion}`;
+  
+  console.log('[Thumbnail] Render state:', {
+    currentImageIndex,
+    availableImagesLength: availableImages.length,
+    currentImageSrc,
+    isLoadingImages
+  });
 
   // Reset loading state when the displayed image changes
   useEffect(() => {
@@ -68,33 +87,42 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
     return () => clearTimeout(timeout);
   }, [currentImageSrc]);
 
-  const handleImageError = (imageSrc) => {
-    // Mark this image as failed and remove it from available images
-    setFailedImages(prev => new Set([...prev, imageSrc]));
-  };
-
-  const getValidImages = () => {
-    return availableImages.filter(img => !failedImages.has(img));
-  };
-
   const handlePrevious = () => {
-    const validImages = getValidImages();
-    // Don't allow navigation if only one valid image is available
-    if (validImages.length <= 1) return;
+    console.log('[Thumbnail] Previous clicked', {
+      availableImagesCount: availableImages.length,
+      currentIndex: currentImageIndex,
+      availableImages: availableImages
+    });
+    
+    // Don't allow navigation if only one image is available
+    if (availableImages.length <= 1) {
+      console.log('[Thumbnail] Navigation blocked - only one image available');
+      return;
+    }
 
     setCurrentImageIndex((prev) => {
-      const newIndex = prev === 0 ? validImages.length - 1 : prev - 1;
+      const newIndex = prev === 0 ? availableImages.length - 1 : prev - 1;
+      console.log('[Thumbnail] Previous: changing index from', prev, 'to', newIndex);
       return newIndex;
     });
   };
 
   const handleNext = () => {
-    const validImages = getValidImages();
-    // Don't allow navigation if only one valid image is available
-    if (validImages.length <= 1) return;
+    console.log('[Thumbnail] Next clicked', {
+      availableImagesCount: availableImages.length,
+      currentIndex: currentImageIndex,
+      availableImages: availableImages
+    });
+    
+    // Don't allow navigation if only one image is available
+    if (availableImages.length <= 1) {
+      console.log('[Thumbnail] Navigation blocked - only one image available');
+      return;
+    }
 
     setCurrentImageIndex((prev) => {
-      const newIndex = prev === validImages.length - 1 ? 0 : prev + 1;
+      const newIndex = prev === availableImages.length - 1 ? 0 : prev + 1;
+      console.log('[Thumbnail] Next: changing index from', prev, 'to', newIndex);
       return newIndex;
     });
   };
@@ -106,7 +134,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
       )}
       <Image
         className={styles.backgroundImage}
-        src={validImages[0] || `/images/${item.id}.webp?${cacheVersion}`}
+        src={availableImages[0] || `/images/${item.id}.webp?${cacheVersion}`}
         alt={item.name}
         width={350}
         height={470}
@@ -114,10 +142,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
         quality={90}
         priority={priority}
         onLoad={() => setIsImageLoaded(true)}
-        onError={() => {
-          handleImageError(validImages[0] || `/images/${item.id}.webp?${cacheVersion}`);
-          setIsImageLoaded(true); // Still show the component even if image fails
-        }}
+        onError={() => setIsImageLoaded(true)} // Show image even if there's an error
         style={{ width: '100%', height: 'auto' }}
       />
       <Image
@@ -130,10 +155,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
         quality={90}
         priority={priority}
         onLoad={() => setIsImageLoaded(true)}
-        onError={() => {
-          handleImageError(currentImageSrc);
-          setIsImageLoaded(true); // Still show the component even if image fails
-        }}
+        onError={() => setIsImageLoaded(true)} // Show image even if there's an error
         onClick={onImageClick ? () => onImageClick(currentImageSrc, item.name) : undefined}
         style={{
           opacity: isImageLoaded ? 1 : 0,
@@ -143,7 +165,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
           maxHeight: '100%'
         }}
       />
-      {allowCycling && validImages.length > 1 && (
+      {allowCycling && availableImages.length > 1 && (
         <>
           <button className={styles.navButton} onClick={handlePrevious} aria-label="Previous image">
             <span className={styles.navButtonHitbox}></span>
@@ -167,4 +189,3 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
     </div>
   );
 }
-
