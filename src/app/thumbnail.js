@@ -16,6 +16,8 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
   const [maxImageHeight, setMaxImageHeight] = useState(0);
   const discoveryStarted = useRef(false);
   const imageRefs = useRef({});
+  const loadedImages = useRef(new Set());
+  const visibleImageRef = useRef(null);
 
   useEffect(() => {
     // Reset state when item changes
@@ -23,6 +25,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
     setCurrentImageIndex(0);
     setAvailableImages([`/images/${item.id}.webp?${cacheVersion}`]);
     discoveryStarted.current = false;
+    loadedImages.current.clear();
   }, [item.id, cacheVersion]);
 
   // Image discovery logic
@@ -70,6 +73,31 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
     discoverImages();
   }, [item.id, allowCycling, cacheVersion]);
 
+  // Check if visible image is loaded when currentImageIndex changes
+  useEffect(() => {
+    const visibleImageSrc = availableImages[currentImageIndex];
+    if (visibleImageSrc && loadedImages.current.has(visibleImageSrc)) {
+      setIsImageLoaded(true);
+      return;
+    }
+    
+    // Check if image is already loaded (cached images) - use requestAnimationFrame to ensure DOM is ready
+    requestAnimationFrame(() => {
+      if (visibleImageRef.current) {
+        // Next.js Image wraps img in a span, find the actual img element
+        const imgElement = visibleImageRef.current.querySelector('img');
+        if (imgElement && imgElement.complete && imgElement.naturalHeight > 0) {
+          loadedImages.current.add(visibleImageSrc);
+          setIsImageLoaded(true);
+          return;
+        }
+      }
+      
+      // If not loaded yet, set to false and wait for onLoad
+      setIsImageLoaded(false);
+    });
+  }, [currentImageIndex, availableImages]);
+
   const handlePrevious = () => {
     if (availableImages.length <= 1) return;
     setCurrentImageIndex((prev) => (prev === 0 ? availableImages.length - 1 : prev - 1));
@@ -85,9 +113,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
       className={`${styles.container} ${allowCycling ? styles.cyclingContainer : ''}`}
       style={allowCycling && maxImageHeight > 0 ? { minHeight: `${maxImageHeight}px` } : {}}
     >
-      {!isImageLoaded && (
-        <div className={styles.skeleton} />
-      )}
+      <div className={`${styles.skeleton} ${isImageLoaded ? styles.hidden : ''}`} />
       
       {/* Render ALL available images into the DOM to force pre-decoding */}
       {availableImages.map((src, index) => {
@@ -110,6 +136,9 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
               if (allowCycling && el) {
                 imageRefs.current[src] = el;
               }
+              if (isVisible) {
+                visibleImageRef.current = el;
+              }
             }}
             style={{ 
               position: shouldBeRelative ? 'relative' : 'absolute',
@@ -131,7 +160,14 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
               priority={isPriority} // Eager load main images
               loading={isPriority ? "eager" : "lazy"}
               onLoad={(e) => {
-                if (!isImageLoaded) setIsImageLoaded(true);
+                // Mark this image as loaded
+                loadedImages.current.add(src);
+                
+                // Hide skeleton if this is the visible image
+                if (isVisible) {
+                  setIsImageLoaded(true);
+                }
+                
                 // Measure image wrapper height when cycling to set container to tallest
                 if (allowCycling && e.target && imageRefs.current[src]) {
                   const wrapper = imageRefs.current[src];
@@ -145,7 +181,11 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
                 }
               }}
               onError={() => {
-                if (!isImageLoaded) setIsImageLoaded(true);
+                // Mark as loaded even on error to hide skeleton
+                loadedImages.current.add(src);
+                if (isVisible) {
+                  setIsImageLoaded(true);
+                }
               }}
               onClick={onImageClick ? () => onImageClick(src, item.name) : undefined}
               style={{
