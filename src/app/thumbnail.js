@@ -1,95 +1,76 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import styles from './thumbnail.module.scss';
 
 export default function Thumbnail({ item, allowCycling = false, onImageClick, priority = false }) {
   // Force cache busting with version parameter (increment when images are updated)
-  const cacheVersion = 'v3'; // Change this number when you update images to force cache clearing
+  const cacheVersion = 'v3'; 
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  // Initialize immediately with main image to prevent flash of wrong image
+  // Initialize with just the main image
   const [availableImages, setAvailableImages] = useState([`/images/${item.id}.webp?${cacheVersion}`]);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isLoadingImages, setIsLoadingImages] = useState(false);
+  const discoveryStarted = useRef(false);
 
   useEffect(() => {
-    // Reset image loaded state when item changes
+    // Reset state when item changes
     setIsImageLoaded(false);
-    setIsLoadingImages(true);
-    setCurrentImageIndex(0); // Reset to first image
+    setCurrentImageIndex(0);
+    setAvailableImages([`/images/${item.id}.webp?${cacheVersion}`]);
+    discoveryStarted.current = false;
+  }, [item.id, cacheVersion]);
 
-    const loadAvailableImages = async () => {
-      if (allowCycling) {
-        // Start with the base image
-        const images = [`/images/${item.id}.webp?${cacheVersion}`];
+  // Image discovery logic
+  useEffect(() => {
+    if (!allowCycling || discoveryStarted.current) return;
+    
+    const discoverImages = async () => {
+      discoveryStarted.current = true;
+      setIsLoadingImages(true);
 
-        // Check images sequentially using Image.decode() for better reliability
-        for (let i = 1; i <= 10; i++) {
-          const imagePath = `/images/${item.id}-${i}.webp?${cacheVersion}`;
-          
-          try {
-            // Create an actual Image object to test if it loads
-            const img = new window.Image();
-            await new Promise((resolve, reject) => {
-              img.onload = resolve;
-              img.onerror = reject;
-              img.src = imagePath;
-            });
-            // Image loaded successfully, add it
-            images.push(imagePath);
-          } catch {
-            // Image doesn't exist or failed to load, skip it
-            continue;
-          }
-        }
-
-        setAvailableImages(images);
-      } else {
-        // Single image mode
-        setAvailableImages([`/images/${item.id}.webp?${cacheVersion}`]);
+      // Prepare parallel probes for images 1-10
+      const probes = [];
+      for (let i = 1; i <= 10; i++) {
+        const path = `/images/${item.id}-${i}.webp?${cacheVersion}`;
+        const probe = new Promise((resolve) => {
+          const img = new window.Image();
+          img.onload = () => resolve({ path, exists: true, index: i });
+          img.onerror = () => resolve({ path, exists: false, index: i });
+          img.src = path;
+        });
+        probes.push(probe);
       }
 
+      // Run all probes in parallel
+      const results = await Promise.all(probes);
+      
+      // Filter valid images and sort by index
+      const validExtras = results
+        .filter(r => r.exists)
+        .sort((a, b) => a.index - b.index)
+        .map(r => r.path);
+
+      if (validExtras.length > 0) {
+        setAvailableImages(prev => [...prev, ...validExtras]);
+      }
+      
       setIsLoadingImages(false);
     };
 
-    loadAvailableImages();
+    discoverImages();
   }, [item.id, allowCycling, cacheVersion]);
 
-  // Get current image src - if the requested image doesn't exist yet, show the main image
-  const currentImageSrc = availableImages[currentImageIndex] || `/images/${item.id}.webp?${cacheVersion}`;
-
-  // Only reset loading state on initial mount, not when cycling through images
-  // Cycling should be instant since images are already loaded
-  useEffect(() => {
-    // Only set to false on initial load
-    if (currentImageIndex === 0 && !isImageLoaded) {
-      const timeout = setTimeout(() => {
-        setIsImageLoaded(true);
-      }, 200);
-      return () => clearTimeout(timeout);
-    }
-  }, []);
-
   const handlePrevious = () => {
-    // Don't allow navigation if only one image is available
     if (availableImages.length <= 1) return;
-
-    setCurrentImageIndex((prev) => {
-      const newIndex = prev === 0 ? availableImages.length - 1 : prev - 1;
-      return newIndex;
-    });
+    setCurrentImageIndex((prev) => (prev === 0 ? availableImages.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
-    // Don't allow navigation if only one image is available
     if (availableImages.length <= 1) return;
-
-    setCurrentImageIndex((prev) => {
-      const newIndex = prev === availableImages.length - 1 ? 0 : prev + 1;
-      return newIndex;
-    });
+    setCurrentImageIndex((prev) => (prev === availableImages.length - 1 ? 0 : prev + 1));
   };
 
   return (
@@ -97,39 +78,53 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
       {!isImageLoaded && (
         <div className={styles.skeleton} />
       )}
-      <Image
-        className={styles.backgroundImage}
-        src={availableImages[0] || `/images/${item.id}.webp?${cacheVersion}`}
-        alt={item.name}
-        width={350}
-        height={470}
-        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        quality={90}
-        priority={priority}
-        onLoad={() => setIsImageLoaded(true)}
-        onError={() => setIsImageLoaded(true)} // Show image even if there's an error
-        style={{ width: '100%', height: 'auto' }}
-      />
-      <Image
-        className={styles.overlayImage}
-        src={currentImageSrc}
-        alt={item.name}
-        width={350}
-        height={470}
-        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        quality={90}
-        priority={priority}
-        onLoad={() => setIsImageLoaded(true)}
-        onError={() => setIsImageLoaded(true)} // Show image even if there's an error
-        onClick={onImageClick ? () => onImageClick(currentImageSrc, item.name) : undefined}
-        style={{
-          opacity: isImageLoaded ? 1 : 0,
-          width: 'auto',
-          height: 'auto',
-          maxWidth: '100%',
-          maxHeight: '100%'
-        }}
-      />
+      
+      {/* Render ALL available images into the DOM to force pre-decoding */}
+      {availableImages.map((src, index) => {
+        const isVisible = index === currentImageIndex;
+        // Only the first few images need high priority to save bandwidth on initial load
+        // But we want them all to load eventually
+        const isPriority = priority || index <= 1; 
+        
+        return (
+          <div 
+            key={src}
+            className={styles.imageWrapper}
+            style={{ 
+              display: isVisible ? 'block' : 'none', // Hide but keep in DOM
+              width: '100%',
+              height: '100%'
+            }}
+          >
+            <Image
+              src={src}
+              alt={item.name}
+              width={350}
+              height={470}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              quality={75} // Optimized quality
+              priority={isPriority} // Eager load main images
+              loading={isPriority ? "eager" : "lazy"}
+              onLoad={() => {
+                if (index === 0) setIsImageLoaded(true);
+              }}
+              onError={() => {
+                if (index === 0) setIsImageLoaded(true);
+              }}
+              onClick={onImageClick ? () => onImageClick(src, item.name) : undefined}
+              style={{
+                width: 'auto',
+                height: 'auto',
+                maxWidth: '100%',
+                maxHeight: '100%',
+                margin: '0 auto',
+                display: 'block'
+              }}
+            />
+          </div>
+        );
+      })}
+
       {allowCycling && availableImages.length > 1 && (
         <>
           <button className={styles.navButton} onClick={handlePrevious} aria-label="Previous image">
