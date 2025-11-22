@@ -5,8 +5,18 @@ import { act } from 'react';
 // Mock next/image
 jest.mock('next/image', () => {
   return function MockImage({ src, alt, style, priority, loading, onLoad }) {
-    // Simulate onLoad immediately for testing
-    if (onLoad) setTimeout(onLoad, 0);
+    // Simulate onLoad immediately for testing with proper event object
+    if (onLoad) {
+      setTimeout(() => {
+        const mockEvent = {
+          target: {
+            src: src,
+            complete: true
+          }
+        };
+        onLoad(mockEvent);
+      }, 0);
+    }
     return <img src={src} alt={alt} style={style} data-priority={priority} data-loading={loading} />;
   };
 });

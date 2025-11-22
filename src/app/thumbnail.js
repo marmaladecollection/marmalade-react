@@ -56,7 +56,12 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
         .map(r => r.path);
 
       if (validExtras.length > 0) {
-        setAvailableImages(prev => [...prev, ...validExtras]);
+        setAvailableImages(prev => {
+          // Prevent duplicates by filtering out images that already exist
+          const existingPaths = new Set(prev);
+          const newImages = validExtras.filter(path => !existingPaths.has(path));
+          return newImages.length > 0 ? [...prev, ...newImages] : prev;
+        });
       }
       
       setIsLoadingImages(false);

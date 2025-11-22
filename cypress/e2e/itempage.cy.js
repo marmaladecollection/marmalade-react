@@ -36,4 +36,89 @@ describe('Item Page', () => {
           .should('include', 'card-table-1');
       });
   });
+
+  it('should cycle through all desk-manor images correctly without duplicates', () => {
+    // Visit desk-manor item page - we know it has exactly 4 images:
+    // desk-manor.webp (main), desk-manor-1.webp, desk-manor-2.webp, desk-manor-3.webp
+    cy.visit('/item/desk-manor');
+
+    // Wait for page to load and item to be fetched
+    cy.contains('Add to bag', { timeout: 10000 }).should('exist');
+
+    // Wait for image discovery to complete (loading indicator should disappear)
+    // The loading indicator appears when discovering images
+    cy.get('button[aria-label="Next image"]', { timeout: 10000 }).should('exist');
+    
+    // Small delay to ensure image discovery has completed
+    cy.wait(1000);
+
+    // Get the initial image (should be desk-manor.webp - the main image)
+    cy.get('img:visible').first().invoke('attr', 'src').then((initialSrc) => {
+      expect(initialSrc).to.include('desk-manor');
+      // Main image should be desk-manor.webp (not a numbered variant)
+      expect(initialSrc).to.not.include('desk-manor-');
+
+      // Track all images we see during the cycle
+      const seenImages = [initialSrc];
+
+      // Click through all 4 images (3 more clicks after the initial one)
+      // After 4 clicks total, we should be back to the main image
+      
+      // Click 1: should show desk-manor-1.webp
+      cy.get('button[aria-label="Next image"]').click();
+      cy.wait(200);
+      cy.get('img:visible').first().invoke('attr', 'src').then((src1) => {
+        seenImages.push(src1);
+        expect(src1).to.include('desk-manor-1');
+
+        // Click 2: should show desk-manor-2.webp
+        cy.get('button[aria-label="Next image"]').click();
+        cy.wait(200);
+        cy.get('img:visible').first().invoke('attr', 'src').then((src2) => {
+          seenImages.push(src2);
+          expect(src2).to.include('desk-manor-2');
+
+          // Click 3: should show desk-manor-3.webp
+          cy.get('button[aria-label="Next image"]').click();
+          cy.wait(200);
+          cy.get('img:visible').first().invoke('attr', 'src').then((src3) => {
+            seenImages.push(src3);
+            expect(src3).to.include('desk-manor-3');
+
+            // Click 4: should be back to main image (desk-manor.webp)
+            cy.get('button[aria-label="Next image"]').click();
+            cy.wait(200);
+            cy.get('img:visible').first().invoke('attr', 'src').then((src4) => {
+              seenImages.push(src4);
+              
+              // After 4 clicks, should return to main image
+              expect(src4).to.equal(initialSrc, 'After 4 clicks, should return to main image');
+              
+              // Verify we saw exactly 4 unique images (no duplicates)
+              const uniqueImages = [...new Set(seenImages)];
+              expect(uniqueImages.length).to.equal(4, 'Should have exactly 4 unique images in the cycle (no duplicates)');
+              
+              // Verify all images are desk-manor variants
+              seenImages.forEach((imgSrc, idx) => {
+                expect(imgSrc).to.include('desk-manor', `Image ${idx + 1} should be a desk-manor image`);
+              });
+              
+              // Verify the expected images are present:
+              // - Main image: desk-manor.webp
+              // - Variants: desk-manor-1.webp, desk-manor-2.webp, desk-manor-3.webp
+              const hasMain = seenImages.some(src => src.includes('desk-manor.webp') && !src.includes('desk-manor-'));
+              const hasVariant1 = seenImages.some(src => src.includes('desk-manor-1.webp'));
+              const hasVariant2 = seenImages.some(src => src.includes('desk-manor-2.webp'));
+              const hasVariant3 = seenImages.some(src => src.includes('desk-manor-3.webp'));
+              
+              expect(hasMain).to.be.true;
+              expect(hasVariant1).to.be.true;
+              expect(hasVariant2).to.be.true;
+              expect(hasVariant3).to.be.true;
+            });
+          });
+        });
+      });
+    });
+  });
 });
