@@ -91,7 +91,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
             key={src}
             className={styles.imageWrapper}
             style={{ 
-              display: isVisible ? 'block' : 'none', // Hide but keep in DOM
+              display: isVisible ? 'flex' : 'none', // Hide but keep in DOM
               width: '100%',
               height: '100%'
             }}

@@ -64,7 +64,7 @@ describe('Thumbnail', () => {
     
     // First image should be visible
     expect(images[0]).toBeVisible();
-    expect(images[0].parentElement).toHaveStyle({ display: 'block' });
+    expect(images[0].parentElement).toHaveStyle({ display: 'flex' });
 
     // Others should be hidden but present
     expect(images[1].parentElement).toHaveStyle({ display: 'none' });
@@ -90,7 +90,7 @@ describe('Thumbnail', () => {
     expect(images[0].parentElement).toHaveStyle({ display: 'none' });
     
     // Index 1 (test-item-1) should be visible
-    expect(images[1].parentElement).toHaveStyle({ display: 'block' });
+    expect(images[1].parentElement).toHaveStyle({ display: 'flex' });
     expect(images[1].src).toContain('test-item-1.webp');
   });
 });
