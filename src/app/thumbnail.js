@@ -146,9 +146,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
               style={{
                 width: '100%',
                 height: 'auto',
-                objectFit: 'contain',
-                maxWidth: '100%',
-                maxHeight: allowCycling ? '100vh' : 'none'
+                objectFit: 'contain'
               }}
             />
           </div>

@@ -2,7 +2,8 @@
 
 .images {
     margin-left: 20px;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: visible;
     position: relative;
 
     @include common.mobile {
