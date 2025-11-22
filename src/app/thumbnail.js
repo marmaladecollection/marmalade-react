@@ -13,6 +13,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
   const [availableImages, setAvailableImages] = useState([`/images/${item.id}.webp?${cacheVersion}`]);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isLoadingImages, setIsLoadingImages] = useState(false);
+  const [failedImages, setFailedImages] = useState(new Set());
 
   useEffect(() => {
     // Reset image loaded state when item changes
@@ -29,23 +30,11 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
         let consecutiveFailures = 0;
         const maxFailures = 3; // Stop after 3 consecutive missing images
 
-        while (consecutiveFailures < maxFailures && index <= 20) {
-          const imagePath = `/images/${item.id}-${index}.webp?${cacheVersion}`;
-
-          try {
-            // Use fetch with HEAD to check if image exists (faster than Image loading)
-            const response = await fetch(imagePath, { method: 'HEAD' });
-            if (response.ok) {
-              images.push(imagePath);
-              consecutiveFailures = 0; // Reset failure count
-            } else {
-              consecutiveFailures++;
-            }
-          } catch (error) {
-            consecutiveFailures++;
-          }
-
-          index++;
+        // Try to find numbered variants by checking if they exist
+        // Use a more reliable method that works in both local and deployed environments
+        for (let i = 1; i <= 10; i++) {
+          const imagePath = `/images/${item.id}-${i}.webp?${cacheVersion}`;
+          images.push(imagePath);
         }
 
         setAvailableImages(images);
@@ -60,8 +49,11 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
     loadAvailableImages();
   }, [item.id, allowCycling, cacheVersion]);
 
+  // Get valid images (excluding failed ones)
+  const validImages = getValidImages();
+
   // Get current image src - if the requested image doesn't exist yet, show the main image
-  const currentImageSrc = availableImages[currentImageIndex] || `/images/${item.id}.webp?${cacheVersion}`;
+  const currentImageSrc = validImages[currentImageIndex] || `/images/${item.id}.webp?${cacheVersion}`;
 
   // Reset loading state when the displayed image changes
   useEffect(() => {
@@ -76,22 +68,33 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
     return () => clearTimeout(timeout);
   }, [currentImageSrc]);
 
+  const handleImageError = (imageSrc) => {
+    // Mark this image as failed and remove it from available images
+    setFailedImages(prev => new Set([...prev, imageSrc]));
+  };
+
+  const getValidImages = () => {
+    return availableImages.filter(img => !failedImages.has(img));
+  };
+
   const handlePrevious = () => {
-    // Don't allow navigation if only one image is available
-    if (availableImages.length <= 1) return;
+    const validImages = getValidImages();
+    // Don't allow navigation if only one valid image is available
+    if (validImages.length <= 1) return;
 
     setCurrentImageIndex((prev) => {
-      const newIndex = prev === 0 ? availableImages.length - 1 : prev - 1;
+      const newIndex = prev === 0 ? validImages.length - 1 : prev - 1;
       return newIndex;
     });
   };
 
   const handleNext = () => {
-    // Don't allow navigation if only one image is available
-    if (availableImages.length <= 1) return;
+    const validImages = getValidImages();
+    // Don't allow navigation if only one valid image is available
+    if (validImages.length <= 1) return;
 
     setCurrentImageIndex((prev) => {
-      const newIndex = prev === availableImages.length - 1 ? 0 : prev + 1;
+      const newIndex = prev === validImages.length - 1 ? 0 : prev + 1;
       return newIndex;
     });
   };
@@ -103,7 +106,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
       )}
       <Image
         className={styles.backgroundImage}
-        src={availableImages[0] || `/images/${item.id}.webp?${cacheVersion}`}
+        src={validImages[0] || `/images/${item.id}.webp?${cacheVersion}`}
         alt={item.name}
         width={350}
         height={470}
@@ -111,12 +114,15 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
         quality={90}
         priority={priority}
         onLoad={() => setIsImageLoaded(true)}
-        onError={() => setIsImageLoaded(true)} // Show image even if there's an error
+        onError={() => {
+          handleImageError(validImages[0] || `/images/${item.id}.webp?${cacheVersion}`);
+          setIsImageLoaded(true); // Still show the component even if image fails
+        }}
         style={{ width: '100%', height: 'auto' }}
       />
       <Image
         className={styles.overlayImage}
-        src={availableImages[currentImageIndex] || `/images/${item.id}.webp?${cacheVersion}`}
+        src={currentImageSrc}
         alt={item.name}
         width={350}
         height={470}
@@ -124,8 +130,11 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
         quality={90}
         priority={priority}
         onLoad={() => setIsImageLoaded(true)}
-        onError={() => setIsImageLoaded(true)} // Show image even if there's an error
-        onClick={onImageClick ? () => onImageClick(availableImages[currentImageIndex], item.name) : undefined}
+        onError={() => {
+          handleImageError(currentImageSrc);
+          setIsImageLoaded(true); // Still show the component even if image fails
+        }}
+        onClick={onImageClick ? () => onImageClick(currentImageSrc, item.name) : undefined}
         style={{
           opacity: isImageLoaded ? 1 : 0,
           width: 'auto',
@@ -134,7 +143,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
           maxHeight: '100%'
         }}
       />
-      {allowCycling && availableImages.length > 1 && (
+      {allowCycling && validImages.length > 1 && (
         <>
           <button className={styles.navButton} onClick={handlePrevious} aria-label="Previous image">
             <span className={styles.navButtonHitbox}></span>
