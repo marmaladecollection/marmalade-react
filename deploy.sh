@@ -9,28 +9,14 @@ source "$SCRIPT_DIR/deploy-common.sh"
 
 echo "Starting deployment..."
 
-# Kill any processes using port 3000
-echo "Checking for processes on port 3000..."
-PORT_3000_PIDS=$(lsof -ti:3000 2>/dev/null)
-if [ ! -z "$PORT_3000_PIDS" ]; then
-    echo "Found processes on port 3000: $PORT_3000_PIDS"
-    echo "Killing processes on port 3000..."
-    kill -9 $PORT_3000_PIDS 2>/dev/null
-    echo "✅ Port 3000 cleared"
-else
-    echo "✅ Port 3000 is already free"
-fi
+# Kill any processes using port 3000 (needed before starting local dev server)
+kill_port_3000
 
-# Install dependencies
-echo "Installing dependencies..."
-npm install
-INSTALL_EXIT_CODE=$?
-
-if [ $INSTALL_EXIT_CODE -ne 0 ]; then
-    echo "❌ Dependencies installation failed. Aborting deployment."
+# Install local dependencies
+install_local_dependencies
+if [ $? -ne 0 ]; then
     exit 1
 fi
-echo "✅ Dependencies installed successfully"
 
 # Run unit tests
 echo "Running unit tests..."

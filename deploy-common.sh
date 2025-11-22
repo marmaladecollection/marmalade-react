@@ -10,6 +10,34 @@ SITE_URL="https://www.marmaladecollection.com"
 # SSH command wrapper - can be overridden by scripts
 SSH_CMD="ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=10"
 
+# Function to kill processes on port 3000 (useful before starting local dev server)
+kill_port_3000() {
+    echo "Checking for processes on port 3000..."
+    PORT_3000_PIDS=$(lsof -ti:3000 2>/dev/null)
+    if [ ! -z "$PORT_3000_PIDS" ]; then
+        echo "Found processes on port 3000: $PORT_3000_PIDS"
+        echo "Killing processes on port 3000..."
+        kill -9 $PORT_3000_PIDS 2>/dev/null
+        echo "✅ Port 3000 cleared"
+    else
+        echo "✅ Port 3000 is already free"
+    fi
+}
+
+# Function to install local dependencies
+install_local_dependencies() {
+    echo "Installing dependencies..."
+    npm install
+    INSTALL_EXIT_CODE=$?
+    
+    if [ $INSTALL_EXIT_CODE -ne 0 ]; then
+        echo "❌ Dependencies installation failed. Aborting deployment."
+        return 1
+    fi
+    echo "✅ Dependencies installed successfully"
+    return 0
+}
+
 # Function to run SSH command (can be overridden to use sshpass)
 run_ssh() {
     $SSH_CMD "$SERVER" "$@"

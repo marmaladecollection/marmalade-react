@@ -2,30 +2,24 @@
 
 # Quick deployment script - skips tests for faster deployment
 # Only use this when you're confident tests pass!
-
-if [ -z "$SSHPASS" ]; then
-    echo "Error: SSHPASS environment variable is not set."
-    echo "Please set it by running: export SSHPASS=\"your_password_here\""
-    exit 1
-fi
+# This script uses SSH key authentication
+# Make sure your SSH key is added to the server's authorized_keys
 
 # Source common deployment functions
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-# Override SSH command to use sshpass before sourcing
-SSH_CMD="sshpass -e ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=10"
 source "$SCRIPT_DIR/deploy-common.sh"
-
-# Override run_ssh function to use sshpass
-run_ssh() {
-    sshpass -e ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=10 "$SERVER" "$@"
-}
 
 echo "🚀 Starting QUICK deployment (skipping tests)..."
 echo "⚠️  WARNING: This skips all test validation!"
 
-# Deploy to server using rsync with sshpass
-deploy_to_server "sshpass -e rsync"
+# Install local dependencies
+install_local_dependencies
+if [ $? -ne 0 ]; then
+    exit 1
+fi
+
+# Deploy to server using rsync
+deploy_to_server "rsync"
 
 if [ $? -eq 0 ]; then
     echo ""
