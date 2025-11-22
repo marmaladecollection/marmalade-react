@@ -64,11 +64,11 @@ describe('Thumbnail', () => {
     
     // First image should be visible
     expect(images[0]).toBeVisible();
-    expect(images[0].parentElement).toHaveStyle({ display: 'flex' });
+    expect(images[0].parentElement).toHaveStyle({ opacity: '1', zIndex: '10' });
 
     // Others should be hidden but present
-    expect(images[1].parentElement).toHaveStyle({ display: 'none' });
-    expect(images[2].parentElement).toHaveStyle({ display: 'none' });
+    expect(images[1].parentElement).toHaveStyle({ opacity: '0', zIndex: '1' });
+    expect(images[2].parentElement).toHaveStyle({ opacity: '0', zIndex: '1' });
   });
 
   it('switches visibility instantly on next click', async () => {
@@ -87,10 +87,10 @@ describe('Thumbnail', () => {
     const images = screen.getAllByAltText('Test Item');
     
     // Index 0 should now be hidden
-    expect(images[0].parentElement).toHaveStyle({ display: 'none' });
+    expect(images[0].parentElement).toHaveStyle({ opacity: '0', zIndex: '1' });
     
     // Index 1 (test-item-1) should be visible
-    expect(images[1].parentElement).toHaveStyle({ display: 'flex' });
+    expect(images[1].parentElement).toHaveStyle({ opacity: '1', zIndex: '10' });
     expect(images[1].src).toContain('test-item-1.webp');
   });
 });

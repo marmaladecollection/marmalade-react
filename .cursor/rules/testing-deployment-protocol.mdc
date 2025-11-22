@@ -1,0 +1,23 @@
+---
+description: Critical workflow rules for testing and deployment
+globs: **/*
+---
+
+# Testing & Deployment Rules
+
+## 1. Mandatory Integration Testing
+- **Rule**: NEVER consider a task complete or ready for deployment based solely on unit tests.
+- **Action**: You MUST verify UI changes by running integration tests (Cypress) against the local development server.
+- **Why**: Unit tests mock the DOM and don't catch CSS layout issues (like 0x0 sizing) or browser-specific rendering quirks.
+
+## 2. Deployment Permission Protocol
+- **Rule**: NEVER deploy to production without explicit user confirmation in the current turn.
+- **Action**: Even if the user said "deploy" in a previous message, if you have made code changes since then, you must ASK AGAIN: "Tests passed. Shall I deploy now?"
+- **exception**: If the user explicitly commands "fix this and deploy immediately" in a single prompt.
+
+## 3. Test-Driven fixes
+- **Rule**: When fixing a bug, verify the fix with a test.
+- **Action**: Run the specific test that reproduces the issue. If one doesn't exist, create it. Do not rely on "it looks correct" code analysis.
+
+## 4. Verify Local Server
+- **Rule**: Before running Cypress, ensure the local dev server is actually up and responsive (curl check).

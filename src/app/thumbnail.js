@@ -13,7 +13,9 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
   const [availableImages, setAvailableImages] = useState([`/images/${item.id}.webp?${cacheVersion}`]);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isLoadingImages, setIsLoadingImages] = useState(false);
+  const [maxImageHeight, setMaxImageHeight] = useState(0);
   const discoveryStarted = useRef(false);
+  const imageRefs = useRef({});
 
   useEffect(() => {
     // Reset state when item changes
@@ -74,7 +76,10 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
   };
 
   return (
-    <div className={styles.container}>
+    <div 
+      className={`${styles.container} ${allowCycling ? styles.cyclingContainer : ''}`}
+      style={allowCycling && maxImageHeight > 0 ? { minHeight: `${maxImageHeight}px` } : {}}
+    >
       {!isImageLoaded && (
         <div className={styles.skeleton} />
       )}
@@ -86,17 +91,29 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
         // But we want them all to load eventually
         const isPriority = priority || index <= 1; 
         
+        // When cycling, first image is relative (establishes height), all images centered
+        // Container min-height is set to max of all image heights
+        // When not cycling, visible image establishes height, hidden images overlay
+        const isFirstImage = index === 0;
+        const shouldBeRelative = allowCycling ? isFirstImage : (isVisible ? true : false);
+        
         return (
           <div 
             key={src}
             className={styles.imageWrapper}
+            ref={(el) => {
+              if (allowCycling && el) {
+                imageRefs.current[src] = el;
+              }
+            }}
             style={{ 
-              position: isVisible ? 'relative' : 'absolute',
-              top: 0,
-              left: 0,
+              position: shouldBeRelative ? 'relative' : 'absolute',
               opacity: isVisible ? 1 : 0,
               zIndex: isVisible ? 10 : 1,
               pointerEvents: isVisible ? 'auto' : 'none',
+              top: (allowCycling && !shouldBeRelative) ? '50%' : (shouldBeRelative ? 'auto' : 0),
+              left: (allowCycling && !shouldBeRelative) ? '50%' : (shouldBeRelative ? 'auto' : 0),
+              transform: (allowCycling && !shouldBeRelative) ? 'translate(-50%, -50%)' : 'none',
             }}
           >
             <Image
@@ -108,8 +125,19 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
               quality={75} // Optimized quality
               priority={isPriority} // Eager load main images
               loading={isPriority ? "eager" : "lazy"}
-              onLoad={() => {
+              onLoad={(e) => {
                 if (!isImageLoaded) setIsImageLoaded(true);
+                // Measure image wrapper height when cycling to set container to tallest
+                if (allowCycling && e.target && imageRefs.current[src]) {
+                  const wrapper = imageRefs.current[src];
+                  // Small delay to ensure layout is complete
+                  requestAnimationFrame(() => {
+                    const height = wrapper.offsetHeight;
+                    if (height > maxImageHeight) {
+                      setMaxImageHeight(height);
+                    }
+                  });
+                }
               }}
               onError={() => {
                 if (!isImageLoaded) setIsImageLoaded(true);
@@ -118,7 +146,9 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
               style={{
                 width: '100%',
                 height: 'auto',
-                display: 'block'
+                objectFit: 'contain',
+                maxWidth: '100%',
+                maxHeight: allowCycling ? '100vh' : 'none'
               }}
             />
           </div>

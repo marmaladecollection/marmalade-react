@@ -12,9 +12,11 @@
 }
 
 .left {
-    max-width: 400px;
+    width: 350px; /* Enforce width for absolute positioned images */
+    max-width: 100%;
     flex: 0 0 auto;
     @include common.mobile {
+        width: 100%;
         max-width: 100%;
     }
 }
