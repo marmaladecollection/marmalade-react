@@ -91,9 +91,12 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
             key={src}
             className={styles.imageWrapper}
             style={{ 
-              display: isVisible ? 'flex' : 'none', // Hide but keep in DOM
-              width: '100%',
-              height: '100%'
+              position: isVisible ? 'relative' : 'absolute',
+              top: 0,
+              left: 0,
+              opacity: isVisible ? 1 : 0,
+              zIndex: isVisible ? 10 : 1,
+              pointerEvents: isVisible ? 'auto' : 'none',
             }}
           >
             <Image
@@ -106,18 +109,15 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
               priority={isPriority} // Eager load main images
               loading={isPriority ? "eager" : "lazy"}
               onLoad={() => {
-                if (index === 0) setIsImageLoaded(true);
+                if (!isImageLoaded) setIsImageLoaded(true);
               }}
               onError={() => {
-                if (index === 0) setIsImageLoaded(true);
+                if (!isImageLoaded) setIsImageLoaded(true);
               }}
               onClick={onImageClick ? () => onImageClick(src, item.name) : undefined}
               style={{
-                width: 'auto',
+                width: '100%',
                 height: 'auto',
-                maxWidth: '100%',
-                maxHeight: '100%',
-                margin: '0 auto',
                 display: 'block'
               }}
             />

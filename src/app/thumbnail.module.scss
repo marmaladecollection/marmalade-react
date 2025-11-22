@@ -11,6 +11,9 @@
     width: 100%;
     aspect-ratio: 350 / 470; /* Enforce aspect ratio */
     overflow: hidden; /* Ensure images don't spill out */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .imageWrapper {
