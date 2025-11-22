@@ -3,6 +3,10 @@
 # This script uses SSH key authentication
 # Make sure your SSH key is added to the server's authorized_keys
 
+# Source common deployment functions
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/deploy-common.sh"
+
 echo "Starting deployment..."
 
 # Kill any processes using port 3000
@@ -45,7 +49,7 @@ echo "Starting local dev server for Cypress tests..."
 npm run dev &
 DEV_SERVER_PID=$!
 
-# Wait for the server to be ready (adjust the URL and timeout as needed)
+# Wait for the server to be ready
 echo "Waiting for local dev server to be ready..."
 MAX_TRIES=20
 TRIES=0
@@ -74,73 +78,20 @@ if [ $CYPRESS_EXIT_CODE -ne 0 ]; then
 fi
 echo "✅ All Cypress tests passed"
 
-# Sync files using rsync
-echo "Syncing files to server..."
-rsync -avz --progress --ignore-times --delete --exclude '.git' --exclude '.next' --exclude 'node_modules' . root@217.154.9.107:/srv/marmalade/
-RSYNC_EXIT_CODE=$?
+# Deploy to server using rsync
+deploy_to_server "rsync"
 
-if [ $RSYNC_EXIT_CODE -eq 0 ]; then
-    echo "File sync completed successfully."
-    
-    # Install dependencies and build application
-    echo "Cleaning npm cache on server..."
-    ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=10 root@217.154.9.107 "cd /srv/marmalade && npm cache clean --force"
-    
-    echo "Removing old lock files and Darwin-specific modules..."
-    ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=10 root@217.154.9.107 "cd /srv/marmalade && rm -f package-lock.json && rm -rf node_modules/@next/swc-darwin-arm64 node_modules/@next/swc-darwin-x64"
-    
-    echo "Installing dependencies on server (this may take a few minutes)..."
-    ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=10 root@217.154.9.107 "cd /srv/marmalade && npm install --force --no-audit"
-    INSTALL_SERVER_EXIT_CODE=$?
-    
-    if [ $INSTALL_SERVER_EXIT_CODE -eq 0 ]; then
-        echo "✅ Server dependencies installed successfully"
-        echo "Setting up production environment..."
-        ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=10 root@217.154.9.107 "cd /srv/marmalade && cp .env.production .env.local"
-        echo "Building application with production environment..."
-        ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=10 root@217.154.9.107 "cd /srv/marmalade && NODE_ENV=production npm run build"
-    else
-        echo "❌ Server dependency installation failed. Skipping build."
-        exit 1
-    fi
-    BUILD_EXIT_CODE=$?
-    
-    if [ $BUILD_EXIT_CODE -eq 0 ]; then
-        echo "✅ Build completed successfully"
-        echo "Restarting application with PM2 in production mode..."
-        ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=10 root@217.154.9.107 "cd /srv/marmalade && NODE_ENV=production pm2 restart marmalade --update-env"
-        if [ $? -eq 0 ]; then
-            echo "✅ Application restarted successfully"
-        else
-            echo "⚠️ Warning: PM2 restart may have failed"
-        fi
-    else
-        echo "❌ Build failed. Skipping PM2 restart."
-        exit 1
-    fi
-    
-    # Verify site is accessible
-    echo "Verifying site is accessible..."
-    sleep 3  # Give PM2 a moment to fully restart
-    
-    if curl -s --max-time 10 -o /dev/null -w "%{http_code}" https://www.marmaladecollection.com | grep -q "200"; then
-        echo "✅ Site is accessible at https://www.marmaladecollection.com"
-        
-        # Run Cypress tests against deployed production site
-        echo "Running Cypress tests against deployed production site..."
-        npx cypress run --config baseUrl=https://www.marmaladecollection.com --spec "cypress/e2e/404.cy.js,cypress/e2e/basket.cy.js,cypress/e2e/checkout.cy.js,cypress/e2e/contact.cy.js,cypress/e2e/homepage.cy.js,cypress/e2e/itempage.cy.js,cypress/e2e/navigation.cy.js,cypress/e2e/sales.cy.js"
-        CYPRESS_PROD_EXIT_CODE=$?
-        if [ $CYPRESS_PROD_EXIT_CODE -ne 0 ]; then
-            echo "❌ Cypress tests failed against production site. Aborting deployment."
-            exit 1
-        fi
-        echo "✅ All Cypress tests passed against production site"
-    else
-        echo "⚠️ Warning: Site may not be responding correctly at https://www.marmaladecollection.com"
-        echo "Checking HTTP status:"
-        curl -s --max-time 10 -w "HTTP Status: %{http_code}\n" https://www.marmaladecollection.com -o /dev/null
-    fi
-else
-    echo "File sync failed. Aborting deployment."
+if [ $? -ne 0 ]; then
     exit 1
 fi
+
+# Run Cypress tests against deployed production site
+echo "Running Cypress tests against deployed production site..."
+npx cypress run --config baseUrl="$SITE_URL" --spec "cypress/e2e/404.cy.js,cypress/e2e/basket.cy.js,cypress/e2e/checkout.cy.js,cypress/e2e/contact.cy.js,cypress/e2e/homepage.cy.js,cypress/e2e/itempage.cy.js,cypress/e2e/navigation.cy.js,cypress/e2e/sales.cy.js"
+CYPRESS_PROD_EXIT_CODE=$?
+
+if [ $CYPRESS_PROD_EXIT_CODE -ne 0 ]; then
+    echo "❌ Cypress tests failed against production site. Aborting deployment."
+    exit 1
+fi
+echo "✅ All Cypress tests passed against production site"
