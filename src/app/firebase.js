@@ -79,6 +79,13 @@ export const fetchAllItems = async (setItems) => {
       }
     }
 
+    // Sort items by order field (ascending), items without order field go last
+    filteredItems.sort((a, b) => {
+      const orderA = a.order !== undefined ? a.order : Infinity;
+      const orderB = b.order !== undefined ? b.order : Infinity;
+      return orderA - orderB;
+    });
+
     setItems(filteredItems);
   } catch (e) {
     console.error("Error fetching items:", e);

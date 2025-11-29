@@ -7,6 +7,8 @@ const firestoreMocks = {
   getFirestore: jest.fn(),
   addDoc: jest.fn(),
   setDoc: jest.fn(),
+  query: jest.fn((collectionRef, ...queryConstraints) => collectionRef),
+  orderBy: jest.fn((field, direction) => ({ field, direction })),
 };
 
 jest.mock('firebase/firestore', () => ({
@@ -105,6 +107,84 @@ describe('fetchAllItems', () => {
     const setItems = jest.fn();
     await fetchAllItems(setItems);
     expect(setItems).toHaveBeenCalledWith([]);
+  });
+
+  it('should order items by the order field in ascending order', async () => {
+    jest.resetModules();
+    firestoreMocks.collection = jest.fn((db, name) => ({ id: name }));
+    firestoreMocks.getDocs = jest.fn();
+    firestoreMocks.doc = jest.fn((db, collectionName, id) => ({ path: `${collectionName}/${id}` }));
+    firestoreMocks.getDoc = jest.fn();
+    firestoreMocks.getFirestore = jest.fn();
+    firestoreMocks.addDoc = jest.fn();
+    firestoreMocks.setDoc = jest.fn();
+    const { fetchAllItems } = require('./firebase');
+    // Mock items with order field in random order
+    const mockItems = [
+      { id: 'item1', name: 'Item 1', price: 100, order: 3 },
+      { id: 'item2', name: 'Item 2', price: 200, order: 1 },
+      { id: 'item3', name: 'Item 3', price: 300, order: 2 },
+    ];
+    // Mock getDocs for items collection
+    firestoreMocks.getDocs.mockResolvedValueOnce({
+      docs: mockItems.map(item => ({
+        id: item.id,
+        data: () => ({ name: item.name, price: item.price, order: item.order })
+      }))
+    });
+    // Mock getDoc for sale collection - no items sold
+    firestoreMocks.getDoc.mockImplementation(() => Promise.resolve({
+      exists: () => false
+    }));
+    // Mock setItems function
+    const setItems = jest.fn();
+    // Call fetchAllItems
+    await fetchAllItems(setItems);
+    // Verify that setItems was called with items ordered by order field (1, 2, 3)
+    expect(setItems).toHaveBeenCalledWith([
+      { id: 'item2', name: 'Item 2', price: 200, order: 1 },
+      { id: 'item3', name: 'Item 3', price: 300, order: 2 },
+      { id: 'item1', name: 'Item 1', price: 100, order: 3 },
+    ]);
+  });
+
+  it('should handle items without order field by placing them last', async () => {
+    jest.resetModules();
+    firestoreMocks.collection = jest.fn((db, name) => ({ id: name }));
+    firestoreMocks.getDocs = jest.fn();
+    firestoreMocks.doc = jest.fn((db, collectionName, id) => ({ path: `${collectionName}/${id}` }));
+    firestoreMocks.getDoc = jest.fn();
+    firestoreMocks.getFirestore = jest.fn();
+    firestoreMocks.addDoc = jest.fn();
+    firestoreMocks.setDoc = jest.fn();
+    const { fetchAllItems } = require('./firebase');
+    // Mock items - some with order, some without
+    const mockItems = [
+      { id: 'item1', name: 'Item 1', price: 100, order: 2 },
+      { id: 'item2', name: 'Item 2', price: 200 }, // no order field
+      { id: 'item3', name: 'Item 3', price: 300, order: 1 },
+    ];
+    // Mock getDocs for items collection
+    firestoreMocks.getDocs.mockResolvedValueOnce({
+      docs: mockItems.map(item => ({
+        id: item.id,
+        data: () => ({ name: item.name, price: item.price, ...(item.order !== undefined && { order: item.order }) })
+      }))
+    });
+    // Mock getDoc for sale collection - no items sold
+    firestoreMocks.getDoc.mockImplementation(() => Promise.resolve({
+      exists: () => false
+    }));
+    // Mock setItems function
+    const setItems = jest.fn();
+    // Call fetchAllItems
+    await fetchAllItems(setItems);
+    // Verify that setItems was called with items ordered by order field, items without order last
+    expect(setItems).toHaveBeenCalledWith([
+      { id: 'item3', name: 'Item 3', price: 300, order: 1 },
+      { id: 'item1', name: 'Item 1', price: 100, order: 2 },
+      { id: 'item2', name: 'Item 2', price: 200 },
+    ]);
   });
 });
 
