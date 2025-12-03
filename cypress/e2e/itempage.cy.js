@@ -61,8 +61,8 @@ describe('Item Page', () => {
       // Track all images we see during the cycle
       const seenImages = [initialSrc];
 
-      // Click through all 4 images (3 more clicks after the initial one)
-      // After 4 clicks total, we should be back to the main image
+      // Click through all 5 images (4 more clicks after the initial one)
+      // After 5 clicks total, we should be back to the main image
       
       // Click 1: should show desk-manor-1.webp
       cy.get('button[aria-label="Next image"]').click();
@@ -85,36 +85,46 @@ describe('Item Page', () => {
             seenImages.push(src3);
             expect(src3).to.include('desk-manor-3');
 
-            // Click 4: should be back to main image (desk-manor.webp)
+            // Click 4: should show desk-manor-4.webp
             cy.get('button[aria-label="Next image"]').click();
             cy.wait(200);
             cy.get('img:visible').first().invoke('attr', 'src').then((src4) => {
               seenImages.push(src4);
-              
-              // After 4 clicks, should return to main image
-              expect(src4).to.equal(initialSrc, 'After 4 clicks, should return to main image');
-              
-              // Verify we saw exactly 4 unique images (no duplicates)
-              const uniqueImages = [...new Set(seenImages)];
-              expect(uniqueImages.length).to.equal(4, 'Should have exactly 4 unique images in the cycle (no duplicates)');
-              
-              // Verify all images are desk-manor variants
-              seenImages.forEach((imgSrc, idx) => {
-                expect(imgSrc).to.include('desk-manor', `Image ${idx + 1} should be a desk-manor image`);
+              expect(src4).to.include('desk-manor-4');
+
+              // Click 5: should be back to main image (desk-manor.webp)
+              cy.get('button[aria-label="Next image"]').click();
+              cy.wait(200);
+              cy.get('img:visible').first().invoke('attr', 'src').then((src5) => {
+                seenImages.push(src5);
+                
+                // After 5 clicks, should return to main image
+                expect(src5).to.equal(initialSrc, 'After 5 clicks, should return to main image');
+                
+                // Verify we saw exactly 5 unique images (no duplicates)
+                const uniqueImages = [...new Set(seenImages)];
+                expect(uniqueImages.length).to.equal(5, 'Should have exactly 5 unique images in the cycle (no duplicates)');
+                
+                // Verify all images are desk-manor variants
+                seenImages.forEach((imgSrc, idx) => {
+                  expect(imgSrc).to.include('desk-manor', `Image ${idx + 1} should be a desk-manor image`);
+                });
+                
+                // Verify the expected images are present:
+                // - Main image: desk-manor.webp
+                // - Variants: desk-manor-1.webp, desk-manor-2.webp, desk-manor-3.webp, desk-manor-4.webp
+                const hasMain = seenImages.some(src => src.includes('desk-manor.webp') && !src.includes('desk-manor-'));
+                const hasVariant1 = seenImages.some(src => src.includes('desk-manor-1.webp'));
+                const hasVariant2 = seenImages.some(src => src.includes('desk-manor-2.webp'));
+                const hasVariant3 = seenImages.some(src => src.includes('desk-manor-3.webp'));
+                const hasVariant4 = seenImages.some(src => src.includes('desk-manor-4.webp'));
+                
+                expect(hasMain).to.be.true;
+                expect(hasVariant1).to.be.true;
+                expect(hasVariant2).to.be.true;
+                expect(hasVariant3).to.be.true;
+                expect(hasVariant4).to.be.true;
               });
-              
-              // Verify the expected images are present:
-              // - Main image: desk-manor.webp
-              // - Variants: desk-manor-1.webp, desk-manor-2.webp, desk-manor-3.webp
-              const hasMain = seenImages.some(src => src.includes('desk-manor.webp') && !src.includes('desk-manor-'));
-              const hasVariant1 = seenImages.some(src => src.includes('desk-manor-1.webp'));
-              const hasVariant2 = seenImages.some(src => src.includes('desk-manor-2.webp'));
-              const hasVariant3 = seenImages.some(src => src.includes('desk-manor-3.webp'));
-              
-              expect(hasMain).to.be.true;
-              expect(hasVariant1).to.be.true;
-              expect(hasVariant2).to.be.true;
-              expect(hasVariant3).to.be.true;
             });
           });
         });
