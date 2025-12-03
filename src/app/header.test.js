@@ -13,8 +13,8 @@ describe('Header', () => {
     const contactLink = screen.getByRole('link', { name: /Contact Us/i });
     expect(contactLink).toHaveAttribute('href', '/contact');
     
-    // Check for the About Us link
-    const aboutLink = screen.getByRole('link', { name: /About Us/i });
+    // Check for the About Marmalade link
+    const aboutLink = screen.getByRole('link', { name: /About Marmalade/i });
     expect(aboutLink).toHaveAttribute('href', '/about');
   });
 });

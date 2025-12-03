@@ -11,7 +11,7 @@ export default function Header() {
       </div>
       <div className={styles.rightSection}>
         <Link href="/contact">Contact Us</Link>
-        <Link href="/about">About Us</Link>
+        <Link href="/about">About Marmalade</Link>
       </div>
     </div>
   );
