@@ -39,10 +39,43 @@ export const isValidDeliveryPostcode = (postcode) => {
   // Normalize the postcode (remove spaces and convert to uppercase)
   const normalizedPostcode = postcode.replace(/\s+/g, '').toUpperCase();
   
-  // Check if the postcode matches any of our delivery areas
-  return Object.values(DELIVERY_AREAS).some(area => 
-    area.postcodes.some(validPostcode => 
-      normalizedPostcode.startsWith(validPostcode)
-    )
-  );
+  // UK postcode format: outward code (2-4 chars) + inward code (3 chars: digit + 2 letters)
+  // The inward code is always the last 3 characters and matches pattern: digit + 2 letters
+  
+  // Check if postcode ends with inward code pattern (digit + 2 letters)
+  const inwardMatch = normalizedPostcode.match(/([0-9][A-Z]{2})$/);
+  
+  let possibleOutwardCodes = [];
+  
+  if (inwardMatch) {
+    // Has inward code, extract the outward code (everything before the inward code)
+    const remaining = normalizedPostcode.substring(0, normalizedPostcode.length - 3);
+    
+    // The remaining part must match the outward code pattern exactly
+    // Pattern: 1-2 letters + 1-2 digits + optional letter (max 4 chars total)
+    if (!remaining.match(/^[A-Z]{1,2}[0-9]{1,2}[A-Z]?$/)) {
+      return false; // Invalid outward code format
+    }
+    
+    // The remaining part is the outward code
+    possibleOutwardCodes.push(remaining);
+  } else {
+    // No inward code, treat the whole thing as outward code
+    if (normalizedPostcode.match(/^[A-Z]{1,2}[0-9]{1,2}[A-Z]?$/)) {
+      possibleOutwardCodes.push(normalizedPostcode);
+    } else {
+      return false;
+    }
+  }
+  
+  // Check if the outward code matches any of our delivery areas
+  // We need exact matches to avoid false positives (e.g., BN11 incorrectly matching BN1)
+  if (possibleOutwardCodes.length > 0) {
+    const outwardCode = possibleOutwardCodes[0];
+    return Object.values(DELIVERY_AREAS).some(area => 
+      area.postcodes.includes(outwardCode)
+    );
+  }
+  
+  return false;
 }; 

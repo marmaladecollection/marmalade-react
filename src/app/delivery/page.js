@@ -7,7 +7,7 @@ export default function DeliveryPage() {
         <h1>Delivery Options</h1>
         
         <p>
-          We aim to deliver your order within 5 working days.
+          We aim to deliver your order within 5 working days.*
         </p>
         
         <div className={styles.deliveryOption}>
@@ -24,6 +24,10 @@ export default function DeliveryPage() {
             </a>.
           </p>
         </div>
+
+        <p className={styles.disclaimer}>
+          *Christmas deliveries may take a little longer.
+        </p>
       </div>
     </main>
   );
