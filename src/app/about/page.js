@@ -13,7 +13,7 @@ export default function AboutPage() {
           <br /><br />
           At Marmalade, we provide an accessible way to buy an antique desk, dining table or sofa at the same cost as purchasing new. As a small, carefully assembled collection, we offer a distinctive and more personal alternative to online warehouses and overwhelming auctions.
           <br /><br />
-          Our guiding belief at Marmalade is that buying antique furniture is a both practical and sustainable choice, and one that should not be daunting. When you buy a good piece of furniture that has already endured for a century or more, you know not only that it will last but also that you are preserving the past.
+          Our guiding belief at Marmalade is that buying antique furniture is a both practical and sustainable choice, and one that should not be daunting. When you buy a good piece of antique furniture, you know not only that it will last but also that you are preserving the past.
           </p>
         </div>
       </div>
