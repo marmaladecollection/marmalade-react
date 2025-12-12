@@ -2,25 +2,6 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import Thumbnail from './thumbnail';
 import { act } from 'react';
 
-// Mock next/image
-jest.mock('next/image', () => {
-  return function MockImage({ src, alt, style, priority, loading, onLoad }) {
-    // Simulate onLoad immediately for testing with proper event object
-    if (onLoad) {
-      setTimeout(() => {
-        const mockEvent = {
-          target: {
-            src: src,
-            complete: true
-          }
-        };
-        onLoad(mockEvent);
-      }, 0);
-    }
-    return <img src={src} alt={alt} style={style} data-priority={priority} data-loading={loading} />;
-  };
-});
-
 describe('Thumbnail', () => {
   const mockItem = {
     id: 'test-item',
@@ -40,7 +21,7 @@ describe('Thumbnail', () => {
       set src(val) {
         // Simulate success for item-1 and item-2, fail for others
         // Use regex or exact match to avoid "test-item-1" matching "test-item-10"
-        if (val.includes('test-item-1.webp') || val.includes('test-item-2.webp')) {
+        if (val.includes('test-item-1.jpg') || val.includes('test-item-2.jpg')) {
           setTimeout(() => this.onload && this.onload(), 10);
         } else if (val.includes('test-item-')) {
           setTimeout(() => this.onerror && this.onerror(), 10);
@@ -57,7 +38,7 @@ describe('Thumbnail', () => {
     render(<Thumbnail item={mockItem} />);
     const img = screen.getByAltText('Test Item');
     expect(img).toBeInTheDocument();
-    expect(img.src).toContain('test-item.webp');
+    expect(img.src).toContain('test-item.jpg');
   });
 
   it('discovers and renders secondary images hidden in the DOM', async () => {
@@ -101,7 +82,7 @@ describe('Thumbnail', () => {
     
     // Index 1 (test-item-1) should be visible
     expect(images[1].parentElement).toHaveStyle({ opacity: '1', zIndex: '10' });
-    expect(images[1].src).toContain('test-item-1.webp');
+    expect(images[1].src).toContain('test-item-1.jpg');
   });
 });
 
