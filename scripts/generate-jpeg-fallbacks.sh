@@ -7,10 +7,10 @@
 set -e
 
 IMAGES_DIR="public/images"
-JPEG_QUALITY=72  # Lower quality for smaller files (acceptable for edge case users)
+JPEG_QUALITY=65  # Lower quality to keep file sizes similar to WebP
 
-echo "🖼️  Generating JPEG fallbacks from WebP images..."
-echo "JPEG quality: ${JPEG_QUALITY}%"
+echo "🖼️  Generating JPEG images from WebP sources..."
+echo "JPEG quality: ${JPEG_QUALITY}% (optimized for similar file sizes to WebP)"
 echo ""
 
 # Counter for processed images
@@ -55,7 +55,7 @@ total_webp_mb=$((total_webp_size / 1024 / 1024))
 total_jpeg_mb=$((total_jpeg_size / 1024 / 1024))
 
 echo "======================================"
-echo "✅ JPEG fallback generation complete!"
+echo "✅ JPEG generation complete!"
 echo "Images processed: $count"
 echo "Total WebP size: ${total_webp_mb}MB"
 echo "Total JPEG size: ${total_jpeg_mb}MB"
