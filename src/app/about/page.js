@@ -7,7 +7,7 @@ export default function AboutPage() {
       
       <div className={styles.content}>
         <div className={styles.textContainer}>
-          <h1>About Marmalade</h1>
+          <h1>About</h1>
           <p className={styles.text}>
           Marmalade is a curated collection of antique furniture for sale that offers a range of small pieces to fit any home. Each piece is hand-selected for its beauty and craftsmanship as well as its practicality as a working item of furniture.
           <br /><br />

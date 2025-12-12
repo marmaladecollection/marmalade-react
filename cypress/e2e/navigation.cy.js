@@ -1,6 +1,6 @@
 describe('Navigation', () => {
   const pages = [
-    { linkText: /about/i, url: '/about', content: 'About Marmalade' },
+    { linkText: /about/i, url: '/about', content: 'About' },
     { linkText: /contact/i, url: '/contact', content: "We'd love to hear from you!" },
     { linkText: /delivery/i, url: '/delivery', content: 'Delivery Options' },
     { linkText: /returns/i, url: '/returns', content: 'Returns are accepted within 20 days of delivery.' },
