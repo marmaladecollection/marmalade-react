@@ -5,7 +5,7 @@ import styles from './thumbnail.module.scss';
 
 export default function Thumbnail({ item, allowCycling = false, onImageClick, priority = false }) {
   // Force cache busting with version parameter (increment when images are updated)
-  const cacheVersion = 'v16'; 
+  const cacheVersion = 'v17'; 
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   // Initialize with just the main image
