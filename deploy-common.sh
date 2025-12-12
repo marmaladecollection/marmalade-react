@@ -38,6 +38,19 @@ install_local_dependencies() {
     return 0
 }
 
+# Function to generate JPEG fallbacks from WebP images
+generate_jpeg_fallbacks() {
+    echo "Generating JPEG fallback images from WebP files..."
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    bash "$SCRIPT_DIR/scripts/generate-jpeg-fallbacks.sh"
+    if [ $? -ne 0 ]; then
+        echo "❌ JPEG fallback generation failed. Aborting deployment."
+        return 1
+    fi
+    echo "✅ JPEG fallbacks generated successfully"
+    return 0
+}
+
 # Function to run SSH command (can be overridden to use sshpass)
 run_ssh() {
     $SSH_CMD "$SERVER" "$@"
@@ -117,6 +130,15 @@ verify_site_accessible() {
 # Function to deploy to server (main deployment logic)
 deploy_to_server() {
     local RSYNC_CMD="$1"
+    
+    # Generate JPEG fallbacks before syncing files
+    generate_jpeg_fallbacks
+    JPEG_GEN_EXIT_CODE=$?
+    
+    if [ $JPEG_GEN_EXIT_CODE -ne 0 ]; then
+        echo "❌ JPEG fallback generation failed. Aborting deployment."
+        return 1
+    fi
     
     # Sync files
     sync_files "$RSYNC_CMD"

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useRef } from 'react';
-import Image from 'next/image';
 import styles from './thumbnail.module.scss';
 
 export default function Thumbnail({ item, allowCycling = false, onImageClick, priority = false }) {
@@ -9,8 +8,8 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
   const cacheVersion = 'v16'; 
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  // Initialize with just the main image
-  const [availableImages, setAvailableImages] = useState([`/images/${item.id}.webp?${cacheVersion}`]);
+  // Initialize with just the main image (store base name without extension)
+  const [availableImages, setAvailableImages] = useState([item.id]);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isLoadingImages, setIsLoadingImages] = useState(false);
   const [maxImageHeight, setMaxImageHeight] = useState(0);
@@ -23,7 +22,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
     // Reset state when item changes
     setIsImageLoaded(false);
     setCurrentImageIndex(0);
-    setAvailableImages([`/images/${item.id}.webp?${cacheVersion}`]);
+    setAvailableImages([item.id]);
     discoveryStarted.current = false;
     loadedImages.current.clear();
   }, [item.id, cacheVersion]);
@@ -36,15 +35,23 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
       discoveryStarted.current = true;
       setIsLoadingImages(true);
 
-      // Prepare parallel probes for images 1-10
+      // Prepare parallel probes for images 1-10 (check WebP first, fallback to JPEG)
       const probes = [];
       for (let i = 1; i <= 10; i++) {
-        const path = `/images/${item.id}-${i}.webp?${cacheVersion}`;
+        const baseName = `${item.id}-${i}`;
+        const webpPath = `/images/${baseName}.webp?${cacheVersion}`;
         const probe = new Promise((resolve) => {
           const img = new window.Image();
-          img.onload = () => resolve({ path, exists: true, index: i });
-          img.onerror = () => resolve({ path, exists: false, index: i });
-          img.src = path;
+          img.onload = () => resolve({ baseName, exists: true, index: i });
+          img.onerror = () => {
+            // Try JPEG fallback
+            const jpegPath = `/images/${baseName}.jpg?${cacheVersion}`;
+            const jpegImg = new window.Image();
+            jpegImg.onload = () => resolve({ baseName, exists: true, index: i });
+            jpegImg.onerror = () => resolve({ baseName, exists: false, index: i });
+            jpegImg.src = jpegPath;
+          };
+          img.src = webpPath;
         });
         probes.push(probe);
       }
@@ -56,13 +63,13 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
       const validExtras = results
         .filter(r => r.exists)
         .sort((a, b) => a.index - b.index)
-        .map(r => r.path);
+        .map(r => r.baseName);
 
       if (validExtras.length > 0) {
         setAvailableImages(prev => {
           // Prevent duplicates by filtering out images that already exist
-          const existingPaths = new Set(prev);
-          const newImages = validExtras.filter(path => !existingPaths.has(path));
+          const existingNames = new Set(prev);
+          const newImages = validExtras.filter(baseName => !existingNames.has(baseName));
           return newImages.length > 0 ? [...prev, ...newImages] : prev;
         });
       }
@@ -75,8 +82,8 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
 
   // Check if visible image is loaded when currentImageIndex changes
   useEffect(() => {
-    const visibleImageSrc = availableImages[currentImageIndex];
-    if (visibleImageSrc && loadedImages.current.has(visibleImageSrc)) {
+    const visibleImageBaseName = availableImages[currentImageIndex];
+    if (visibleImageBaseName && loadedImages.current.has(visibleImageBaseName)) {
       setIsImageLoaded(true);
       return;
     }
@@ -84,10 +91,10 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
     // Check if image is already loaded (cached images) - use requestAnimationFrame to ensure DOM is ready
     requestAnimationFrame(() => {
       if (visibleImageRef.current) {
-        // Next.js Image wraps img in a span, find the actual img element
+        // Find the actual img element inside picture element
         const imgElement = visibleImageRef.current.querySelector('img');
         if (imgElement && imgElement.complete && imgElement.naturalHeight > 0) {
-          loadedImages.current.add(visibleImageSrc);
+          loadedImages.current.add(visibleImageBaseName);
           setIsImageLoaded(true);
           return;
         }
@@ -116,7 +123,7 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
       <div className={`${styles.skeleton} ${isImageLoaded ? styles.hidden : ''}`} />
       
       {/* Render ALL available images into the DOM to force pre-decoding */}
-      {availableImages.map((src, index) => {
+      {availableImages.map((baseName, index) => {
         const isVisible = index === currentImageIndex;
         // Only the first few images need high priority to save bandwidth on initial load
         // But we want them all to load eventually
@@ -128,13 +135,18 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
         const isFirstImage = index === 0;
         const shouldBeRelative = allowCycling ? isFirstImage : (isVisible ? true : false);
         
+        // Build image paths
+        const webpSrc = `/images/${baseName}.webp?${cacheVersion}`;
+        const jpegSrc = `/images/${baseName}.jpg?${cacheVersion}`;
+        const fullSrc = webpSrc; // For onImageClick callback
+        
         return (
           <div 
-            key={src}
+            key={baseName}
             className={styles.imageWrapper}
             ref={(el) => {
               if (allowCycling && el) {
-                imageRefs.current[src] = el;
+                imageRefs.current[baseName] = el;
               }
               if (isVisible) {
                 visibleImageRef.current = el;
@@ -150,50 +162,48 @@ export default function Thumbnail({ item, allowCycling = false, onImageClick, pr
               transform: (allowCycling && !shouldBeRelative) ? 'translate(-50%, -50%)' : 'none',
             }}
           >
-            <Image
-              src={src}
-              alt={item.name}
-              width={350}
-              height={470}
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              quality={75} // Optimized quality
-              priority={isPriority} // Eager load main images
-              loading={isPriority ? "eager" : "lazy"}
-              onLoad={(e) => {
-                // Mark this image as loaded
-                loadedImages.current.add(src);
-                
-                // Hide skeleton if this is the visible image
-                if (isVisible) {
-                  setIsImageLoaded(true);
-                }
-                
-                // Measure image wrapper height when cycling to set container to tallest
-                if (allowCycling && e.target && imageRefs.current[src]) {
-                  const wrapper = imageRefs.current[src];
-                  // Small delay to ensure layout is complete
-                  requestAnimationFrame(() => {
-                    const height = wrapper.offsetHeight;
-                    if (height > maxImageHeight) {
-                      setMaxImageHeight(height);
-                    }
-                  });
-                }
-              }}
-              onError={() => {
-                // Mark as loaded even on error to hide skeleton
-                loadedImages.current.add(src);
-                if (isVisible) {
-                  setIsImageLoaded(true);
-                }
-              }}
-              onClick={onImageClick ? () => onImageClick(src, item.name) : undefined}
-              style={{
-                width: '100%',
-                height: 'auto',
-                objectFit: 'contain'
-              }}
-            />
+            <picture>
+              <source srcSet={webpSrc} type="image/webp" />
+              <img
+                src={jpegSrc}
+                alt={item.name}
+                loading={isPriority ? "eager" : "lazy"}
+                onLoad={(e) => {
+                  // Mark this image as loaded
+                  loadedImages.current.add(baseName);
+                  
+                  // Hide skeleton if this is the visible image
+                  if (isVisible) {
+                    setIsImageLoaded(true);
+                  }
+                  
+                  // Measure image wrapper height when cycling to set container to tallest
+                  if (allowCycling && e.target && imageRefs.current[baseName]) {
+                    const wrapper = imageRefs.current[baseName];
+                    // Small delay to ensure layout is complete
+                    requestAnimationFrame(() => {
+                      const height = wrapper.offsetHeight;
+                      if (height > maxImageHeight) {
+                        setMaxImageHeight(height);
+                      }
+                    });
+                  }
+                }}
+                onError={() => {
+                  // Mark as loaded even on error to hide skeleton
+                  loadedImages.current.add(baseName);
+                  if (isVisible) {
+                    setIsImageLoaded(true);
+                  }
+                }}
+                onClick={onImageClick ? () => onImageClick(fullSrc, item.name) : undefined}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  objectFit: 'contain'
+                }}
+              />
+            </picture>
           </div>
         );
       })}
