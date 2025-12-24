@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { collection, doc, getDoc, getDocs, getFirestore, addDoc, setDoc } from "firebase/firestore";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
+import { getAnalytics, logEvent } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDAy3UOEf3Occ9dRnfO8i-NawSc81jMuIY",
@@ -23,6 +24,17 @@ let currentUser = null;
 const isTestEnvironment = 
   process.env.NODE_ENV === 'test' || 
   (typeof window !== 'undefined' && window.Cypress);
+
+// Initialize Analytics (only in browser, not in test environment or SSR)
+let analytics = null;
+if (typeof window !== 'undefined' && !isTestEnvironment) {
+  try {
+    analytics = getAnalytics(app);
+  } catch (error) {
+    // Analytics initialization failed (e.g., in development with strict mode)
+    console.warn("Analytics initialization failed:", error);
+  }
+}
 
 // Initialize auth state listener (skip in test environment)
 if (!isTestEnvironment) {
@@ -293,6 +305,18 @@ export const fetchSoldItems = async () => {
   } catch (e) {
     console.error("Error fetching sold items:", e);
     throw e;
+  }
+};
+
+// Export analytics function for tracking custom events
+export const trackEvent = (eventName, eventParams) => {
+  if (analytics && !isTestEnvironment) {
+    try {
+      logEvent(analytics, eventName, eventParams);
+    } catch (error) {
+      // Silently fail in case of analytics errors (e.g., during development)
+      console.warn("Analytics event tracking failed:", error);
+    }
   }
 };
 
